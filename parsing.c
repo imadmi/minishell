@@ -1,197 +1,285 @@
 #include "parsing.h"
 
-char *ft_fgets(char *str, int n, FILE *stream) 
+int	ft_isspace(int c)
 {
-    int i = 0;
-    int c = fgetc(stream);
-
-    while (i < n - 1 && c != EOF && c != '\n') 
-    {
-        str[i++] = c;
-        c = fgetc(stream);
-    }
-
-    if (c == '\n') 
-    {
-        str[i++] = c;
-    }
-
-    str[i] = '\0';
-    if (i == 0 && c == EOF) 
-    {
-        return NULL;
-    }
-    return str;
+	if (c == 32 || (c >= 9 && c <= 13))
+		return (1);
+	return (0);
 }
 
-
-int ft_strcspn(const char *str1, const char *str2) 
+int ft_strnncmp(char str1, char str2)
 {
-    int len1 = ft_strlen(str1);
-    int len2 = ft_strlen(str2);
-    int i = 0, j;
-
-    while (i < len1) {
-        j = 0;
-        while (j < len2 && str1[i] != str2[j]) 
-        {
-            j++;
-        }
-        if (j < len2) 
-        {
-            return i;
-        }
-        i++;
-    }
-
-    return len1;
-}
-
-char* ft_strcpy(char* dest, const char* src) 
-{
-    char* original_dest = dest;
-
-    while (*src != '\0') {
-        *dest = *src;
-        dest++;
-        src++;
-    }
-    *dest = '\0';
-
-    return original_dest;
-}
-
-char* get_input() 
-{
-    printf("Minishell> ");
-    
-    char input[100];
-    ft_fgets(input, 100, stdin);
-    
-    input[ft_strcspn(input, "\n")] = 0;
-    
-    char *str = (char*) malloc(strlen(input) + 1);
-    ft_strcpy(str, input);
-    
-    return str;
-}
-
-void add_to_list(t_struct **head, t_struct **tail, char *str) 
-{
-    t_struct *new_node = (t_struct*) malloc(sizeof(t_struct));
-    new_node->value = (char*) malloc(strlen(str) + 1);
-    ft_strcpy(new_node->value, str);
-    new_node->next = NULL;
-
-    if (*head == NULL) {
-        *head = new_node;
-        *tail = new_node;
-    } else {
-        (*tail)->next = new_node;
-        *tail = new_node;
-    }
-}
-
-void print_list(t_struct *head) {
-    printf("> ");
-    t_struct *current = head;
-    while (current != NULL) {
-        printf("%s ", current->value);
-        current = current->next;
-    }
-    printf("\n");
-}
-
-void free_list(t_struct *head) {
-    t_struct *current = head;
-    while (current != NULL) {
-        t_struct *temp = current;
-        current = current->next;
-        free(temp->value);
-        free(temp);
-    }
-}
-
-char *findTokenStart(const char *str, const char *delim) {
-    while (*str != '\0') {
-        if (strchr(delim, *str) == NULL) {
-            return (char*) str;
-        }
-        str++;
-    }
-    return NULL;
-}
-
-char *findTokenEnd(const char *str, const char *delim) {
-    const char *s = str;
-
-    while (*s != '\0') {
-        const char *d = delim;
-        while (*d != '\0') {
-            if (*s == *d) {
-                return (char *)s;
-            }
-            d++;
-        }
-        s++;
-    }
-    return (char *)s;
-}
-
-char *ft_strtok(char *str, const char *delim) 
-{
-    char *lastToken = NULL;
-    char *tokenStart;
-    char *tokenEnd;
-
-    if (str != NULL) 
-    {
-        lastToken = str;
-    } 
-    else 
-    {
-        lastToken = strtok(NULL, delim);
-        if (lastToken == NULL) 
-        {
-            return NULL;
-        }
-    }
-    tokenStart = findTokenStart(lastToken, delim);
-    if (tokenStart == NULL) 
-    {
-        return NULL;
-    }
-    tokenEnd = findTokenEnd(tokenStart, delim);
-    if (*tokenEnd != '\0') 
-    {
-        *tokenEnd = '\0';
-        lastToken = tokenEnd + 1;
-    } 
-    else 
-    {
-        lastToken = tokenEnd;
-    }
-    return tokenStart;
-}
-
-int main() 
-{
-    t_struct *head = NULL;
-    t_struct *tail = NULL;
-    
-    while (1) {
-        char *input = get_input();
-        char *token = ft_strtok(input, " ");
-        while (token != NULL) {
-            add_to_list(&head, &tail, token);
-            token = ft_strtok(NULL, " ");
-        }
-        print_list(head);
-        free(input);
-        free_list(head);
-        head = NULL;
-        tail = NULL;
-    }
-    
+	if (str1 != str2)
+	{
+		return ((str1 < str2) ? -1 : 1);
+	}
     return 0;
+}
+
+
+void	nbr_cmd_sides(t_data *data, char *cmd_line)
+{
+	int	i;
+	int	side;
+
+	i = 0;
+	side = 1;
+	if (cmd_line == NULL)
+        return ;
+	while (cmd_line[i])
+	{
+		if (cmd_line[i] == '|')
+        {
+			side++;
+        }
+		i++;
+	}
+    // printf("%d\n",side);//
+	data->side = side;
+}
+
+void	count_quotes(char c, int *single_quote, int *double_quote)
+{
+	if (c == '\'' && (*double_quote) % 2 == 0)
+    {
+		(*single_quote)++;
+    }
+	else if (c == '"' && (*single_quote) % 2 == 0)
+	{
+        (*double_quote)++;
+    }
+}
+
+
+int	check_pipes_suite(char *cmd_line, int *i, int len)
+{
+	int a;
+	int	b;
+
+	a = *i + 1;
+	b = a;
+	while (ft_isspace(cmd_line[b]) && b >= 0)
+		b--;
+	if (cmd_line[b] == '|' && b >= 0)
+	{
+		printf("unexpected token `|` \n");
+		return 1;
+	}	
+	return (0);
+}
+
+int	check_pipes(char *cmd_line)
+{
+	int	i;
+	int	quotes[2];
+
+	quotes[0] = 0;
+	quotes[1] = 0;
+	i = 0;
+    while (cmd_line[i])
+	{
+        count_quotes(cmd_line[i], &quotes[0], &quotes[1]);
+        if (!(quotes[0] % 2) && !(quotes[1] % 2))
+		{
+            if (cmd_line[i] == '|')
+			{
+                if (check_pipes_suite(cmd_line, &i, ft_strlen(cmd_line)))
+				{
+                    return 1;
+                }
+            }
+        }
+		i++;
+    }
+    return (0);
+}
+
+int	check_quotes(char *cmd_line)
+{
+	int		i;
+	int		quotes[2];
+
+	quotes[0] = 0;
+	quotes[1] = 0;
+	i = 0;
+	while (cmd_line[i])
+	{
+		if (cmd_line[i] == '\'' && quotes[1] % 2 == 0)
+			quotes[0]++;
+		else if (cmd_line[i] == '"' && quotes[0] % 2 == 0)
+			quotes[1]++;
+		i++;
+	}
+	if (quotes[0] % 2 || quotes[1] % 2)
+	{
+		printf("Quotes Syntax Error \n");
+		return (1);
+	}
+	return (0);
+}
+
+int	consecutive_op_redirections_suite(char *cmd_line, int *i, char red, int len)
+{
+	int a;
+	int b;
+
+	b = *i + 1;
+	a = b;
+	if(!ft_strnncmp('<', red))
+		red = '>';
+	else if(!ft_strnncmp('>', red))
+		red = '<';
+	while (a >= 0 && ft_isspace(cmd_line[a]))
+		a--;
+	if (cmd_line[a] == red)
+		return (1);
+	a = b + 1;
+	while (a < len && ft_isspace(cmd_line[a]))
+		a++;
+	if (cmd_line[a] == red)
+		return (1);
+	return (0);
+}
+
+int	consecutive_op_redirections(char *cmd_line , char red)
+{
+	int	i;
+	int	quotes[2];
+
+	quotes[0] = 0;
+	quotes[1] = 0;
+	i = 0;
+	while (cmd_line[i])
+	{
+		count_quotes(cmd_line[i], &quotes[0], &quotes[1]);
+		if (quotes[0] % 2 || quotes[1] % 2)
+		{
+			i++;
+			continue ;
+		}
+		if (cmd_line[i] == red)
+			if (consecutive_op_redirections_suite(cmd_line, &i, red, ft_strlen(cmd_line)))
+				return (1);
+		i++;
+	}
+	return (0);
+}
+
+
+int	check_redirection(char *cmd_line)
+{
+	int	len;
+	int	i;
+	int	quotes[2];
+
+	i = 0;
+	quotes[0] = 0;
+	quotes[1] = 0;
+	len = ft_strlen(cmd_line);
+	// printf("syntax error\n");//
+	if (cmd_line[len - 1] == '>' || cmd_line[len - 1] == '<')
+	{
+		printf("syntax error\n");
+		return (1);
+	}
+	if (consecutive_op_redirections(cmd_line , '>') || consecutive_op_redirections(cmd_line, '<'))
+	{
+		printf("syntax error\n");
+		return (1);
+	}
+	// if (cmd_line[len - 1] == '>' || cmd_line[len - 1] == '<' || consec_red1(cmd_line)
+	// 	|| consec_red2(cmd_line) || space_between_red(cmd_line))
+	// 	return (ft_putstr_fd(SNT_ERR, 1), ft_putendl_fd("newline'", 1), 1);
+	// if (consec_redin(s) || consec_redout(s))
+	// 	return (1);
+	return (0);
+}
+
+int	tokens_parsing(t_data *data, char *cmd_line)
+{
+	data->error = 0;
+	// if (check_pipes(cmd_line) || check_quotes(cmd_line) || check_red(cmd_line) || check_parent(cmd_line))
+	if (check_quotes(cmd_line))
+	{
+		data->error = 1;
+		// g_exit_status = 258;
+		return (1);
+	}
+	if (check_pipes(cmd_line))
+	{
+		data->error = 1;
+		// g_exit_status = 258;
+		return (1);
+	}
+	if (check_redirection(cmd_line))
+	{
+		data->error = 1;
+		// g_exit_status = 258;
+		return (1);
+	}
+	return (0);
+}
+
+
+t_token	*ft_token(t_token *token, t_data *data, char *cmd_line)
+{
+	int	i;
+	int	start;
+	int	side;
+
+	i = 0;
+	start = i;
+	side = 1;
+
+    // printf("%s\n",cmd_line);//
+	nbr_cmd_sides(data, cmd_line);
+	data->cmd_sides = ft_split(cmd_line, '|');
+    if (cmd_line[0] == '|' || cmd_line[ft_strlen(cmd_line) - 1] == '|')
+	{
+		printf("unexpected token : `|` \nexit ");
+        return (0);
+    }
+	if (tokens_parsing(data, data->cmd_line))
+    {
+		printf("exit \n");
+		return (0);
+    }
+	return (token);
+	// return (ft_token_side(token, data->cmd_line));
+}
+
+void	parsing(t_data data, t_cmd *cmd, t_token *token)
+{
+    int i = ft_strlen(data.cmd_line);
+
+	if (i)
+	{
+		token = ft_token(token, &data, data.cmd_line);
+		// exp_change_value(envp, token);
+		// cmd = node_per_cmd(token);
+	}
+	// run(data, envp, cmd);
+}
+
+int	main()
+{
+	t_data	data;
+	t_token	*token;
+	t_cmd	*cmd;
+
+	while (1)
+	{
+		token = NULL;
+		cmd = NULL;
+		data.cmd_line = readline("$ Minishell > ");
+		add_history(data.cmd_line);
+		if (data.cmd_line == NULL)
+		{
+			printf("exit \n");
+			exit(0);
+		}
+        data.cmd_line = ft_strtrim(data.cmd_line, " ");
+		parsing(data, cmd, token);
+	}
+	return (0);
 }

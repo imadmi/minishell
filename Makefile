@@ -1,7 +1,6 @@
-FLAGS =	-Wall -Wextra -Werror
+FLAGS =	-fsanitize=address
 
 
 all: parsing.c parsing.h
-	@ cc -fsanitize=address $(FLAGS) ./libft/libft.a parsing.c -o minishell
+	@ cc  $(FLAGS) ./libft/libft.a parsing.c -o minishell  -lreadline -ltermcap
 	@ make -C libft
-	@ clear
