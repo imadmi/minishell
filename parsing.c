@@ -35,6 +35,21 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (1);
 }
 
+char	*ft_strcpy(char *dest, char *src)
+{
+	int i;
+
+	i = 0;
+	while (*(src + i) != '\0')
+	{
+		*(dest + i) = *(src + i);
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
+
 int	ft_token_type(char *value)
 {
 	if (!ft_strcmp(value, "\""))
@@ -74,19 +89,17 @@ t_token	*ft_create_new_node(char *value)
 {
 	t_token	*new;
 
-	new = (t_token *)malloc(sizeof(t_token));
+	new = malloc(sizeof(t_token));
 	if (!new)
 		return (new);
 
-	// Allocate memory for value and copy contents of value parameter
-	new->value = (char*)malloc((ft_strlen(value) + 1));
+	new->value = malloc((ft_strlen(value) + 1));
 	if (!new->value)
 	{
 		free(new);
 		return (NULL);
 	}
-	strcpy(new->value, value);
-
+	ft_strcpy(new->value, value);
 	new->type = ft_token_type(value);
 	new->next = NULL;
 	return (new);
