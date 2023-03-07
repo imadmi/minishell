@@ -25,26 +25,17 @@
 
 int			g_exit_status;
 
-// typedef struct s_env
-// {
-// 	char	*name;
-// 	char	*value;
-// }			t_env;
-
-// typedef enum e_token
-// {
-// 	S_QUOTE,
-// 	D_QUOTE,
-// 	RED_IN,
-// 	RED_OUT,
-// 	RED_IN_APP,
-// 	RED_OUT_APP,
-// 	PIPE,
-// 	FILEE,
-// 	WORD,
-// 	CMD,
-// 	ARG
-// }					t_e_token;
+#define S_QUOTE 0
+#define D_QUOTE 1
+#define RED_IN 2
+#define RED_OUT 3
+#define RED_IN_D 4
+#define RED_OUT_D 5
+#define PIPE 6
+#define WORD 7
+#define FILEE 8
+// #define CMD 9
+// #define ARG 10
 
 typedef struct s_data
 {
@@ -54,17 +45,10 @@ typedef struct s_data
 	int				error;
 }					t_data;
 
-typedef struct s_tocmd
-{
-	// char	**args;
-	// int		*file_type;
-	// char	**file_name;
-}			t_tocmd;
-
 typedef struct s_token
 {
-	// int				type;
-	// char			*value;
+	int				type;
+	char			*value;
 	// int				sgl_qt;
 	// int				args_num;
 	// int				redi;
@@ -72,13 +56,6 @@ typedef struct s_token
 	// int				count_cmd;
 	struct s_token	*next;
 }					t_token;
-
-// typedef struct s_files
-// {
-// 	int				type;
-// 	char			*name;
-// 	struct s_files	*next;
-// }					t_files;
 
 typedef struct s_cmd
 {
