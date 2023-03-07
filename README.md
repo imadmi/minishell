@@ -1,9 +1,0 @@
-# minishell
-
-  ```sh
-  git clone https://github.com/ombhd/my_tools_installer.git && cd my_tools_installer && ./my_tools_installer.bash
-  ```
-  
-  ```sh
-brew install readline  
-  ```
