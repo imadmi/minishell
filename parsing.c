@@ -369,34 +369,34 @@ int	check_redirection(char *cmd_line)
 	return (0);
 }
 
+// int check_args(char *cmd_line)
+// {
+// 	int	i;
+// 	int	quotes[2];
+
+// 	quotes[0] = 0;
+// 	quotes[1] = 0;
+// 	i = 0;
+// 	while (cmd_line[i])
+// 	{
+// 		count_quotes(cmd_line[i], &quotes[0], &quotes[1]);
+// 		if (quotes[0] % 2 || quotes[1] % 2)
+// 		{
+// 			i++;
+// 			continue ;
+// 		}
+// 		if (cmd_line[i] == '-')
+// 			if (ft_isspace(cmd_line[++i]))
+// 			{
+// 				printf("\033[0;31msyntax error\n");
+// 				return (1);
+// 			}
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
 int check_args(char *cmd_line)
-{
-	int	i;
-	int	quotes[2];
-
-	quotes[0] = 0;
-	quotes[1] = 0;
-	i = 0;
-	while (cmd_line[i])
-	{
-		count_quotes(cmd_line[i], &quotes[0], &quotes[1]);
-		if (quotes[0] % 2 || quotes[1] % 2)
-		{
-			i++;
-			continue ;
-		}
-		if (cmd_line[i] == '-')
-			if (ft_isspace(cmd_line[++i]))
-			{
-				printf("\033[0;31msyntax error\n");
-				return (1);
-			}
-		i++;
-	}
-	return (0);
-}
-
-int check_args2(char *cmd_line)
 {
 	int	i;
 	int	j;
@@ -464,7 +464,7 @@ int check_backslash(char *cmd_line, t_exe *parssing)
     return (0);
 }
 
-int	tokens_parssing(t_data *data, char *cmd_line, t_exe *parssing)
+int	tokens_parssing(char *cmd_line, t_exe *parssing)
 {
 	if (check_semicolon(cmd_line))
 		return (1);
@@ -476,8 +476,8 @@ int	tokens_parssing(t_data *data, char *cmd_line, t_exe *parssing)
 		return (1);
 	if (check_args(cmd_line))
 		return (1);
-	if (check_args2(cmd_line))
-		return (1);
+	// if (check_args2(cmd_line))
+	// 	return (1);
 	if (parssing->b_parssing)
 		return (1);
 	
@@ -574,7 +574,7 @@ t_token	*ft_token(t_token *token, char *cmd_line, t_exe *parssing)
 }
 
 
-int ft_parse_tokens(t_token *token, t_data *data, char *cmd_line, t_exe *parssing ,int flag)
+int ft_parse_tokens(t_token *token, char *cmd_line, t_exe *parssing ,int flag)
 {
 	int	i;
 	int	start;
@@ -594,7 +594,7 @@ int ft_parse_tokens(t_token *token, t_data *data, char *cmd_line, t_exe *parssin
 	// 	printf("unexpected token : \'|\' \nexit\n");
     //     return 0;
     // }
-	if (tokens_parssing(data, data->cmd_line, parssing) || flag)
+	if (tokens_parssing(cmd_line, parssing) || flag)
     {
 		printf("\033[\033[31;1m× exit\n");
 		return 0;
@@ -602,19 +602,19 @@ int ft_parse_tokens(t_token *token, t_data *data, char *cmd_line, t_exe *parssin
 	return 1;
 }
 
-void	parssing(t_data data, t_token *token , t_exe *parssing)
+void	parssing(char *cmd_line, t_token *token , t_exe *parssing)
 {
 	int counter = 0;
-	if (data.cmd_line)
+	if (cmd_line)
 	{
-		if (ft_parse_tokens(token, &data, data.cmd_line, parssing, counter))
+		if (ft_parse_tokens(token, cmd_line, parssing, counter))
 		{
 			parssing->b_parssing = 1;
 			// printf("%d\n",parssing->b_parssing);
-			token = ft_token(token, data.cmd_line , parssing);
+			token = ft_token(token, cmd_line , parssing);
 			counter = 1;
 			if (!parssing->b_parssing)
-				ft_parse_tokens(token, &data, data.cmd_line, parssing, counter);
+				ft_parse_tokens(token, cmd_line, parssing, counter);
 			print_token(token);//
 		}
 		else
@@ -643,7 +643,7 @@ void ft_free(t_token *head)
 int	main()
 {
 	t_exe error;
-	t_data	data;
+	char	*cmd_line;
 	t_token	*token;
 	// system("clear");//
 	printf("\n|***********************************************************|\n");
@@ -658,29 +658,29 @@ int	main()
 		// parssing.b_pipe = 0;
 		// parssing.b_fail_malloc = 0;
 		token = NULL;
-		data.cmd_line = readline("\033[1m\033[32m➜ Minishell > \033[0;33m");
-		add_history(data.cmd_line);
-		if (!ft_strcmp(data.cmd_line,"exit"))
+		cmd_line = readline("\033[1m\033[32m➜ Minishell > \033[0;33m");
+		add_history(cmd_line);
+		if (!ft_strcmp(cmd_line,"exit"))
 		{
 			printf("\033[\033[31;1m× exit \n");
-			free(data.cmd_line);
+			free(cmd_line);
 			ft_free(token);
 			clear_history();
 			exit(0);
 		}
-		if (data.cmd_line == NULL)
+		if (cmd_line == NULL)
 		{
 			printf("\033[\033[31;1m× exit \n");
-			free(data.cmd_line);
+			free(cmd_line);
 			ft_free(token);
 			clear_history();
 			exit(1);
 		}
-		parssing(data, token ,&error);
+		parssing(cmd_line, token ,&error);
 		printf("\nb_parssing %d\n",error.b_parssing);//
 		printf("b_pipe %d\n",error.b_pipe);//
 		printf("b_fail_malloc %d\n",error.b_fail_malloc);//
-		free(data.cmd_line);
+		free(cmd_line);
 		ft_free(token);
 	}
 	return (0);

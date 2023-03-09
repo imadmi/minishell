@@ -29,11 +29,6 @@ typedef struct s_exe
 #define PIPE 6
 #define WORD 7
 
-typedef struct s_data
-{
-	char			*cmd_line;
-}					t_data;
-
 typedef struct s_token
 {
 	int				type;
