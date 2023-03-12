@@ -249,10 +249,15 @@ int	consecutive_op_redirections_suite(char *cmd_line, int *i, char red, int len)
 
 	b = *i ;
 	a = b -1;
+	b++;
     if (red == '<')
         red = '>';
     else if (red == '>')
         red = '<';
+	while (b < ft_strlen(cmd_line) && ft_isspace(cmd_line[b]))
+		b++;
+	if (b < ft_strlen(cmd_line) && !ft_isspace(cmd_line[b]))
+		return (0);
 	while (a >= 0 && ft_isspace(cmd_line[a]))
 		a--;
 	if (a >= 0 && cmd_line[a] == red)
