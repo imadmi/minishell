@@ -50,13 +50,49 @@ char	*ft_strcpy(char *dest, char *src)
 }
 
 
-int	ft_token_type(char *value)
+void	count_quotes(char c, int *single_quote, int *double_quote)
 {
-	if (!ft_strcmp(value, "\""))
-		return (D_QUOTE);
-	else if (!ft_strcmp(value, "'"))
-		return (S_QUOTE);
-	else if (!ft_strcmp(value, "|"))
+	if (c == '\'' && (*double_quote) % 2 == 0)
+    {
+		(*single_quote)++;
+    }
+	else if (c == '"' && (*single_quote) % 2 == 0)
+	{
+        (*double_quote)++;
+    }
+}
+
+void	ft_quotes_type(t_token *token)
+{
+	int	quotes[2];
+	int j;
+
+	j = 0;
+	quotes[0] = 0;
+	quotes[1] = 0;
+	j = 0;
+	while(token->value[j])
+	{
+		count_quotes(token->value[j], &quotes[0], &quotes[1]);
+		if (quotes[0] % 2)
+		{
+			token->quote = S_QUOTE;
+			return ;
+		}
+		if (quotes[1] % 2)
+		{
+			token->quote = D_QUOTE;
+			return ;
+		}
+		j++;
+	}
+	token->quote = N_QUOTE;
+}
+
+int	ft_token_type(t_token *token, char *value)
+{
+	// printf("%s\n",value);//
+	if (!ft_strcmp(value, "|"))
 		return (PIPE);
 	else if (!ft_strcmp(value, "<<"))
 		return (RED_IN_D);
@@ -85,7 +121,7 @@ int	ft_token_type(char *value)
 // 	return (new);
 // }
 
-t_token	*ft_create_new_node(char *value, t_exe *parssing)
+t_token	*ft_create_new_node(t_token **token, char *value, t_exe *parssing, int space_befor)
 {
 	t_token	*new;
 
@@ -96,6 +132,7 @@ t_token	*ft_create_new_node(char *value, t_exe *parssing)
 		return (new);
 	}
 
+	
 	new->value = malloc((ft_strlen(value) + 1));
 	if (!new->value)
 	{
@@ -104,7 +141,7 @@ t_token	*ft_create_new_node(char *value, t_exe *parssing)
 		return (NULL);
 	}
 	ft_strcpy(new->value, value);
-	new->type = ft_token_type(value);
+	new->space_befor = space_befor;
 	new->next = NULL;
 	return (new);
 }
@@ -113,8 +150,15 @@ void	ft_add_back(t_token **token, char *value, t_exe *parssing)
 {
 	t_token	*last;
 	t_token	*new;
+	int space_befor;
 
-	new = ft_create_new_node(ft_strtrim(value, " "), parssing);
+	space_befor = 0;
+	if (value[0] == ' ')
+		space_befor = 1;
+	// (*token)->space_befor = 0;
+	if (ft_strlen(ft_strtrim(value, " ")) == 0)
+		return;
+	new = ft_create_new_node(token, ft_strtrim(value, " "), parssing, space_befor);
 	if (new == NULL)
 		return ;
 	last = *token;
@@ -130,18 +174,6 @@ void	ft_add_back(t_token **token, char *value, t_exe *parssing)
 	last->next = new;
 }
 
-
-void	count_quotes(char c, int *single_quote, int *double_quote)
-{
-	if (c == '\'' && (*double_quote) % 2 == 0)
-    {
-		(*single_quote)++;
-    }
-	else if (c == '"' && (*single_quote) % 2 == 0)
-	{
-        (*double_quote)++;
-    }
-}
 
 
 int	check_pipes_suite2(char *cmd_line)
@@ -234,11 +266,11 @@ int	check_quotes(char *cmd_line)
 			quotes[1]++;
 		i++;
 	}
-	// if (quotes[0] % 2 || quotes[1] % 2)
-	// {
-	// 	printf("Quotes Syntax Error \n");
-	// 	return (1);
-	// }
+	if (quotes[0] % 2 || quotes[1] % 2)
+	{
+		printf("Quotes Syntax Error \n");
+		return (1);
+	}
 	return (0);
 }
 
@@ -461,6 +493,8 @@ int check_semicolon(char *cmd_line)
 int check_backslash(char *cmd_line, t_exe *parssing)
 {
 	// printf("%c\n\n",cmd_line[ft_strlen(cmd_line) - 1]);
+	if (ft_strlen(cmd_line) == 0)
+    	return (0);
 	if (cmd_line[ft_strlen(cmd_line) - 1] == '\\')
 	{
 		parssing->b_parssing = 0;
@@ -495,6 +529,8 @@ void	print_token_name(int code)
 		printf("token->type is S_QUOTE\n");
     else if (code == D_QUOTE)
 		printf("token->type is D_QUOTE\n");
+    else if (code == N_QUOTE)
+		printf("token->type is N_QUOTE\n");
     else if (code == RED_IN)
 		printf("token->type is RED_IN\n");
     else if (code == RED_OUT)
@@ -515,8 +551,10 @@ void	print_token(t_token *token)
 {
 	while (token)
 	{
-		printf("value is \"%s\"\n", token->value);
+		printf("value is `%s`\n", token->value);
 		print_token_name(token->type);
+		printf("quotes is \"%d\"\n", token->quote);
+		printf("space_befor is \"%d\"\n\n", token->space_befor);
 		token = token->next;
 	}
 }
@@ -525,11 +563,27 @@ void	remove_quotes(t_token *token, t_exe *parssing)
 {
 	while (token)
 	{
+		ft_quotes_type(token);
 		token->value = ft_strtrim(token->value,"\"'");
+		token->type = ft_token_type(token, token->value);
 		check_backslash(token->value, parssing);
 		token = token->next;
 	}
 }
+
+		// count_quotes(cmd_line[j], &quotes[0], &quotes[1]);
+		// if (quotes[0] % 2)
+		// {
+		// 	token->type = S_QUOTE;
+		// 	j++;
+		// }
+		// if (quotes[1] % 2)
+		// {
+		// 	token->type = D_QUOTE;
+		// 	j++;
+		// }
+
+	// remove_quotes(token, parssing);
 
 t_token	*ft_token(t_token *token, char *cmd_line, t_exe *parssing)
 {
@@ -545,36 +599,44 @@ t_token	*ft_token(t_token *token, char *cmd_line, t_exe *parssing)
 	{
 		count_quotes(cmd_line[j], &quotes[0], &quotes[1]);
 		if ((quotes[1] % 2) || (quotes[0] % 2))
+		{
 			j++;
-		if (quotes[1] % 2 || quotes[0] % 2)
 			continue ;
+		}
 		if (!is_isseparator(cmd_line[j]))
 		{
 			count_quotes(cmd_line[j], &quotes[0], &quotes[1]);
+			// while ((cmd_line[j] && !is_isseparator(cmd_line[j])))
 			while ((cmd_line[j] && !is_isseparator(cmd_line[j])) || (cmd_line[j] && (quotes[0] % 2 || quotes[1] % 2)))
 			{
 				count_quotes(cmd_line[j], &quotes[0], &quotes[1]);
-				if (quotes[1] % 2 || quotes[0] % 2)
+				if ((quotes[1] % 2) || (quotes[0] % 2))
+				{
 					j++;
-				if (quotes[1] % 2 || quotes[0] % 2)
 					continue ;
+				}
 				j++;
 			}
+			// printf("`%s`\n",ft_substr(cmd_line, position, j - position));//
 			ft_add_back(&token, ft_substr(cmd_line, position, j - position), parssing);
 			position = j;
 		}
 		while (cmd_line[j] && ft_isspace(cmd_line[j]))
+		{
 			j++;
+			continue ;
+		}
 		if (is_special(cmd_line[j]))
 		{
 			// printf("*\n");//
 			while (cmd_line[j] && is_special(cmd_line[j]))
 				j++;
+			// printf("`%s`\n",ft_substr(cmd_line, position, j - position));//
 			ft_add_back(&token, ft_substr(cmd_line, position, j - position), parssing);
 			position = j;
 		}
 	}
-	remove_quotes(token, parssing);
+	remove_quotes(token, parssing);//
 	return (token);
 }
 
@@ -644,6 +706,7 @@ void ft_free(t_token *head)
     }
 }
 
+//U should execute the comman with the quotes i give u
 
 int	main()
 {
@@ -665,7 +728,7 @@ int	main()
 		token = NULL;
 		cmd_line = readline("\033[1m\033[32m➜ Minishell > \033[0;33m");
 		add_history(cmd_line);
-		if (!ft_strcmp(cmd_line,"exit"))
+		if (!ft_strcmp(cmd_line,"e"))
 		{
 			printf("\033[\033[31;1m× exit \n");
 			free(cmd_line);
@@ -682,9 +745,9 @@ int	main()
 			exit(1);
 		}
 		parssing(cmd_line, token ,&error);
-		printf("\nb_parssing %d\n",error.b_parssing);//
-		printf("b_pipe %d\n",error.b_pipe);//
-		printf("b_fail_malloc %d\n",error.b_fail_malloc);//
+		// printf("\nb_parssing %d\n",error.b_parssing);//
+		// printf("b_pipe %d\n",error.b_pipe);//
+		// printf("b_fail_malloc %d\n",error.b_fail_malloc);//
 		free(cmd_line);
 		ft_free(token);
 	}
