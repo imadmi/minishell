@@ -706,7 +706,6 @@ void ft_free(t_token *head)
     }
 }
 
-//U should execute the comman with the quotes i give u
 
 int	main()
 {
@@ -753,3 +752,10 @@ int	main()
 	}
 	return (0);
 }
+
+
+//U should execute the comman with the quotes i give u
+
+		// parssing(cmd_line, token ,&error);  // this is the line u should use , cmd line is the the return of readline ,token : is the linked list i used to store the tokens , error : is the struct were i stored the errors.
+
+//dont forget to copy the header too
