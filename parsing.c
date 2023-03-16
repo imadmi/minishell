@@ -703,7 +703,7 @@ void	parssing(char *cmd_line, t_token *token , t_exe *parssing)
 			if (!parssing->b_parssing)
 				ft_parse_tokens(token, cmd_line, parssing, counter);
 			print_token(token);//
-			ft_free(token);
+			// ft_free(token);
 		}
 		else
 		{
@@ -770,6 +770,7 @@ int	main()
 		// printf("b_fail_malloc %d\n",error.b_fail_malloc);//
 		free(cmd_line);
 		// ft_free(&token);
+		// system("leaks minishell");
 	}
 	return (0);
 }
