@@ -517,16 +517,20 @@ int check_semicolon(char *cmd_line)
     return (0);
 }
 
-int check_backslash(char *cmd_line, t_exe *parssing)
+int check_backslash(char *cmd_line)
 {
+	char *temp;
+
+	temp = ft_strtrim(cmd_line,"'\" ");
 	// printf("%c\n\n",cmd_line[ft_strlen(cmd_line) - 1]);
-	if (ft_strlen(cmd_line) == 0)
+	if (ft_strlen(temp) == 0)
     	return (0);
-	if (cmd_line[ft_strlen(cmd_line) - 1] == '\\')
+	if (temp[ft_strlen(temp) - 1] == '\\')
 	{
-		parssing->b_parssing = 0;
+		free(temp);
 		return 1;
 	}
+	free(temp);
     return (0);
 }
 
@@ -542,8 +546,8 @@ int	tokens_parssing(char *cmd_line, t_exe *parssing)
 		return (1);
 	if (check_args(cmd_line))
 		return (1);
-	// if (check_args2(cmd_line))
-	// 	return (1);
+	if (check_backslash(cmd_line))
+		return (1);
 	if (parssing->b_parssing)
 		return (1);
 	
@@ -595,7 +599,7 @@ void	remove_quotes(t_token *token, t_exe *parssing)
 		free(token->value);//
 		token->value = ft_strtrim(token->value,"\"'");
 		token->type = ft_token_type(token, token->value);
-		check_backslash(token->value, parssing);
+		// check_backslash(token->value, parssing);
 		token = token->next;
 	}
 }
@@ -655,7 +659,7 @@ t_token	*ft_token(t_token *token, char *cmd_line, t_exe *parssing)
 	return (token);
 }
 
-int ft_parse_tokens(t_token *token, char *cmd_line, t_exe *parssing ,int flag)
+int ft_parse_tokens(t_token *token, char *cmd_line, t_exe *parssing)
 {
 	int	i;
 	int	start;
@@ -667,7 +671,7 @@ int ft_parse_tokens(t_token *token, char *cmd_line, t_exe *parssing ,int flag)
 
 	if(!ft_strcmp(cmd_line,""))
 		return 0;
-	if (tokens_parssing(cmd_line, parssing) || flag)
+	if (tokens_parssing(cmd_line, parssing))
     {
 		printf("\033[\033[31;1m× exit\n");
 		return 0;
@@ -688,22 +692,26 @@ void ft_free(t_token *head)
     }
 }
 
-void	parssing(char *cmd_line, t_token *token , t_exe *parssing)
+t_token *	parssing(char *cmd_line , t_exe *parssing)
 {
-	int counter = 0;
+	// int counter = 0;
+	t_token *token;
+
+	// token = malloc(sizeof(t_token *));
+
 	if (cmd_line)
 	{
-		if (ft_parse_tokens(token, cmd_line, parssing, counter))
+		if (ft_parse_tokens(token, cmd_line, parssing))
 		{
 			parssing->b_parssing = 1;
 			// printf("%d\n",parssing->b_parssing);
-			token = NULL;
-			token = ft_token(token, cmd_line , parssing);
-			counter = 1;
-			if (!parssing->b_parssing)
-				ft_parse_tokens(token, cmd_line, parssing, counter);
-			print_token(token);//
-			// ft_free(token);
+			// token = NULL;
+			token = ft_token(NULL, cmd_line , parssing);
+			// counter = 1;
+			// if (!parssing->b_parssing)
+			// 	ft_parse_tokens(token, cmd_line, parssing, counter);
+			// // print_token(token);//
+			// // ft_free(token);
 		}
 		else
 		{
@@ -711,16 +719,20 @@ void	parssing(char *cmd_line, t_token *token , t_exe *parssing)
 			parssing->b_parssing = 0;
 			// printf("%d\n",parssing->b_parssing);
 		}
-
 	}
+	return token  ;
 }
 
-t_token ft_parse(char *cmd_line, t_exe *parssin)
+t_token *ft_parse(char *cmd_line, t_exe *parssin)
 {
-	t_token token;
+	t_token *token;
 
-	token.next = NULL;
-	parssing(cmd_line, &token ,parssin);
+	// token = malloc(sizeof(t_token *));
+	// token->next = NULL;
+	
+	token = parssing(cmd_line ,parssin);
+
+	// print_token(token);//
 	return token;
 }
 
@@ -731,7 +743,7 @@ int	main()
 {
 	t_exe error;
 	char	*cmd_line;
-	t_token	token;
+	t_token	 * token;
 
 	// system("clear");//
 	printf("\n|***********************************************************|\n");
@@ -765,17 +777,18 @@ int	main()
 			exit(1);
 		}
 		token = ft_parse(cmd_line ,&error);
+		print_token(token);//
 		// printf("\nb_parssing %d\n",error.b_parssing);//
 		// printf("b_pipe %d\n",error.b_pipe);//
 		// printf("b_fail_malloc %d\n",error.b_fail_malloc);//
 		free(cmd_line);
-		// ft_free(&token);
+		ft_free(token);
 		// system("leaks minishell");
 	}
 	return (0);
 }
 
 
-// ft_parse(cmd_line ,&error); // 
 
+		// token = ft_parse(cmd_line ,&error);
 //dont forget to copy the header too
