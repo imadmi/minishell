@@ -17,9 +17,7 @@
 #define WORD 7
 #define N_QUOTE 8
 
-
-#define cmds_nbr 1000
-
+// #define cmds_nbr 1000
 
 typedef struct		s_exe
 {
@@ -37,5 +35,27 @@ typedef struct s_token
 	struct s_token	*next;
 	t_exe			*exe;
 }					t_token;
+
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	int				printed;
+	int				equal_c;
+	struct s_env	*next;
+	struct s_env	*prev;
+}	t_env;
+
+
+typedef struct s_data
+{
+	int		should_exit;
+	t_env	*env;
+	t_env	**ex_env;
+	char	**builtins;
+	char	current_dir[1024];
+	int		shell_level;
+}	t_data;
+
 
 #endif 

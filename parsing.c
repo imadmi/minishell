@@ -723,7 +723,158 @@ t_token *	parssing(char *cmd_line , t_exe *parssing)
 	return token  ;
 }
 
-t_token *ft_parse(char *cmd_line, t_exe *parssin)
+int	dolar_exist(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == '$')
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+// void	exp_value(t_env *envp, t_token *token)
+// {
+// 	t_env	*tmp;
+// 	char	**sp;
+// 	int		i;
+
+// 	tmp = envp;
+// 	while (token)
+// 	{
+// 		// if (token->type == WORD && !token->sgl_qt && dolar_exist(token->value))
+// 		if (token->type == WORD && dolar_exist(token->value))//
+// 		{
+// 	// 		exp_exit_status(&token->value);
+// 			sp = ft_split(token->value, '$');
+// 			i = -1;
+// 			while (sp[++i])
+// 			{
+// 				envp = tmp;
+// 				while (envp)
+// 				{
+// 					// token->value = ft_ass_exp(&token->value, sp[i], envp->content);
+// 					envp = envp->next;
+// 				}
+// 			}
+// 		}
+// 		token = token->next;
+// 	}
+// }
+
+
+char  *find_env(t_env *env, char *key)
+{
+    while (env != NULL)
+    {
+        if (ft_strcmp(env->key, key) == 0)
+        {
+            return env->value;
+        }
+        env = env->next;
+    }
+    return NULL;
+}
+
+int parse_keys(t_env *env, t_token *token)
+{
+	if (token->type == WORD && dolar_exist(token->value) != -1)
+	{
+		char *s = token->value;
+		int i = dolar_exist(token->value);
+		if (s[i + 1] == '{' && s[i + 2] != '{' && s[ft_strlen(s) - 1] == '}' && s[ft_strlen(s) - 2] != '}')
+		{
+			return 1;
+		}
+		if (s[i + 1] == '(' && s[i + 2] != '(' && s[ft_strlen(s) - 1] == ')' && s[ft_strlen(s) - 2] != ')')
+		{
+			return 2;
+		}
+		return 3;
+	}
+	return 0;
+}
+
+void expand_value(t_env *env, t_token *token)
+{
+	if (parse_keys(env, token) == 3 && token->quote != S_QUOTE)
+	{
+		char *key = ft_strtrim(token->value, "$");
+
+		if (find_env(env, key) != NULL)
+		{
+			char *value = token->value;
+			free(token->value);
+			token->value = ft_strtrim(find_env(env, key),"");
+			// printf("%s\n",find_env(env, key));
+		}
+		free(key);
+	}
+}
+
+void exp_valuebrackets(t_env *env ,t_token *token)
+{
+	if (parse_keys(env, token) == 1 && token->quote != S_QUOTE)
+	{
+		char *key = ft_strtrim(token->value, "${}");
+
+		if (find_env(env, key) != NULL)
+		{
+			char *value = token->value;
+			free(token->value);
+			token->value = ft_strtrim(find_env(env, key),"");
+			// printf("%s\n",find_env(env, key));
+		}
+		free(key);
+	}
+}
+
+void exp_valuebrackets2(t_env *env ,t_token *token)
+{
+	if (parse_keys(env, token) == 2 && token->quote != S_QUOTE)
+	{
+		char *key = ft_strtrim(token->value, "$()");
+
+		if (find_env(env, key) != NULL)
+		{
+			char *value = token->value;
+			free(token->value);
+			token->value = ft_strtrim(find_env(env, key),"");
+			// printf("%s\n",find_env(env, key));
+		}
+		free(key);
+	}
+}
+
+void exp_value(t_env *env, t_token *token)
+{
+    while (token != NULL)
+    {
+        if (parse_keys(env, token))
+        {
+			if (parse_keys(env, token) == 1 && token->quote != 0)
+			{
+				exp_valuebrackets(env ,token);
+			}
+			if (parse_keys(env, token) == 2 && token->quote != 0)
+			{
+				exp_valuebrackets2(env ,token);
+			}
+			if (parse_keys(env, token) == 3 && token->quote != 0)
+			{
+				expand_value(env ,token);
+			}
+        }
+        token = token->next;
+    }
+}
+
+
+t_token *ft_parse(char *cmd_line, t_data *data, t_exe *parssin)
 {
 	t_token *token;
 
@@ -731,19 +882,154 @@ t_token *ft_parse(char *cmd_line, t_exe *parssin)
 	// token->next = NULL;
 	
 	token = parssing(cmd_line ,parssin);
+	exp_value(data->env, token);
 
 	// print_token(token);//
 	return token;
 }
 
-
-
-
-int	main()
+char	*env_key(char *str)
 {
-	t_exe error;
-	char	*cmd_line;
-	t_token	 * token;
+	int		i;
+	char	*p;
+
+	i = 0;
+	while (str[i] != '=' && str[i])
+		i++;
+	p = malloc(i + 1);
+	if (!p)
+		return (NULL);
+	i = 0;
+	while (str[i] != '=')
+	{
+		p[i] = str[i];
+		i++;
+	}
+	return (p[i] = '\0', p);
+}
+
+char	*env_value(char *str)
+{
+	int		i;
+	char	*p;
+	int		j;
+
+	j = 0;
+	i = 0;
+	while (*str != '=')
+		str++;
+	if (*str)
+		str++;
+	while (str[i])
+		i++;
+	p = malloc(i + 1);
+	i = 0;
+	if (!p)
+		return (NULL);
+	while (str[i])
+		p[j++] = str[i++];
+	return (p[j] = '\0', p);
+}
+
+void	setting_var(char *environ, t_env *tmp)
+{
+	tmp->key = env_key(environ);
+	tmp->value = env_value(environ);
+}
+
+void	free_node(t_env *head)
+{
+	t_env	*tmp;
+
+	while (head)
+    {
+		tmp = head;
+		if (head->key)
+			free(head->key);
+		if (head->value)
+			free(head->value);
+		head = head->next;
+		free(tmp);
+	}
+	exit(1);
+}
+
+t_env	*creat_node(void)
+{
+	t_env	*p;
+
+	p = malloc(sizeof(t_env));
+	if (!p)
+		return (NULL);
+	p->key = NULL;
+	p->value = NULL;
+	return (p);
+}
+
+t_env	*export_linked_list(char **environ)
+{
+	int		i;
+	t_env	*head;
+	t_env	*tmp;
+
+	i = 0;
+	head = creat_node();
+	if (head == NULL)
+		exit(1);
+	head->key = env_key(environ[i]);
+	if (!head->key)
+		exit(1);
+	head->value = env_value(environ[i]);
+	head->equal_c = 1;
+	i++;
+	head->printed = -1;
+	tmp = head;
+	while (environ[i])
+	{
+		tmp->next = creat_node();
+		if (tmp->next == NULL)
+			free_node(head);
+		tmp = tmp->next;
+		setting_var(environ[i], tmp);
+		tmp->equal_c = 1;
+		if (!tmp->key || !tmp->value)
+			return (tmp->next = NULL, free_node(head), NULL);
+		tmp->printed = -1;
+		i++;
+	}
+	return (tmp->next = NULL, head);
+}
+
+void print_env_variables(t_data *data)
+{
+    t_env *env = data->env;
+    while (env)
+    {
+        printf("%s=%s\n", env->key, env->value);
+        env = env->next;
+    }
+}
+
+int	setting_data(t_data *data, char **env)
+{
+	data->env = export_linked_list(env);
+	data->shell_level = 1;
+	if (!data->env)
+		return (1);
+	return (0);
+}
+
+int	main(int argc, char **argv, char **env)
+{
+	t_exe 		error;
+	char		*cmd_line;
+	t_token	 	*token;
+	t_data		data;
+
+	if (setting_data(&data, env) != 0)
+		return (1);
+
+	// print_env_variables(&data);//
 
 	// system("clear");//
 	printf("\n|***********************************************************|\n");
@@ -776,7 +1062,7 @@ int	main()
 			clear_history();
 			exit(1);
 		}
-		token = ft_parse(cmd_line ,&error);
+		token = ft_parse(cmd_line , &data, &error);
 		print_token(token);//
 		// printf("\nb_parssing %d\n",error.b_parssing);//
 		// printf("b_pipe %d\n",error.b_pipe);//
