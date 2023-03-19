@@ -215,6 +215,14 @@ int	check_pipes_suite2(char *cmd_line)
 		printf("\033[0;31munexpected token \'|\' \n");
 		return 1;
 	}	
+	i = ft_strlen(cmd_line) - 1;
+	while (ft_isspace(cmd_line[i]) &&  i > 0)
+		i--;
+	if (cmd_line[i] == '|')
+	{
+		printf("\033[0;31munexpected token \'|\' \n");
+		return 1;
+	}	
 	return (0);
 }
 
@@ -707,6 +715,7 @@ t_token *	parssing(char *cmd_line , t_exe *parssing)
 			// printf("%d\n",parssing->b_parssing);
 			// token = NULL;
 			token = ft_token(NULL, cmd_line , parssing);
+			// print_token(token);
 			// counter = 1;
 			// if (!parssing->b_parssing)
 			// 	ft_parse_tokens(token, cmd_line, parssing, counter);
@@ -737,34 +746,7 @@ int	dolar_exist(char *s)
 	return (-1);
 }
 
-// void	exp_value(t_env *envp, t_token *token)
-// {
-// 	t_env	*tmp;
-// 	char	**sp;
-// 	int		i;
 
-// 	tmp = envp;
-// 	while (token)
-// 	{
-// 		// if (token->type == WORD && !token->sgl_qt && dolar_exist(token->value))
-// 		if (token->type == WORD && dolar_exist(token->value))//
-// 		{
-// 	// 		exp_exit_status(&token->value);
-// 			sp = ft_split(token->value, '$');
-// 			i = -1;
-// 			while (sp[++i])
-// 			{
-// 				envp = tmp;
-// 				while (envp)
-// 				{
-// 					// token->value = ft_ass_exp(&token->value, sp[i], envp->content);
-// 					envp = envp->next;
-// 				}
-// 			}
-// 		}
-// 		token = token->next;
-// 	}
-// }
 
 
 char  *find_env(t_env *env, char *key)
@@ -801,8 +783,6 @@ int parse_keys(t_env *env, t_token *token)
 
 void expand_value(t_env *env, t_token *token)
 {
-	if (parse_keys(env, token) == 3 && token->quote != S_QUOTE)
-	{
 		char *key = ft_strtrim(token->value, "$");
 
 		if (find_env(env, key) != NULL)
@@ -813,41 +793,50 @@ void expand_value(t_env *env, t_token *token)
 			// printf("%s\n",find_env(env, key));
 		}
 		free(key);
-	}
 }
 
 void exp_valuebrackets(t_env *env ,t_token *token)
 {
-	if (parse_keys(env, token) == 1 && token->quote != S_QUOTE)
-	{
-		char *key = ft_strtrim(token->value, "${}");
+	char *key = ft_strtrim(token->value, "${}");
 
-		if (find_env(env, key) != NULL)
-		{
-			char *value = token->value;
-			free(token->value);
-			token->value = ft_strtrim(find_env(env, key),"");
-			// printf("%s\n",find_env(env, key));
-		}
-		free(key);
+	if (find_env(env, key) != NULL)
+	{
+		char *value = token->value;
+		free(token->value);
+		token->value = ft_strtrim(find_env(env, key),"");
+		// printf("%s\n",find_env(env, key));
 	}
+	free(key);
 }
+
 
 void exp_valuebrackets2(t_env *env ,t_token *token)
 {
-	if (parse_keys(env, token) == 2 && token->quote != S_QUOTE)
-	{
-		char *key = ft_strtrim(token->value, "$()");
 
-		if (find_env(env, key) != NULL)
+	int	i;
+	int	quotes[2];
+
+	quotes[0] = 0;
+	quotes[1] = 0;
+	i = 0;
+    while (token->value[i])
+	{
+        count_quotes(token->value[i], &quotes[0], &quotes[1]);
+        if ((quotes[0] == 0) && !(quotes[1] % 2) )
 		{
-			char *value = token->value;
-			free(token->value);
-			token->value = ft_strtrim(find_env(env, key),"");
-			// printf("%s\n",find_env(env, key));
-		}
-		free(key);
-	}
+			char *key = ft_strtrim(token->value, "$()\"");
+
+			if (find_env(env, key) != NULL)
+			{
+				char *value = token->value;
+				free(token->value);
+				token->value = ft_strtrim(find_env(env, key),"");
+				// printf("%s\n",find_env(env, key));
+			}
+			free(key);
+        }
+		i++;
+    }
 }
 
 void exp_value(t_env *env, t_token *token)
@@ -856,15 +845,15 @@ void exp_value(t_env *env, t_token *token)
     {
         if (parse_keys(env, token))
         {
-			if (parse_keys(env, token) == 1 && token->quote != 0)
+			if (parse_keys(env, token) == 1 && token->quote != S_QUOTE)
 			{
 				exp_valuebrackets(env ,token);
 			}
-			if (parse_keys(env, token) == 2 && token->quote != 0)
+			if (parse_keys(env, token) == 2 && token->quote != S_QUOTE)
 			{
 				exp_valuebrackets2(env ,token);
 			}
-			if (parse_keys(env, token) == 3 && token->quote != 0)
+			if (parse_keys(env, token) == 3 && token->quote != S_QUOTE)
 			{
 				expand_value(env ,token);
 			}

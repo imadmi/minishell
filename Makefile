@@ -1,4 +1,4 @@
-# FLAGS =	-fsanitize=addres
+FLAGS =	-fsanitize=address
 
 
 all: parsing.c parsing.h
