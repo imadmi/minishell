@@ -846,7 +846,7 @@ int contains_dollar(char *str)
 
 int exp_valuebrackets(t_env *env ,t_token *token)
 {
-	if ((token->dollar == 1  && token->quote != S_QUOTE) || contains_dollar(token->value))
+	if ((token->dollar == 1  && token->quote == N_QUOTE) || contains_dollar(token->value))
 	{
 		// printf("%d\n\n",token->dollar);
 		char *key = ft_strtrim(token->value,"$\"({}) ");
