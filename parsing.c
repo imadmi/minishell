@@ -9,14 +9,14 @@ int	ft_isspace(int c)
 
 int	is_special(char c)
 {
-	if (c == '|' || c == '<' || c == '>' || c == '&')
+	if (c == '|' || c == '<' || c == '>' || c == '&' || c == '(' || c == ')' || c == '{' || c == '}')
 		return (1);
 	return (0);
 }
 
 int	is_isseparator(char c)
 {
-	if (c == '|' || c == '<' || c == '>' || c == '&' || c == 32 || (c >= 9 && c <= 13))
+	if (c == '|' || c == '<' || c == '>' || c == '&' || c == '(' || c == ')' || c == '{' || c == '}' || c == 32 || (c >= 9 && c <= 13))
 		return (1);
 	return (0);
 }
@@ -89,7 +89,7 @@ void	ft_quotes_type(t_token *token)
 	token->quote = N_QUOTE;
 }
 
-int	ft_token_type(t_token *token, char *value)
+int	ft_token_type( char *value)
 {
 	// printf("%s\n",value);//
 	if (!ft_strcmp(value, "|"))
@@ -146,7 +146,7 @@ int	ft_token_type(t_token *token, char *value)
 // 	return (new);
 // }
 
-t_token	*ft_create_new_node(t_token **token, char *value, t_exe *parssing, int space_befor)
+t_token	*ft_create_new_node(char *value, t_exe *parssing, int space_befor)
 {
 	t_token	*new;
 
@@ -184,7 +184,7 @@ void	ft_add_back(t_token **token, char *value, t_exe *parssing)
 	// (*token)->space_befor = 0;
 	// if (ft_strlen(ft_strtrim(value, " ")) == 0)
 	// 	return;
-	new = ft_create_new_node(token, ft_strtrim(value, " "), parssing, space_befor);
+	new = ft_create_new_node(ft_strtrim(value, " "), parssing, space_befor);
 	free(value);
 	if (new == NULL)
 		return ;
@@ -208,7 +208,7 @@ int	check_pipes_suite2(char *cmd_line)
 	int i;
 
 	i = 0;
-	while (ft_isspace(cmd_line[i]) && i < ft_strlen(cmd_line))
+	while (ft_isspace(cmd_line[i]) && i < (int)ft_strlen(cmd_line))
 		i++;
 	if (cmd_line[i] == '|')
 	{
@@ -309,7 +309,7 @@ int	check_quotes(char *cmd_line)
 	return (0);
 }
 
-int	consecutive_op_redirections_suite(char *cmd_line, int *i, char red, int len)
+int	consecutive_op_redirections_suite(char *cmd_line, int *i, char red)
 {
 	int a;
 	int b;
@@ -321,9 +321,9 @@ int	consecutive_op_redirections_suite(char *cmd_line, int *i, char red, int len)
         red = '>';
     else if (red == '>')
         red = '<';
-	while (b < ft_strlen(cmd_line) && ft_isspace(cmd_line[b]))
+	while (b < (int)ft_strlen(cmd_line) && ft_isspace(cmd_line[b]))
 		b++;
-	if (b < ft_strlen(cmd_line) && !ft_isspace(cmd_line[b]))
+	if (b < (int)ft_strlen(cmd_line) && !ft_isspace(cmd_line[b]))
 		return (0);
 	while (a >= 0 && ft_isspace(cmd_line[a]))
 		a--;
@@ -352,7 +352,7 @@ int	consecutive_op_redirections(char *cmd_line , char red)
 			continue ;
 		}
 		if (cmd_line[i] == red)
-			if (consecutive_op_redirections_suite(cmd_line, &i, red, ft_strlen(cmd_line)))
+			if (consecutive_op_redirections_suite(cmd_line, &i, red))
 				return (1);
 		i++;
 	}
@@ -414,7 +414,6 @@ int	consecutive_redirections(char *cmd_line, char red)
 
 int	check_redirection(char *cmd_line)
 {
-	int	len;
 	int	i;
 
 	i = 0;
@@ -531,7 +530,7 @@ int check_backslash(char *cmd_line)
 
 	temp = ft_strtrim(cmd_line,"'\" ");
 	// printf("%c\n\n",cmd_line[ft_strlen(cmd_line) - 1]);
-	if (ft_strlen(temp) == 0)
+	if ((int)ft_strlen(temp) == 0)
     	return (0);
 	if (temp[ft_strlen(temp) - 1] == '\\')
 	{
@@ -590,23 +589,27 @@ void	print_token(t_token *token)
 {
 	while (token)
 	{
+		// printf("`%s` ", token->value);
 		printf("value is `%s`\n", token->value);
 		print_token_name(token->type);
 		printf("quotes is \"%d\"\n", token->quote);
-		printf("space_befor is \"%d\"\n\n", token->space_befor);
+		printf("space_befor is \"%d\"\n", token->space_befor);
+		printf("dollar is \"%d\"\n\n", token->dollar);
 
 		token = token->next;
 	}
+	printf("\n");
 }
 
 void	remove_quotes(t_token *token, t_exe *parssing)
 {
+	(void)parssing;
 	while (token)
 	{
 		ft_quotes_type(token);
 		free(token->value);//
 		token->value = ft_strtrim(token->value,"\"'");
-		token->type = ft_token_type(token, token->value);
+		token->type = ft_token_type(token->value);
 		// check_backslash(token->value, parssing);
 		token = token->next;
 	}
@@ -677,6 +680,7 @@ int ft_parse_tokens(t_token *token, char *cmd_line, t_exe *parssing)
 	start = i;
 	side = 1;
 
+	(void)token;
 	if(!ft_strcmp(cmd_line,""))
 		return 0;
 	if (tokens_parssing(cmd_line, parssing))
@@ -687,16 +691,51 @@ int ft_parse_tokens(t_token *token, char *cmd_line, t_exe *parssing)
 	return 1;
 }
 
-void ft_free(t_token *head)
+void ft_free(t_token *token)
 {
     t_token *temp;
 
-    while (head != NULL)
+    while (token != NULL)
 	{
-        temp = head;
-        head = head->next;
+        temp = token;
+        token = token->next;
 		free(temp->value);
         free(temp);
+    }
+}
+
+void ft_dollar(t_token *token)
+{
+    while (token != NULL)
+	{
+		if (token->value[ft_strlen(token->value) - 1] == '$' && token->next->next != NULL)
+		{
+			if ((token->next->value[0] == '(' || token->next->value[0] == '{')\
+				&& (token->next->next->next->value[0] == ')' || token->next->next->next->value[0] == '}'))
+			{
+				token->dollar = 2;
+
+				char *temp = ft_strtrim(token->value,"$");
+				free(token->value);
+				token->value = temp;
+
+				
+				t_token *tmp;
+				tmp = token->next;
+				token->next = token->next->next;
+				free(tmp->value);
+				free(tmp);
+
+				token = token->next;
+				token->dollar = 1; 
+
+				tmp = token->next;
+				token->next = token->next->next;
+				free(tmp->value);
+				free(tmp);
+			}
+		}
+        token = token->next;
     }
 }
 
@@ -706,7 +745,7 @@ t_token *	parssing(char *cmd_line , t_exe *parssing)
 	t_token *token;
 
 	// token = malloc(sizeof(t_token *));
-
+	token = NULL;//
 	if (cmd_line)
 	{
 		if (ft_parse_tokens(token, cmd_line, parssing))
@@ -715,6 +754,7 @@ t_token *	parssing(char *cmd_line , t_exe *parssing)
 			// printf("%d\n",parssing->b_parssing);
 			// token = NULL;
 			token = ft_token(NULL, cmd_line , parssing);
+			ft_dollar(token);
 			// print_token(token);
 			// counter = 1;
 			// if (!parssing->b_parssing)
@@ -732,21 +772,19 @@ t_token *	parssing(char *cmd_line , t_exe *parssing)
 	return token  ;
 }
 
-int	dolar_exist(char *s)
-{
-	int	i;
+// int	dolar_exist(char *s)
+// {
+// 	int	i;
 
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == '$')
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-
+// 	i = 0;
+// 	while (s[i])
+// 	{
+// 		if (s[i] == '$')
+// 			return (i);
+// 		i++;
+// 	}
+// 	return (-1);
+// }
 
 
 char  *find_env(t_env *env, char *key)
@@ -762,52 +800,86 @@ char  *find_env(t_env *env, char *key)
     return NULL;
 }
 
-int parse_keys(t_env *env, t_token *token)
+int expand_value(t_env *env, t_token *token)
 {
-	if (token->type == WORD && dolar_exist(token->value) != -1)
+	if(ft_strchr(token->value, '$') && token->quote != S_QUOTE)
 	{
-		char *s = token->value;
-		int i = dolar_exist(token->value);
-		if (s[i + 1] == '{' && s[i + 2] != '{' && s[ft_strlen(s) - 1] == '}' && s[ft_strlen(s) - 2] != '}')
+		int i = 0;
+		while(token->value[i])
 		{
-			return 1;
+			if (token->value[i] == '$')
+			{
+				if (find_env(env, ft_strchr(token->value, '$') + 1) != NULL)
+				{
+					char *key;
+					key = ft_strtrim(ft_strchr(token->value, '$'), "$");
+					char suff[i + ft_strlen(find_env(env, key))] ;
+					ft_strlcpy(suff, token->value, i + 1);
+					// printf("%s\n\n",suff);
+
+					ft_strlcat(suff, find_env(env, key),ft_strlen(find_env(env, key)) + i + 1);
+					// char *value = token->value;
+					free(token->value);
+					token->value = ft_strdup(suff);
+					// printf("%s\n",find_env(env, key));
+					free(key);
+					return 1;
+				}
+			}
+			i++;
 		}
-		if (s[i + 1] == '(' && s[i + 2] != '(' && s[ft_strlen(s) - 1] == ')' && s[ft_strlen(s) - 2] != ')')
-		{
-			return 2;
-		}
-		return 3;
 	}
 	return 0;
 }
 
-void expand_value(t_env *env, t_token *token)
+int contains_dollar(char *str)
 {
-		char *key = ft_strtrim(token->value, "$");
+	int i = 0;
+	while(str[i])
+	{
+		if (str[i] == '$')
+			return 1;
+		i++;
+	}
+    return 0;
+}
+
+int exp_valuebrackets(t_env *env ,t_token *token)
+{
+	if ((token->dollar == 1  && token->quote != S_QUOTE) || contains_dollar(token->value))
+	{
+		// printf("%d\n\n",token->dollar);
+		char *key = ft_strtrim(token->value,"$\"({}) ");
 
 		if (find_env(env, key) != NULL)
 		{
-			char *value = token->value;
+			// char *value = token->value;
 			free(token->value);
-			token->value = ft_strtrim(find_env(env, key),"");
+			token->value = ft_strdup(find_env(env, key));
 			// printf("%s\n",find_env(env, key));
 		}
 		free(key);
-}
-
-void exp_valuebrackets(t_env *env ,t_token *token)
-{
-	char *key = ft_strtrim(token->value, "${}");
-
-	if (find_env(env, key) != NULL)
-	{
-		char *value = token->value;
-		free(token->value);
-		token->value = ft_strtrim(find_env(env, key),"");
-		// printf("%s\n",find_env(env, key));
+		return 1;
 	}
-	free(key);
+	return 0;
 }
+// int exp_valuebrackets(t_env *env ,t_token *token)
+// {
+// 	if(ft_strchr(token->value, '$'))
+// 	{
+// 		char *key = ft_strtrim(token->value, "${}");
+
+// 		if (find_env(env, key) != NULL)
+// 		{
+// 			// char *value = token->value;
+// 			free(token->value);
+// 			token->value = ft_strtrim(find_env(env, key),"");
+// 			// printf("%s\n",find_env(env, key));
+// 		}
+// 		free(key);
+// 	}
+// 	return 0;
+// }
 
 
 void exp_valuebrackets2(t_env *env ,t_token *token)
@@ -828,7 +900,7 @@ void exp_valuebrackets2(t_env *env ,t_token *token)
 
 			if (find_env(env, key) != NULL)
 			{
-				char *value = token->value;
+				// char *value = token->value;
 				free(token->value);
 				token->value = ft_strtrim(find_env(env, key),"");
 				// printf("%s\n",find_env(env, key));
@@ -843,21 +915,26 @@ void exp_value(t_env *env, t_token *token)
 {
     while (token != NULL)
     {
-        if (parse_keys(env, token))
-        {
-			if (parse_keys(env, token) == 1 && token->quote != S_QUOTE)
-			{
-				exp_valuebrackets(env ,token);
-			}
-			if (parse_keys(env, token) == 2 && token->quote != S_QUOTE)
-			{
-				exp_valuebrackets2(env ,token);
-			}
-			if (parse_keys(env, token) == 3 && token->quote != S_QUOTE)
-			{
-				expand_value(env ,token);
-			}
-        }
+		if (expand_value(env ,token))
+		{
+			token = token->next;
+			continue;
+		}
+		else if (exp_valuebrackets(env ,token))
+		{
+			// ft_delete(token);
+			// printf("\n\n'%s'\n\n",token->value);
+			token = token->next;
+			continue;
+		}
+		// else if (contains_dollar(token->value))
+		// {
+		// 	// token = ft_token(NULL, token->value , NULL);
+		// 	// exp_value(env, token);
+		// 	// ft_delete(token);
+		// 	token = token->next;
+		// 	continue;
+		// }
         token = token->next;
     }
 }
@@ -1010,6 +1087,8 @@ int	setting_data(t_data *data, char **env)
 
 int	main(int argc, char **argv, char **env)
 {
+	(void)argc;
+	(void)argv;
 	t_exe 		error;
 	char		*cmd_line;
 	t_token	 	*token;
@@ -1035,7 +1114,8 @@ int	main(int argc, char **argv, char **env)
 		// parssing.b_fail_malloc = 0;
 		cmd_line = readline("\033[1m\033[32m➜ Minishell > \033[0;33m");
 		add_history(cmd_line);
-		if (!ft_strcmp(cmd_line,"e"))
+		// printf("%s\n",ft_strchr(cmd_line, '$'));
+		if (!ft_strcmp(cmd_line,"q"))
 		{
 			printf("\033[\033[31;1m× exit \n");
 			free(cmd_line);
@@ -1066,4 +1146,3 @@ int	main(int argc, char **argv, char **env)
 
 
 		// token = ft_parse(cmd_line ,&error);
-//dont forget to copy the header too
