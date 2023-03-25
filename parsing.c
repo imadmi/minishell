@@ -9,14 +9,14 @@ int	ft_isspace(int c)
 
 int	is_special(char c)
 {
-	if (c == '|' || c == '<' || c == '>' || c == '&' || c == '(' || c == ')' || c == '{' || c == '}')
+	if (c == '|' || c == '<' || c == '>' || c == '&' || c == '+')
 		return (1);
 	return (0);
 }
 
 int	is_isseparator(char c)
 {
-	if (c == '|' || c == '<' || c == '>' || c == '&' || c == '(' || c == ')' || c == '{' || c == '}' || c == 32 || (c >= 9 && c <= 13))
+	if (c == '|' || c == '<' || c == '>' || c == '&' || c == '+' || c == 32 || (c >= 9 && c <= 13))
 		return (1);
 	return (0);
 }
@@ -62,29 +62,31 @@ void	count_quotes(char c, int *single_quote, int *double_quote)
     }
 }
 
+int	char_quotes_type(char *token)
+{
+	if (token[ft_strlen(token) - 1] == '\'' && token[0] == '\'')
+	{
+		printf("%c\n",token[0]);
+		return S_QUOTE;
+	}
+	if (token[ft_strlen(token) - 1] == '"' && token[0] == '"')
+	{
+		return D_QUOTE;
+	}
+	return N_QUOTE;
+}
+
 void	ft_quotes_type(t_token *token)
 {
-	int	quotes[2];
-	int j;
-
-	j = 0;
-	quotes[0] = 0;
-	quotes[1] = 0;
-	j = 0;
-	while(token->value[j])
+	if (token->value[ft_strlen(token->value) - 1] == '\'' && token->value[0] == '\'')
 	{
-		count_quotes(token->value[j], &quotes[0], &quotes[1]);
-		if (quotes[0] % 2)
-		{
-			token->quote = S_QUOTE;
-			return ;
-		}
-		if (quotes[1] % 2)
-		{
-			token->quote = D_QUOTE;
-			return ;
-		}
-		j++;
+		token->quote = S_QUOTE;
+		return ;
+	}
+	if (token->value[ft_strlen(token->value) - 1] == '"' && token->value[0] == '"')
+	{
+		token->quote = D_QUOTE;
+		return ;
 	}
 	token->quote = N_QUOTE;
 }
@@ -555,8 +557,8 @@ int	tokens_parssing(char *cmd_line, t_exe *parssing)
 		return (1);
 	if (check_backslash(cmd_line))
 		return (1);
-	if (parssing->b_parssing)
-		return (1);
+	// if (parssing->b_parssing)
+	// 	return (1);
 	
 	return (0);
 }
@@ -593,24 +595,146 @@ void	print_token(t_token *token)
 		printf("value is `%s`\n", token->value);
 		print_token_name(token->type);
 		printf("quotes is \"%d\"\n", token->quote);
-		printf("space_befor is \"%d\"\n", token->space_befor);
-		printf("dollar is \"%d\"\n\n", token->dollar);
+		printf("space_befor is \"%d\"", token->space_befor);
+		// printf("dollar is \"%d\"\n\n", token->dollar);
 
 		token = token->next;
 	}
 	printf("\n");
 }
 
+char	*ft_str_chr(char *str, char c)
+{
+	int	i;
+
+	i = ft_strlen(str);
+	while (i < ft_strlen(str) - 1)
+	{
+		if (str[i] == c)
+			return ((char *)str + i);
+		i++;
+	}
+	return (NULL);
+}
+
+// char* ft_strncpy(char* dest, const char* src, size_t n)
+// {
+//     size_t i = 0;
+//     while (i < n && src[i] != '\0') {
+//         dest[i] = src[i];
+//         i++;
+//     }
+//     while (i < n) {
+//         dest[i] = '\0';
+//         i++;
+//     }
+//     return dest;
+// }
+
+// char* remove_f_l(char *str)
+// {
+// 	int len = ft_strlen(str);
+// 	char* newStr = (char*) malloc(len - 1);
+
+// 	ft_strncpy(newStr, str + 1, len - 2);
+// 	newStr[len - 2] = '\0';
+
+// 	return newStr;
+// }
+
+// void remove_s_quotes_suit(char **str, int *i)
+// {
+//     char *newStr = remove_f_l(*str);
+//     if (newStr[0] == '\'' && newStr[strlen(newStr) - 1] == '\'')
+//     {
+//         (*i)++;
+//         remove_s_quotes_suit(&newStr, i);
+//     }
+//     *str = newStr;
+// }
+
+// void remove_d_quotes_suit(char **str)
+// {
+//     char *newStr = remove_f_l(*str);
+//     if (newStr[0] == '"' && newStr[strlen(newStr) - 1] == '"')
+//     {
+//         remove_d_quotes_suit(&newStr);
+//     }
+//     *str = newStr;
+// }
+
+// char *trim_quote(char const *s1, char set)
+// {
+//     size_t len = strlen(s1);
+//     char *result = malloc(len + 1);
+//     size_t j = 0;
+
+//     for (size_t i = 0; i < len; i++) {
+//         if (s1[i] != set) {
+//             result[j] = s1[i];
+//             j++;
+//         }
+//     }
+//     result[j] = '\0';
+
+//     return result;
+// }
+
+char *ft_strdup2(char *str, char c)
+{
+	char temp[10000];
+	int i = 0;
+	int j = 0;
+	while(str[i])
+	{
+		if (str[i] != c)
+		{
+			temp[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	temp[j] = '\0';
+	return ft_strdup(temp);
+}
+
 void	remove_quotes(t_token *token, t_exe *parssing)
 {
+	int	i;
+	int	quotes[2];
+
+
 	(void)parssing;
 	while (token)
 	{
 		ft_quotes_type(token);
-		free(token->value);//
-		token->value = ft_strtrim(token->value,"\"'");
+		quotes[0] = 0;
+		quotes[1] = 0;
+		i = -1;
+		while (token->value[++i] && !ft_isalnum(token->value[i]))
+			count_quotes(token->value[i], &quotes[0], &quotes[1]);
+		i = ft_strlen(token->value);
+		while (token->value[--i] && !ft_isalnum(token->value[i]))
+			count_quotes(token->value[i], &quotes[0], &quotes[1]);
+		if ((token->quote == S_QUOTE && quotes[0] % 4 == 0) || token->quote == N_QUOTE)
+		{
+			free(token->value);//
+			token->value = ft_strdup2(token->value,'\'');
+			free(token->value);//
+			token->value = ft_strdup2(token->value,'"');
+
+		}
+		else if (token->quote == S_QUOTE)
+		{
+			free(token->value);//
+			token->value = ft_strdup2(token->value,'\'');
+		}
+		else if (token->quote == D_QUOTE)
+		{
+			free(token->value);//
+			token->value = ft_strdup2(token->value,'"');
+		}
 		token->type = ft_token_type(token->value);
-		// check_backslash(token->value, parssing);
 		token = token->next;
 	}
 }
@@ -704,48 +828,46 @@ void ft_free(t_token *token)
     }
 }
 
-void ft_dollar(t_token *token)
-{
-    while (token != NULL)
-	{
-		if (token->value[ft_strlen(token->value) - 1] == '$' && token->next->next != NULL)
-		{
-			if ((token->next->value[0] == '(' || token->next->value[0] == '{')\
-				&& (token->next->next->next->value[0] == ')' || token->next->next->next->value[0] == '}'))
-			{
-				token->dollar = 2;
+// void ft_dollar(t_token *token)//
+// {
+//     while (token != NULL)
+// 	{
+// 		if (token->value[ft_strlen(token->value) - 1] == '$' && token->next->next != NULL)
+// 		{
+// 			if ((token->next->value[0] == '(' || token->next->value[0] == '{')\
+// 				&& (token->next->next->next->value[0] == ')' || token->next->next->next->value[0] == '}'))
+// 			{
+// 				token->dollar = 2;
 
-				char *temp = ft_strtrim(token->value,"$");
-				free(token->value);
-				token->value = temp;
+// 				char *temp = ft_strtrim(token->value,"$");
+// 				free(token->value);
+// 				token->value = temp;
 
 				
-				t_token *tmp;
-				tmp = token->next;
-				token->next = token->next->next;
-				free(tmp->value);
-				free(tmp);
+// 				t_token *tmp;
+// 				tmp = token->next;
+// 				token->next = token->next->next;
+// 				free(tmp->value);
+// 				free(tmp);
 
-				token = token->next;
-				token->dollar = 1; 
+// 				token = token->next;
+// 				token->dollar = 1; 
 
-				tmp = token->next;
-				token->next = token->next->next;
-				free(tmp->value);
-				free(tmp);
-			}
-		}
-        token = token->next;
-    }
-}
+// 				tmp = token->next;
+// 				token->next = token->next->next;
+// 				free(tmp->value);
+// 				free(tmp);
+// 			}
+// 		}
+//         token = token->next;
+//     }
+// }
 
 t_token *	parssing(char *cmd_line , t_exe *parssing)
 {
-	// int counter = 0;
 	t_token *token;
 
-	// token = malloc(sizeof(t_token *));
-	token = NULL;//
+	// token = NULL;//
 	if (cmd_line)
 	{
 		if (ft_parse_tokens(token, cmd_line, parssing))
@@ -754,7 +876,7 @@ t_token *	parssing(char *cmd_line , t_exe *parssing)
 			// printf("%d\n",parssing->b_parssing);
 			// token = NULL;
 			token = ft_token(NULL, cmd_line , parssing);
-			ft_dollar(token);
+			// ft_dollar(token);
 			// print_token(token);
 			// counter = 1;
 			// if (!parssing->b_parssing)
@@ -800,36 +922,67 @@ char  *find_env(t_env *env, char *key)
     return NULL;
 }
 
-int expand_value(t_env *env, t_token *token)
+char	*ft_strchr2(char *s, int c, int *flag)
+{
+	int	i;
+	int	quotes[2];
+
+	i = ft_strlen(s);
+	char *res;
+	quotes[0] = 0;
+	quotes[1] = 0;
+	while (s[--i] && !ft_isalnum(s[i]))
+	{
+		count_quotes(s[i], &quotes[0], &quotes[1]);
+	}
+	if (quotes[0] == 1)
+		(*flag) = 1;
+	i = -1;
+	while (s[++i])
+	{
+		if (s[i] == (char)c)
+		{
+			res = ft_strtrim(((char *)s + i), "'$");
+			return res;
+		}
+	}
+	return (NULL);
+}
+
+void expand_value(t_env *env, t_token *token)
 {
 	if(ft_strchr(token->value, '$') && token->quote != S_QUOTE)
 	{
 		int i = 0;
+		int flag = 0;
 		while(token->value[i])
 		{
 			if (token->value[i] == '$')
 			{
-				if (find_env(env, ft_strchr(token->value, '$') + 1) != NULL)
+				char *str;
+				
+				str = ft_strchr2(token->value, '$', &flag);
+				// if (find_env(env, ft_strchr(token->value, '$') + 1) != NULL)
+				if (find_env(env, str) != NULL)
 				{
 					char *key;
-					key = ft_strtrim(ft_strchr(token->value, '$'), "$");
+					key = ft_strtrim(ft_strchr(token->value, '$'), "$'");
 					char suff[i + ft_strlen(find_env(env, key))] ;
 					ft_strlcpy(suff, token->value, i + 1);
-					// printf("%s\n\n",suff);
-
 					ft_strlcat(suff, find_env(env, key),ft_strlen(find_env(env, key)) + i + 1);
+					if (flag)
+						ft_strlcat(suff, "'", ft_strlen(find_env(env, key)) + i + 1 + 1);/////
 					// char *value = token->value;
 					free(token->value);
 					token->value = ft_strdup(suff);
 					// printf("%s\n",find_env(env, key));
 					free(key);
-					return 1;
 				}
+				free(str);
 			}
 			i++;
 		}
 	}
-	return 0;
 }
 
 int contains_dollar(char *str)
@@ -844,25 +997,25 @@ int contains_dollar(char *str)
     return 0;
 }
 
-int exp_valuebrackets(t_env *env ,t_token *token)
-{
-	if ((token->dollar == 1  && token->quote == N_QUOTE) || contains_dollar(token->value))
-	{
-		// printf("%d\n\n",token->dollar);
-		char *key = ft_strtrim(token->value,"$\"({}) ");
+// int exp_valuebrackets(t_env *env ,t_token *token)
+// {
+// 	if ((token->dollar == 1  && token->quote == N_QUOTE) || contains_dollar(token->value))
+// 	{
+// 		// printf("%d\n\n",token->dollar);
+// 		char *key = ft_strtrim(token->value,"$\"({}) ");
 
-		if (find_env(env, key) != NULL)
-		{
-			// char *value = token->value;
-			free(token->value);
-			token->value = ft_strdup(find_env(env, key));
-			// printf("%s\n",find_env(env, key));
-		}
-		free(key);
-		return 1;
-	}
-	return 0;
-}
+// 		if (find_env(env, key) != NULL)
+// 		{
+// 			// char *value = token->value;
+// 			free(token->value);
+// 			token->value = ft_strdup(find_env(env, key));
+// 			// printf("%s\n",find_env(env, key));
+// 		}
+// 		free(key);
+// 		return 1;
+// 	}
+// 	return 0;
+// }
 // int exp_valuebrackets(t_env *env ,t_token *token)
 // {
 // 	if(ft_strchr(token->value, '$'))
@@ -882,51 +1035,52 @@ int exp_valuebrackets(t_env *env ,t_token *token)
 // }
 
 
-void exp_valuebrackets2(t_env *env ,t_token *token)
-{
+// void exp_valuebrackets2(t_env *env ,t_token *token)
+// {
 
-	int	i;
-	int	quotes[2];
+// 	int	i;
+// 	int	quotes[2];
 
-	quotes[0] = 0;
-	quotes[1] = 0;
-	i = 0;
-    while (token->value[i])
-	{
-        count_quotes(token->value[i], &quotes[0], &quotes[1]);
-        if ((quotes[0] == 0) && !(quotes[1] % 2) )
-		{
-			char *key = ft_strtrim(token->value, "$()\"");
+// 	quotes[0] = 0;
+// 	quotes[1] = 0;
+// 	i = 0;
+//     while (token->value[i])
+// 	{
+//         count_quotes(token->value[i], &quotes[0], &quotes[1]);
+//         if ((quotes[0] == 0) && !(quotes[1] % 2) )
+// 		{
+// 			char *key = ft_strtrim(token->value, "$()\"");
 
-			if (find_env(env, key) != NULL)
-			{
-				// char *value = token->value;
-				free(token->value);
-				token->value = ft_strtrim(find_env(env, key),"");
-				// printf("%s\n",find_env(env, key));
-			}
-			free(key);
-        }
-		i++;
-    }
-}
+// 			if (find_env(env, key) != NULL)
+// 			{
+// 				// char *value = token->value;
+// 				free(token->value);
+// 				token->value = ft_strtrim(find_env(env, key),"");
+// 				// printf("%s\n",find_env(env, key));
+// 			}
+// 			free(key);
+//         }
+// 		i++;
+//     }
+// }
 
 void exp_value(t_env *env, t_token *token)
 {
     while (token != NULL)
     {
-		if (expand_value(env ,token))
-		{
-			token = token->next;
-			continue;
-		}
-		else if (exp_valuebrackets(env ,token))
-		{
-			// ft_delete(token);
-			// printf("\n\n'%s'\n\n",token->value);
-			token = token->next;
-			continue;
-		}
+		expand_value(env ,token);
+		// if (expand_value(env ,token))
+		// {
+		// 	token = token->next;
+		// 	continue;
+		// }
+		// else if (exp_valuebrackets(env ,token))
+		// {
+		// 	// ft_delete(token);
+		// 	// printf("\n\n'%s'\n\n",token->value);
+		// 	token = token->next;
+		// 	continue;
+		// }
 		// else if (contains_dollar(token->value))
 		// {
 		// 	// token = ft_token(NULL, token->value , NULL);
@@ -1132,6 +1286,12 @@ int	main(int argc, char **argv, char **env)
 			exit(1);
 		}
 		token = ft_parse(cmd_line , &data, &error);
+		// while (token)
+		// {
+		// 	printf("%s\n",token->value);
+		// 	token = token->next;
+		// }
+		
 		print_token(token);//
 		// printf("\nb_parssing %d\n",error.b_parssing);//
 		// printf("b_pipe %d\n",error.b_pipe);//
