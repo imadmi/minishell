@@ -347,12 +347,22 @@ int	consecutive_op_redirections(char *cmd_line , char red)
 
 int	space_between_redirections(char *cmd_line, char red)
 {
-	int	counter;
 	int	i;
+	int	quotes[2];
 
+	quotes[0] = 0;
+	quotes[1] = 0;
 	i = 0;
+	int	counter;
+
 	while (cmd_line[i])
 	{
+		count_quotes(cmd_line[i], &quotes[0], &quotes[1]);
+		if (quotes[0] % 2 || quotes[1] % 2)
+		{
+			i++;
+			continue ;
+		}
 		counter = 0;
 		if (cmd_line[i] == red)
 		{
@@ -373,6 +383,20 @@ int	space_between_redirections(char *cmd_line, char red)
 	return (0);
 }
 
+int	consecutive_redirections2(char *cmd_line, char red, int *i, int *counter)
+{
+	while (cmd_line[*i] && ft_isspace(cmd_line[*i]))
+		(*i)++;
+	if (cmd_line[*i] == red)
+		(*counter)++;
+	else
+		(*counter) = 0;
+	if ((*counter) > 2)
+		return (printf("\033[0;31mError, consecutive redirections \n"));
+	(*i)++;
+	return (0);
+}
+
 int	consecutive_redirections(char *cmd_line, char red)
 {
 	int	i;
@@ -382,6 +406,7 @@ int	consecutive_redirections(char *cmd_line, char red)
 	quotes[1] = 0;
 	i = 0;
 	int	counter;
+	counter = 0;
 	while (cmd_line[i])
 	{
 		count_quotes(cmd_line[i], &quotes[0], &quotes[1]);
@@ -390,18 +415,8 @@ int	consecutive_redirections(char *cmd_line, char red)
 			i++;
 			continue ;
 		}
-		while (cmd_line[i] && ft_isspace(cmd_line[i]))
-			i++;
-		if (cmd_line[i] == red)
-			counter++;
-		else
-			counter = 0;
-		if (counter > 2)
-		{
-			printf("\033[0;31mError, consecutive redirections \n");
+		if (consecutive_redirections2(cmd_line, red, &i, &counter))
 			return (1);
-		}
-		i++;
 	}
 	return (0);
 }
