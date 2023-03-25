@@ -256,7 +256,6 @@ int	check_pipes_suite(char *cmd_line, int *i, int len)
 
 int	check_pipes(char *cmd_line, t_exe *parssing)
 {
-	// printf("***************");//
 	int	i;
 	int	quotes[2];
 
@@ -273,11 +272,6 @@ int	check_pipes(char *cmd_line, t_exe *parssing)
 				parssing->b_pipe = 1;
                 if (check_pipes_suite2(cmd_line))
                     return 1;
-				// while (ft_isspace(cmd_line[i + 1]) && i < ft_strlen(cmd_line) - 1)
-				// 	i++;
-				// if (cmd_line[i] == '|')
-				// 	return 0;
-				// printf("%c\n",cmd_line[0]);
                 if (check_pipes_suite(cmd_line, &i, ft_strlen(cmd_line)))
                     return 1;
             }
@@ -314,26 +308,16 @@ int	check_quotes(char *cmd_line)
 int	consecutive_op_redirections_suite(char *cmd_line, int *i, char red)
 {
 	int a;
-	int b;
 
-	b = *i ;
-	a = b -1;
-	b++;
+	a = (*i) -1;
     if (red == '<')
         red = '>';
     else if (red == '>')
         red = '<';
-	while (b < (int)ft_strlen(cmd_line) && ft_isspace(cmd_line[b]))
-		b++;
-	if (b < (int)ft_strlen(cmd_line) && !ft_isspace(cmd_line[b]))
-		return (0);
 	while (a >= 0 && ft_isspace(cmd_line[a]))
 		a--;
 	if (a >= 0 && cmd_line[a] == red)
-	{
-		printf("\033[0;31mError, consecutive redirections \n");
-		return (1);
-	}
+		return (printf("\033[0;31mError, consecutive redirections\n"));
 	return (0);
 }
 
@@ -392,12 +376,20 @@ int	space_between_redirections(char *cmd_line, char red)
 int	consecutive_redirections(char *cmd_line, char red)
 {
 	int	i;
-	int	counter;
+	int	quotes[2];
 
-	counter = 0;
+	quotes[0] = 0;
+	quotes[1] = 0;
 	i = 0;
+	int	counter;
 	while (cmd_line[i])
 	{
+		count_quotes(cmd_line[i], &quotes[0], &quotes[1]);
+		if (quotes[0] % 2 || quotes[1] % 2)
+		{
+			i++;
+			continue ;
+		}
 		while (cmd_line[i] && ft_isspace(cmd_line[i]))
 			i++;
 		if (cmd_line[i] == red)
@@ -469,6 +461,21 @@ int	check_redirection(char *cmd_line)
 // 	return (0);
 // }
 
+int check_args2(char *cmd_line , int *i, int *j)
+{
+	(*j) = (*i) - 1;
+	(*i)++;
+	while(ft_isspace(cmd_line[(*i) ]) && cmd_line[(*i) ])
+		(*i)++;
+	if (cmd_line[(*i)] == '<' || cmd_line[(*i)] == '>' || cmd_line[(*i)] == '&')
+		return (printf("\033[0;31msyntax error\n"));
+	while(ft_isspace(cmd_line[(*j)]) && (*j) >= 0)
+		(*j)--;
+	if ((cmd_line[(*j)] == '<' || cmd_line[(*j)] == '>'  || cmd_line[(*j)] == '&') && (*j) >= 0)
+		return (printf("\033[0;31msyntax error\n"));
+	return (0);
+}
+
 int check_args(char *cmd_line)
 {
 	int	i;
@@ -488,16 +495,8 @@ int check_args(char *cmd_line)
 		}
 		if (cmd_line[i] == '|')
 		{
-			j = i - 1;
-			i++;
-			while(ft_isspace(cmd_line[i]) && cmd_line[i])
-				i++;
-			if (cmd_line[i] == '<' || cmd_line[i] == '>' || cmd_line[i] == '&')
-				return (printf("\033[0;31msyntax error\n"));
-			while(ft_isspace(cmd_line[j]) && j >= 0)
-				j--;
-			if ((cmd_line[j] == '<' || cmd_line[j] == '>'  || cmd_line[j] == '&') && j >= 0)
-				return (printf("\033[0;31msyntax error\n"));
+			if (check_args2(cmd_line , &i, &j))
+				return (1);
 		}
 	}
 	return (0);
@@ -739,60 +738,87 @@ void	remove_quotes(t_token *token, t_exe *parssing)
 	}
 }
 
-t_token	*ft_token(t_token *token, char *cmd_line, t_exe *parssing)
+void ft_token1(int * j, int *pos , int *single_quote, int *double_quote)
+{
+	*j = 0;
+	*pos = 0;
+	*single_quote = 0;
+	*double_quote = 0;
+}
+
+int ft_token2(int * j, char cmd_line , int *single_quote, int *double_quote)
+{
+	count_quotes(cmd_line, single_quote, double_quote);
+	if (((*single_quote) % 2) || ((*double_quote) % 2))
+	{
+		(*j)++;
+		return 1 ;
+	}
+	return 0;
+}
+
+void ft_token3(int * j, char *cmd_line , int *single_quote, int *double_quote)
+{
+	count_quotes(cmd_line[*j], single_quote, double_quote);
+	while ((cmd_line[*j] && !ft_isspace(cmd_line[*j]) && !is_special(cmd_line[*j])) || (cmd_line[*j]
+			&& ((*single_quote) % 2 || (*double_quote) % 2)))
+	{
+		count_quotes(cmd_line[*j], single_quote, double_quote);
+		if ((*double_quote) % 2 || (*single_quote) % 2)
+			(*j)++;
+		if ((*double_quote) % 2 || (*single_quote) % 2)
+			continue ;
+		(*j)++;
+	}
+}
+
+void ft_token4(int * j, char *cmd_line)
+{
+	while (cmd_line[(*j)] && ft_isspace(cmd_line[(*j)]))
+	{
+		(*j)++;
+		continue ;
+	}
+}
+
+void ft_token5(int * j, char *cmd_line)
+{
+	while (cmd_line[(*j)] && is_special(cmd_line[(*j)]))
+	{
+		(*j)++;
+		continue ;
+	}
+}
+
+t_token	*ft_token(t_token *token, char *cmd_line, t_exe *err)
 {
 	int	j;
-	int	position;
+	int	pos;
 	int	quotes[2];
 	
-	j = 0;
-	position = 0;
-	quotes[0] = 0;
-	quotes[1] = 0;
+	ft_token1(&j , &pos, &quotes[0], &quotes[1]);
 	while (cmd_line[j])
 	{
-		count_quotes(cmd_line[j], &quotes[0], &quotes[1]);
-		if ((quotes[1] % 2) || (quotes[0] % 2))
-		{
-			j++;
+		if (ft_token2(&j , cmd_line[j], &quotes[0], &quotes[1]))
 			continue ;
-		}
-		if (!is_isseparator(cmd_line[j]))
+		if (!ft_isspace(cmd_line[j]) && !is_special(cmd_line[j]))
 		{
-			count_quotes(cmd_line[j], &quotes[0], &quotes[1]);
-			// while ((cmd_line[j] && !is_isseparator(cmd_line[j])))
-			while ((cmd_line[j] && !is_isseparator(cmd_line[j])) || (cmd_line[j] && (quotes[0] % 2 || quotes[1] % 2)))
-			{
-				count_quotes(cmd_line[j], &quotes[0], &quotes[1]);
-				if ((quotes[1] % 2) || (quotes[0] % 2))
-				{
-					j++;
-					continue ;
-				}
-				j++;
-			}
-			// printf("`%s`\n",ft_substr(cmd_line, position, j - position));//
-			ft_add_back(&token, ft_substr(cmd_line, position, j - position), parssing);
-			position = j;
+			ft_token3(&j , cmd_line, &quotes[0], &quotes[1]);
+			ft_add_back(&token, ft_substr(cmd_line, pos, j - pos), err);
+			pos = j;
 		}
-		while (cmd_line[j] && ft_isspace(cmd_line[j]))
-		{
-			j++;
-			continue ;
-		}
+		ft_token4(&j , cmd_line);
 		if (is_special(cmd_line[j]))
 		{
-			// printf("*\n");//
-			while (cmd_line[j] && is_special(cmd_line[j]))
-				j++;
-			// printf("`%s`\n",ft_substr(cmd_line, position, j - position));//
-			ft_add_back(&token, ft_substr(cmd_line, position, j - position), parssing);
-			position = j;
+			ft_token5(&j , cmd_line);
+			ft_add_back(&token, ft_substr(cmd_line, pos, j - pos), err);
+			pos = j;
 		}
 	}
-	remove_quotes(token, parssing);//
+	remove_quotes(token, err);//
 	return (token);
 }
+
 
 int ft_parse_tokens(t_token *token, char *cmd_line, t_exe *parssing)
 {
