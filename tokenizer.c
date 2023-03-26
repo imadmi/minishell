@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:22:08 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/26 03:26:55 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/03/26 23:34:57 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_token	*ft_create_new_node(char *value, t_exe *parssing, int space_befor)
 	new->value = value;
 	new->space_befor = space_befor;
 	new->next = NULL;
+	new->prev = NULL;
 	return (new);
 }
 
@@ -53,6 +54,7 @@ void	ft_add_back(t_token **token, char *value, t_exe *parssing)
 		last = last->next;
 	}
 	last->next = new;
+	new->prev = last;
 }
 
 void ft_token1(int * j, int *pos , int *single_quote, int *double_quote)

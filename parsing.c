@@ -112,7 +112,7 @@ int	main(int argc, char **argv, char **env)
 		// printf("b_fail_malloc %d\n",error.b_fail_malloc);//
 		free(cmd_line);
 		ft_free(token);
-		system("leaks minishell");
+		// system("leaks minishell");
 	}
 	return (0);
 }
