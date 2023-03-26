@@ -17,7 +17,8 @@
 #define WORD 7
 #define N_QUOTE 8
 
-// #define cmds_nbr 1000
+#define s_quote quotes[0] 
+#define d_quote quotes[1] 
 
 typedef struct		s_exe
 {
@@ -28,9 +29,8 @@ typedef struct		s_exe
 
 typedef struct s_token
 {
-	int				space_befor;//
-	int				quote;//
-	// int				dollar;//
+	int				space_befor;
+	int				quote;
 	int				type;
 	char			*value;
 	struct s_token	*next;
@@ -58,5 +58,53 @@ typedef struct s_data
 	int		shell_level;
 }	t_data;
 
+char			*env_key(char *str);
+char			*env_value(char *str);
+void			setting_var(char *environ, t_env *tmp);
+void			free_node(t_env *head);
+t_env			*creat_node(void);
+t_env			*export_linked_list(char **environ);
+void			print_env_variables(t_data *data);
+int				setting_data(t_data *data, char **env);
+int				ft_isspace(int c);
+int				ft_sepa(char c);
+char			*ft_strdup2(char *str, char c);
+int				ft_strcmp(const char *s1, const char *s2);
+char			*ft_strcpy(char *dest, char *src);
+void			count_quotes(char c, int *single_quote, int *double_quote);
+int				char_quotes_type(char *token);
+void			ft_quotes_type(t_token *token);
+int				ft_token_type( char *value);
+t_token			*ft_create_new_node(char *value, t_exe *parssing, int space_befor);
+void			ft_add_back(t_token **token, char *value, t_exe *parssing);
+void			ft_token1(int * j, int *pos , int *single_quote, int *double_quote);
+int				ft_token2(int * j, char cmd_line , int *single_quote, int *double_quote);
+void			ft_token3(int * j, char *cmd_line , int *single_quote, int *double_quote);
+void			ft_token4(int * j, char *cmd_line);
+void			ft_token5(int * j, char *cmd_line);
+t_token			*ft_token(t_token *token, char *cmd_line, t_exe *err);
+void			remove_quotes(t_token *token, t_exe *parssing);
+int				check_pipes_suite2(char *cmd_line);
+int				check_pipes_suite(char *cmd_line, int *i, int len);
+int				check_pipes(char *cmd_line, t_exe *parssing);
+int				check_quotes(char *cmd_line);
+int				consecutive_op_redirections_suite(char *cmd_line, int *i, char red);
+int				consecutive_op_redirections(char *cmd_line , char red);
+int				space_between_redirections2(char *cmd_line, int *i, char red, int *counter);
+int				space_between_redirections(char *cmd_line, char red);
+int				consecutive_redirections2(char *cmd_line, char red, int *i, int *counter);
+int				consecutive_redirections(char *cmd_line, char red);
+int				check_redirection(char *cmd_line);
+int				check_args2(char *cmd_line , int *i, int *j);
+int				check_args(char *cmd_line);
+int				check_semicolon(char *cmd_line);
+int				check_backslash(char *cmd_line);
+int				tokens_parssing(char *cmd_line, t_exe *parssing);
+void			print_token_name(int code);
+void			print_token(t_token *token);
+void			ft_free(t_token *token);
+char 			*find_env(t_env *env, char *key);
+char			*ft_strchr2(char *s, int c, int *flag);
+void			expand_value(t_env *env, t_token *token);
 
 #endif 
