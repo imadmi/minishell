@@ -6,18 +6,21 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:28:05 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/26 06:26:15 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/03/27 05:49:48 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-char *ft_strdup2(char *str, char c)
+char	*ft_strdup2(char *str, char c)
 {
-	char temp[10000];
-	int i = 0;
-	int j = 0;
-	while(str[i])
+	char	temp[10000];
+	int		j;
+	int		i;
+
+	i = 0;
+	j = 0;
+	while (str[i])
 	{
 		if (str[i] != c)
 		{
@@ -27,18 +30,18 @@ char *ft_strdup2(char *str, char c)
 		i++;
 	}
 	temp[j] = '\0';
-	return ft_strdup(temp);
+	return (ft_strdup(temp));
 }
 
-void ft_free(t_token *token)
+void	ft_free(t_token *token)
 {
-    t_token *temp;
+	t_token	*temp;
 
-    while (token != NULL)
+	while (token != NULL)
 	{
-        temp = token;
-        token = token->next;
+		temp = token;
+		token = token->next;
 		free(temp->value);
-        free(temp);
-    }
+		free(temp);
+	}
 }

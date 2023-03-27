@@ -1,26 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/27 01:59:16 by imimouni          #+#    #+#             */
+/*   Updated: 2023/03/27 05:23:25 by imimouni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSING_H
-#define PARSING_H
+# define PARSING_H
 
 # include <stdio.h>
 # include <unistd.h>
-#include "./libft/libft.h"
+# include "./libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 
-#define S_QUOTE 0
-#define D_QUOTE 1
-#define RED_IN 2
-#define RED_OUT 3
-#define RED_IN_D 4
-#define RED_OUT_D 5
-#define PIPE 6
-#define WORD 7
-#define N_QUOTE 8
+# define S_QUOTE 0
+# define D_QUOTE 1
+# define RED_IN 2
+# define RED_OUT 3
+# define RED_IN_D 4
+# define RED_OUT_D 5
+# define PIPE 6
+# define WORD 7
+# define N_QUOTE 8
 
-#define s_quote quotes[0] 
-#define d_quote quotes[1] 
-
-typedef struct		s_exe
+// parsing structs
+typedef struct s_exe
 {
 	int				b_fail_malloc;
 	int				b_pipe;
@@ -38,6 +48,7 @@ typedef struct s_token
 	t_exe			*exe;
 }					t_token;
 
+//env structs
 typedef struct s_env
 {
 	char			*key;
@@ -47,7 +58,6 @@ typedef struct s_env
 	struct s_env	*next;
 	struct s_env	*prev;
 }	t_env;
-
 
 typedef struct s_data
 {
@@ -59,14 +69,17 @@ typedef struct s_data
 	int		shell_level;
 }	t_data;
 
-char			*env_key(char *str);
-char			*env_value(char *str);
-void			setting_var(char *environ, t_env *tmp);
-void			free_node(t_env *head);
-t_env			*creat_node(void);
-t_env			*export_linked_list(char **environ);
-void			print_env_variables(t_data *data);
-int				setting_data(t_data *data, char **env);
+//env functions
+char			*env_key(char *str);//
+char			*env_value(char *str);//
+void			setting_var(char *environ, t_env *tmp);//
+void			free_node(t_env *head);//
+t_env			*creat_node(void);//
+t_env			*export_linked_list(char **environ);//
+void			print_env_variables(t_data *data);//
+int				setting_data(t_data *data, char **env);//
+
+// parsing functions
 int				ft_isspace(int c);
 int				ft_sepa(char c);
 char			*ft_strdup2(char *str, char c);
@@ -76,27 +89,34 @@ void			count_quotes(char c, int *single_quote, int *double_quote);
 int				char_quotes_type(char *token);
 void			ft_quotes_type(t_token *token);
 int				ft_token_type( char *value);
-t_token			*ft_create_new_node(char *value, t_exe *parssing, int space_befor);
+t_token			*ft_create_new_node(char *value, t_exe *parssing, \
+int space_befor);
 void			ft_add_back(t_token **token, char *value, t_exe *parssing);
-void			ft_token1(int * j, int *pos , int *single_quote, int *double_quote);
-int				ft_token2(int * j, char cmd_line , int *single_quote, int *double_quote);
-void			ft_token3(int * j, char *cmd_line , int *single_quote, int *double_quote);
-void			ft_token4(int * j, char *cmd_line);
-void			ft_token5(int * j, char *cmd_line);
+void			ft_token1(int *j, int *pos, int *single_quote, \
+int *double_quote);
+int				ft_token2(int *j, char cmd_line, int *single_quote, \
+int *double_quote);
+void			ft_token3(int *j, char *cmd_line, int *single_quote, \
+int *double_quote);
+void			ft_token4(int *j, char *cmd_line);
+void			ft_token5(int *j, char *cmd_line);
 t_token			*ft_token(t_token *token, char *cmd_line, t_exe *err);
 void			remove_quotes(t_token *token, t_exe *parssing);
 int				check_pipes_suite2(char *cmd_line);
 int				check_pipes_suite(char *cmd_line, int *i, int len);
 int				check_pipes(char *cmd_line, t_exe *parssing);
 int				check_quotes(char *cmd_line);
-int				consecutive_op_redirections_suite(char *cmd_line, int *i, char red);
-int				consecutive_op_redirections(char *cmd_line , char red);
-int				space_between_redirections2(char *cmd_line, int *i, char red, int *counter);
+int				consecutive_op_redirections_suite(char *cmd_line, int *i, \
+char red);
+int				consecutive_op_redirections(char *cmd_line, char red);
+int				space_between_redirections2(char *cmd_line, int *i, char red, \
+int *counter);
 int				space_between_redirections(char *cmd_line, char red);
-int				consecutive_redirections2(char *cmd_line, char red, int *i, int *counter);
+int				consecutive_redirections2(char *cmd_line, char red, int *i, \
+int *counter);
 int				consecutive_redirections(char *cmd_line, char red);
 int				check_redirection(char *cmd_line);
-int				check_args2(char *cmd_line , int *i, int *j);
+int				check_args2(char *cmd_line, int *i, int *j);
 int				check_args(char *cmd_line);
 int				check_semicolon(char *cmd_line);
 int				check_backslash(char *cmd_line);
@@ -104,8 +124,8 @@ int				tokens_parssing(char *cmd_line, t_exe *parssing);
 void			print_token_name(int code);
 void			print_token(t_token *token);
 void			ft_free(t_token *token);
-char 			*find_env(t_env *env, char *key);
+char			*find_env(t_env *env, char *key);
 char			*ft_strchr2(char *s, int c, int *flag);
 void			expand_value(t_env *env, t_token *token);
 
-#endif 
+#endif

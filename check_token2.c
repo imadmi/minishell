@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:37:07 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/26 06:24:38 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/03/27 02:23:01 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 int	consecutive_op_redirections_suite(char *cmd_line, int *i, char red)
 {
-	int a;
+	int	a;
 
-	a = (*i) -1;
-    if (red == '<')
-        red = '>';
-    else if (red == '>')
-        red = '<';
+	a = (*i) - 1;
+	if (red == '<')
+		red = '>';
+	else if (red == '>')
+		red = '<';
 	while (a >= 0 && ft_isspace(cmd_line[a]))
 		a--;
 	if (a >= 0 && cmd_line[a] == red)
@@ -28,18 +28,18 @@ int	consecutive_op_redirections_suite(char *cmd_line, int *i, char red)
 	return (0);
 }
 
-int	consecutive_op_redirections(char *cmd_line , char red)
+int	consecutive_op_redirections(char *cmd_line, char red)
 {
 	int	i;
 	int	quotes[2];
 
-	s_quote = 0;
-	d_quote = 0;
+	quotes[0] = 0;
+	quotes[1] = 0;
 	i = 0;
 	while (cmd_line[i])
 	{
-		count_quotes(cmd_line[i], &s_quote, &d_quote);
-		if (s_quote % 2 || d_quote % 2)
+		count_quotes(cmd_line[i], &quotes[0], &quotes[1]);
+		if (quotes[0] % 2 || quotes[1] % 2)
 		{
 			i++;
 			continue ;
@@ -69,16 +69,15 @@ int	space_between_redirections(char *cmd_line, char red)
 {
 	int	i;
 	int	quotes[2];
-
-	s_quote = 0;
-	d_quote = 0;
-	i = 0;
 	int	counter;
 
+	quotes[0] = 0;
+	quotes[1] = 0;
+	i = 0;
 	while (cmd_line[i])
 	{
-		count_quotes(cmd_line[i], &s_quote, &d_quote);
-		if (s_quote % 2 || d_quote % 2)
+		count_quotes(cmd_line[i], &quotes[0], &quotes[1]);
+		if (quotes[0] % 2 || quotes[1] % 2)
 		{
 			i++;
 			continue ;

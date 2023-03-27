@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:21:58 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/26 03:21:59 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/03/27 05:47:10 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,25 @@ int	char_quotes_type(char *token)
 {
 	if (token[ft_strlen(token) - 1] == '\'' && token[0] == '\'')
 	{
-		printf("%c\n",token[0]);
-		return S_QUOTE;
+		return (S_QUOTE);
 	}
 	if (token[ft_strlen(token) - 1] == '"' && token[0] == '"')
 	{
-		return D_QUOTE;
+		return (D_QUOTE);
 	}
-	return N_QUOTE;
+	return (N_QUOTE);
 }
 
 void	ft_quotes_type(t_token *token)
 {
-	if (token->value[ft_strlen(token->value) - 1] == '\'' && token->value[0] == '\'')
+	if (token->value[ft_strlen(token->value) - 1] == '\'' \
+		&& token->value[0] == '\'')
 	{
 		token->quote = S_QUOTE;
 		return ;
 	}
-	if (token->value[ft_strlen(token->value) - 1] == '"' && token->value[0] == '"')
+	if (token->value[ft_strlen(token->value) - 1] == '"' && \
+		token->value[0] == '"')
 	{
 		token->quote = D_QUOTE;
 		return ;
@@ -41,7 +42,7 @@ void	ft_quotes_type(t_token *token)
 	token->quote = N_QUOTE;
 }
 
-int	ft_token_type( char *value)
+int	ft_token_type(char *value)
 {
 	if (!ft_strcmp(value, "|"))
 		return (PIPE);
