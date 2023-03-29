@@ -14,5 +14,6 @@ all: parsing.c parsing.h
 	 token_type.c \
 	 tokenizer.c \
 	 tokenizer2.c \
+	 tokenizer3.c \
 	 expnad.c \
 	 -o minishell  -lreadline -ltermcap

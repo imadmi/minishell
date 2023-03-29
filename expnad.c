@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 06:28:07 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/29 02:17:18 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/03/29 03:03:29 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,18 @@ char	*ft_strchr2(char *s, int c, int *flag)
 	quotes[0] = 0;
 	quotes[1] = 0;
 	i = ft_strlen(s);
-	while (s[--i] && !ft_isalnum(s[i]))
-		count_quotes(s[i], &quotes[0], &quotes[1]);
+	while (i > 0 && !ft_isalnum(s[i - 1]))
+		count_quotes(s[--i], &quotes[0], &quotes[1]);
 	if (quotes[0] == 1)
 		(*flag) = 1;
-	i = -1;
-	while (s[++i])
+	while (*s)
 	{
-		if (s[i] == (char)c)
+		if (*s == (char)c)
 		{
-			res = ft_strtrim(((char *)s + i), "$");
+			res = ft_strtrim(s, "$");
 			return (res);
 		}
+		s++;
 	}
 	return (NULL);
 }

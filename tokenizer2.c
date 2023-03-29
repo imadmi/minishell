@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:23:29 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/29 02:35:39 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/03/29 03:43:08 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,26 @@ void	remove_quotes2(t_token *token, int *s_q)
 	char	*new_value;
 
 	i = 0;
-	if ((token->quote == S_QUOTE && (*s_q) % 4 == 0) || token->quote == N_QUOTE)
+	if ((token->quote == S_QUOTE && (*s_q) % 4 == 0))
 	{
-		new_value = ft_strdup2(token->value, '\'');
+		new_value = ft_strdup3(token->value, '"' , '\'');
 		free(token->value);
-		token->value = ft_strdup2(new_value, '"');
-		free(new_value);
+		token->value = new_value;
 		token->quote = D_QUOTE;
 		i = 1;
 	}
-	else if (token->quote == S_QUOTE)
-	{
-		free(token->value);
-		token->value = ft_strdup2(token->value, '\'');
-	}
 	else if (token->quote == D_QUOTE && i == 0)
 	{
+		new_value = ft_strdup2(token->value, '"');
 		free(token->value);
-		token->value = ft_strdup2(token->value, '"');
+		token->value = new_value;
 	}
-	token->type = ft_token_type(token->value);
+	else if (token->quote == S_QUOTE)
+	{
+		new_value = ft_strdup2(token->value, '\'');
+		free(token->value);
+		token->value = new_value;
+	}
 }
 
 void	remove_quotes(t_token *token, t_exe *parssing)
@@ -69,13 +69,14 @@ void	remove_quotes(t_token *token, t_exe *parssing)
 		ft_quotes_type(token);
 		quotes[0] = 0;
 		quotes[1] = 0;
-		i = -1;
-		while (token->value[++i] && !ft_isalnum(token->value[i]))
-			count_quotes(token->value[i], &quotes[0], &quotes[1]);
-		i = ft_strlen(token->value);
-		while (token->value[--i] && !ft_isalnum(token->value[i]))
-			count_quotes(token->value[i], &quotes[0], &quotes[1]);
+		i = 0;
+		while (token->value[i] && !ft_isalnum(token->value[i]))
+			count_quotes(token->value[i++], &quotes[0], &quotes[1]);
+		i = ft_strlen(token->value) - 1;
+		while (i >= 0 && !ft_isalnum(token->value[i]))
+			count_quotes(token->value[i--], &quotes[0], &quotes[1]);
 		remove_quotes2(token, &quotes[0]);
+		remove_quotes3(token);
 		token = token->next;
 	}
 }
