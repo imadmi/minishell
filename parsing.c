@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/27 05:51:27 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/03/27 05:55:00 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	main(int argc, char **argv, char **env)
 
 	// print_env_variables(&data);//
 	printf("\n|***********************************************************|\n");
-	printf("|*	                                                       *|\n");
+	printf("|*                                                         *|\n");
 	printf("|*                       MINI SHELL                        *|\n");
 	printf("|*                   by: Imad && Hatim                     *|\n");
 	printf("|*                                                         *|\n");

@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 06:28:07 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/27 05:17:42 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/03/29 02:17:18 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ void	expand_value_suite(t_env *env, t_token *token, int *i, int *flag)
 	char	*key;
 	char	*suff;
 
-	suff = malloc(sizeof(char *));
-	if (!suff)
-		return ;
 	key = ft_strtrim(ft_strchr(token->value, '$'), "$");
 	if (!key)
+		return ;
+	suff = malloc(ft_strlen(find_env(env, key)) + (*i) + 2);
+	if (!suff)
 		return ;
 	ft_strlcpy(suff, token->value, (*i) + 1);
 	ft_strlcat(suff, find_env(env, key), \
