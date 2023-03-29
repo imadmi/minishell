@@ -72,6 +72,7 @@ typedef struct s_env
 typedef struct s_data
 {
 	int		should_exit;
+	int		shell_level;
 	t_env	*env;
 	char	**ex_env;
 	char	**builtins;
