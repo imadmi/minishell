@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:22:08 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/27 00:27:39 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/03/29 05:12:26 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_add_back(t_token **token, char *value, t_exe *parssing)
 	new->prev = last;
 }
 
-void	ft_token1(int *j, int *pos, int *single_quote, int *double_quote)
+void	ft_token1(int *pos, int *j, int *single_quote, int *double_quote)
 {
 	*j = 0;
 	*pos = 0;

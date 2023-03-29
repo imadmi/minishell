@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:23:29 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/29 03:43:08 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/03/29 05:12:40 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ t_token	*ft_token(t_token *token, char *cmd_line, t_exe *err)
 	int	pos;
 	int	i;
 
-	ft_token1(&i, &pos, &quotes[0], &quotes[1]);
+	ft_token1(&pos, &i, &quotes[0], &quotes[1]);
 	while (cmd_line[i])
 	{
 		if (ft_token2(&i, cmd_line[i], &quotes[0], &quotes[1]))
