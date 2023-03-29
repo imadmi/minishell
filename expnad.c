@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 06:28:07 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/29 05:18:35 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/03/29 06:53:02 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,11 @@ void	expand_value(t_env *env, t_token *token)
 	i = -1;
 	flag = 0;
 	str = ft_strchr2(token->value, '$', &flag);
-	if (ft_strchr(token->value, '$') && token->quote != S_QUOTE \
-		&& token->prev->type != RED_IN_D)
-	{	
+	if (ft_strchr(token->value, '$') && token->quote != S_QUOTE)
+	{
+		if (token->prev != NULL)
+			if (token->prev->type == RED_IN_D)
+				return ;
 		while (token->value[++i])
 		{
 			if (token->value[i] == '$')

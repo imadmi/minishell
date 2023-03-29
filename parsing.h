@@ -5,17 +5,16 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/27 01:59:16 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/29 03:44:09 by imimouni         ###   ########.fr       */
+/*   Created: 2023/03/29 06:56:06 by imimouni          #+#    #+#             */
+/*   Updated: 2023/03/29 06:56:08 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
 # define PARSING_H
 
 # include <stdio.h>
 # include <unistd.h>
-# include "./libft/libft.h"
+# include "../libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -28,6 +27,14 @@
 # define PIPE 6
 # define WORD 7
 # define N_QUOTE 8
+
+// herdock node
+
+typedef struct s_heredoc
+{
+	int	fd;
+	struct s_herdoc	*next;
+}	t_heredoc;
 
 // parsing structs
 typedef struct s_exe
@@ -49,35 +56,35 @@ typedef struct s_token
 }					t_token;
 
 //env structs
+
 typedef struct s_env
 {
 	char			*key;
 	char			*value;
 	int				printed;
 	int				equal_c;
+	int				visible;
 	struct s_env	*next;
 	struct s_env	*prev;
 }	t_env;
 
+// struct passed as first argument for each function
 typedef struct s_data
 {
 	int		should_exit;
 	t_env	*env;
-	t_env	**ex_env;
+	char	**ex_env;
 	char	**builtins;
 	char	current_dir[1024];
-	int		shell_level;
+	int		save_stdin;
+	int		save_stdout;
+	int		fd_in;
+	int		fd_out;
+	t_token *head;
+	t_heredoc *her_head;
 }	t_data;
 
-//env functions
-char			*env_key(char *str);//
-char			*env_value(char *str);//
-void			setting_var(char *environ, t_env *tmp);//
-void			free_node(t_env *head);//
-t_env			*creat_node(void);//
-t_env			*export_linked_list(char **environ);//
-void			print_env_variables(t_data *data);//
-int				setting_data(t_data *data, char **env);//
+
 
 // parsing functions
 int				ft_isspace(int c);
@@ -129,6 +136,4 @@ char			*ft_strchr2(char *s, int c, int *flag);
 void			expand_value(t_env *env, t_token *token);
 void			remove_quotes3(t_token *token);
 char			*ft_strdup3(char *str, char c, char cc);
-
-
-#endif
+t_token			*ft_parse(char *cmd_line, t_data *data, t_exe *parssin);
