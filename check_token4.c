@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:42:20 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/29 07:24:26 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/02 02:03:05 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ int	tokens_parssing(char *cmd_line, t_exe *parssing)
 		return (1);
 	if (check_redirection(cmd_line))
 		return (1);
-	if (check_args(cmd_line))
-		return (1);
+	// if (check_args(cmd_line))
+	// 	return (1);
 	if (check_backslash(cmd_line))
 		return (1);
 	return (0);
@@ -102,8 +102,10 @@ void	print_token_name(int code)
 		printf("token->type is PIPE\n");
 	else if (code == WORD)
 		printf("token->type is WORD\n");
+	else if (code == FILE)
+		printf("token->type is FILE\n");
 	else
-		printf("token->type is Unknown code: %d", code);
+		printf("Unknown type: %d", code);
 }
 
 void	print_token(t_token *token)
@@ -113,8 +115,8 @@ void	print_token(t_token *token)
 		printf("value is `%s`\n", token->value);
 		print_token_name(token->type);
 		printf("quotes is \"%d\"\n", token->quote);
-		printf("space_befor is \"%d\"", token->space_befor);
+		// printf("space_befor is \"%d\"", token->space_befor);
 		token = token->next;
 	}
-	printf("\n");
+	// printf("\n");
 }

@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 06:56:06 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/29 22:53:00 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/02 02:25:01 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,26 @@
 # define PIPE 6
 # define WORD 7
 # define N_QUOTE 8
+# define FILE 9
+
+# define MAX_ARGS 10
+
+typedef struct s_red
+{
+    int     type;    
+    char    *filename;
+    int     quotes;
+    struct  s_red *next;
+} t_red;
+
+typedef struct s_cmd
+{
+    int n_heredoc;//nbr of herdocs in the command
+    char **args;
+    t_red *red;
+	struct s_cmd *next;
+    // int n_args; // added member
+} t_cmd;
 
 // herdock node
 
@@ -87,14 +107,14 @@ typedef struct s_data
 }	t_data;
 
 //env functions
-// char			*env_key(char *str);//
-// char			*env_value(char *str);//
-// void			setting_var(char *environ, t_env *tmp);//
-// void			free_node(t_env *head);//
-// t_env			*creat_node(void);//
-// t_env			*export_linked_list(char **environ);//
-// void			print_env_variables(t_data *data);//
-// int				setting_data(t_data *data, char **env);//
+char			*env_key(char *str);//
+char			*env_value(char *str);//
+void			setting_var(char *environ, t_env *tmp);//
+void			free_node(t_env *head);//
+t_env			*creat_node(void);//
+t_env			*export_linked_list(char **environ);//
+void			print_env_variables(t_data *data);//
+int				setting_data(t_data *data, char **env);//
 
 // parsing functions
 int				ft_isspace(int c);
@@ -146,6 +166,7 @@ char			*ft_strchr2(char *s, int c, int *flag);
 void			expand_value(t_env *env, t_token *token);
 void			remove_quotes3(t_token *token);
 char			*ft_strdup3(char *str, char c, char cc);
-t_token			*ft_parse(char *cmd_line, t_data *data, t_exe *parssin);
+t_token			*ft_parse(char *cmd_line, t_data *data, t_exe *parssin, t_cmd	*cmd);
+void	ft_freee(t_cmd *cmd);
 
 #endif

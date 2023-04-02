@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:39:08 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/27 02:28:37 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/01 00:01:54 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,37 @@ int	consecutive_redirections(char *cmd_line, char red)
 	return (0);
 }
 
+int is_last_char_not_redirect(char *str)
+{
+	int	i;
+	int	quotes[2];
+
+	quotes[0] = 0;
+	quotes[1] = 0;
+	i = ft_strlen(str) - 1;
+	while (str[i])
+	{
+		count_quotes(str[i], &quotes[0], &quotes[1]);
+		if (quotes[0] % 2 || quotes[1] % 2)
+		{
+			i--;
+			continue ;
+		}
+		while (i >= 0 && ft_isspace(str[i]))
+			i--;
+		if (i >= 0 && (str[i] == '<' || str[i] == '>'))
+			return 0;
+		return 1;
+	}
+    return 1;
+}
+
 int	check_redirection(char *cmd_line)
 {
 	int	i;
 
 	i = 0;
-	if (cmd_line[ft_strlen(cmd_line) - 1] == '>' \
-		|| cmd_line[ft_strlen(cmd_line) - 1] == '<')
+	if (!is_last_char_not_redirect(cmd_line))
 		return (printf("\033[0;31msyntax error\n"));
 	if (consecutive_redirections(cmd_line, '>') || \
 		consecutive_redirections(cmd_line, '<'))
