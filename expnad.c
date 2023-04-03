@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 06:28:07 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/03 08:21:27 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/03 08:29:50 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void	expand_value_suite(t_env *env, t_token *token, int *i, int *flag)
 	token->value = ft_strdup(suff);
 	free(suff);
 	free(key);
-	(*i) = -1;
 }
 
 void	expand_value_suite2(t_token *token, int *i)

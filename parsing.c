@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/03 08:09:01 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/03 08:52:01 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,23 @@ int	ft_parse_tokens(char *cmd_line, t_exe *parssing)
 	return (1);
 }
 
+int	ft_last_pipe(t_token *token_list)
+{
+    t_token	*curr;
+	
+	curr = token_list;
+    while (curr->next != NULL)
+    {
+        curr = curr->next;
+    }
+    if (curr->type <= PIPE && curr->type >= RED_IN)
+    {
+		printf("Error\n");
+        return 1;
+    }
+    return 0;
+}
+
 t_token	*parssing(char *cmd_line , t_exe *parssing)
 {
 	t_token	*token;
@@ -35,6 +52,11 @@ t_token	*parssing(char *cmd_line , t_exe *parssing)
 		{
 			parssing->b_parssing = 1;
 			token = ft_token(token, cmd_line , parssing);
+			if (ft_last_pipe(token))
+			{
+				ft_free(token);
+				token = NULL;
+			}
 		}
 		else
 		{
@@ -241,8 +263,8 @@ t_cmd	*ft_parse(char *cmd_line, t_data *data, t_exe *parssin)
 	cmd = NULL;
 	token = parssing(cmd_line ,parssin);
 	files_type(token);
-	// print_token(token);//
 	exp_token(data->env, token);
+	// print_token(token);//
 	cmd = tokens_to_cmds(token);
 	ft_free(token);
 

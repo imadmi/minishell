@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 06:56:06 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/03 08:23:13 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/03 08:52:13 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,14 +106,14 @@ typedef struct s_data
 }	t_data;
 
 //env functions
-char			*env_key(char *str);//
-char			*env_value(char *str);//
-void			setting_var(char *environ, t_env *tmp);//
-void			free_node(t_env *head);//
-t_env			*creat_node(void);//
-t_env			*export_linked_list(char **environ);//
-void			print_env_variables(t_data *data);//
-int				setting_data(t_data *data, char **env);//
+// char			*env_key(char *str);//
+// char			*env_value(char *str);//
+// void			setting_var(char *environ, t_env *tmp);//
+// void			free_node(t_env *head);//
+// t_env			*creat_node(void);//
+// t_env			*export_linked_list(char **environ);//
+// void			print_env_variables(t_data *data);//
+// int				setting_data(t_data *data, char **env);//
 
 // parsing functions
 int				ft_isspace(int c);
