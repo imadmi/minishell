@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:28:05 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/02 05:46:57 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/03 05:38:09 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,18 @@ char	*ft_strdup3(char *str, char c, char cc)
 	return (ft_strdup(temp));
 }
 
-void	ft_free(t_token *token)
+void	ft_free(t_token *head)
 {
-	t_token	*temp;
-
-	while (token != NULL)
+    t_token *current = head;
+	
+    while (current != NULL)
 	{
-		temp = token;
-		token = token->next;
-		if (temp->value)
-			free(temp->value);
-		if (temp)
-			free(temp);
+        t_token *next = current->next;
+        free(current->value);
+		// current->value = NULL;
+        free(current);
+        current = next;
 	}
+	if (current)
+		free(current);
 }

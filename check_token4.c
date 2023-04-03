@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:42:20 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/02 02:03:05 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/03 08:25:59 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ int	tokens_parssing(char *cmd_line, t_exe *parssing)
 		return (1);
 	if (check_redirection(cmd_line))
 		return (1);
-	// if (check_args(cmd_line))
-	// 	return (1);
+	if (check_args(cmd_line))
+		return (1);
 	if (check_backslash(cmd_line))
 		return (1);
 	return (0);

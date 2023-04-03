@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/03 03:12:17 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/03 08:09:01 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,14 +113,27 @@ void files_type(t_token *token)
 	}
 }
 
-void	new_node(t_cmd **cmds, t_cmd **last_cmd, t_cmd **cmdss)
+int nbr_words(t_token	*tmp)
+{
+	t_token	*token;
+
+	token = tmp;
+	int i = 0;
+	while (token != NULL && token->type != PIPE)
+	{
+		i++;
+		token = token->next;
+	}
+	return (i + 1);
+}
+
+void	new_node(t_cmd **cmds, t_cmd **last_cmd, t_cmd **cmdss, t_token	*token)
 {
 	t_cmd *cmd = (t_cmd*)malloc(sizeof(t_cmd));
 	if (!cmd)
 		return ;
 	cmd->n_heredoc = 0;
-	// cmd->red = (t_red*)malloc(sizeof(t_red*) * MAX_ARGS);
-	cmd->args = (char**)malloc(sizeof(char*) * MAX_ARGS);
+	cmd->args = (char**)malloc(sizeof(char*) * nbr_words(token));
 	if (!cmd->args)
 	{
 		free(cmd);
@@ -146,7 +159,6 @@ int token_cmd2(t_token	**current_token, int	*arg_index)
 	(*arg_index) = 0;
 	if ((*current_token)->type == PIPE)
 	{
-		// skip over the PIPE token
 		if ((*current_token)->next)
 			(*current_token) = (*current_token)->next;
 		return 1;
@@ -157,7 +169,6 @@ int token_cmd2(t_token	**current_token, int	*arg_index)
 void add_to_cmd(t_token	**current_token, t_cmd	**cmd, int	*arg_index)
 {
 	(*cmd)->args[(*arg_index)] = ft_strdup((*current_token)->value);
-	// free((*current_token)->value);
 	(*arg_index)++;
 }
 
@@ -170,13 +181,10 @@ void	add_to_cmd2(t_token **current_token, t_cmd **cmd)
     red->quotes = (*current_token)->quote;
     red->type = (*current_token)->prev->type;
     red->filename = ft_strdup((*current_token)->value);
-	// printf("%s : \n" ,red->filename);
-    // red->next = NULL;
 	red->next = NULL;
     if ((*cmd)->red == NULL)
     {
         (*cmd)->red = red;
-		printf("%s\n",(*cmd)->red->filename);
     }
     else
     {
@@ -184,11 +192,8 @@ void	add_to_cmd2(t_token **current_token, t_cmd **cmd)
         while (temp->next != NULL)
             temp = temp->next;
         temp->next = red;
-		// red->next = NULL;
 		
     }
-	// printf("%p\n", &(*cmd)->red);
-	// ((*cmd)->red->next) = NULL;
 }
 
 t_token *void_args(t_cmd **cmds, t_red **red, t_token *token, t_cmd	**last_cmd)
@@ -214,8 +219,7 @@ t_cmd	*tokens_to_cmds(t_token *token)
 	{
 		if (token_cmd2(&tmp, &arg_index))
 			continue ;
-		new_node(&cmds, &last_cmd, &cmd);
-		// printf("%p\n", &cmd->red);
+		new_node(&cmds, &last_cmd, &cmd, tmp);
 		while (tmp != NULL && tmp->type != PIPE)
 		{
 			if (tmp->type == WORD)
@@ -240,8 +244,7 @@ t_cmd	*ft_parse(char *cmd_line, t_data *data, t_exe *parssin)
 	// print_token(token);//
 	exp_token(data->env, token);
 	cmd = tokens_to_cmds(token);
-	// print_cmds(cmd);
-	// ft_free(token);
+	ft_free(token);
 
 	return (cmd);
 }
@@ -293,6 +296,7 @@ int	main(int argc, char **argv, char **env)
 		// error.b_pipe = 0;
 		// error.b_fail_malloc = 0;
 		cmd_line = readline("\033[1m\033[32m➜ Minishell > \033[0;33m");
+		// system(cmd_line);
 		add_history(cmd_line);
 		if (!ft_strcmp(cmd_line,"q"))
 		{
@@ -309,5 +313,3 @@ int	main(int argc, char **argv, char **env)
 	}
 	return (0);
 }
-
-		// token = ft_parse(cmd_line ,&error);

@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 06:56:06 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/03 02:48:33 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/03 08:23:13 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ void			ft_free(t_token *token);
 char			*find_env(t_env *env, char *key);
 char			*ft_strchr2(char *s, int c, int *flag);
 void			expand_value(t_env *env, t_token *token);
+void			expand_value_suite2(t_token *token, int *i);
 void			remove_quotes3(t_token *token);
 char			*ft_strdup3(char *str, char c, char cc);
 t_cmd			*ft_parse(char *cmd_line, t_data *data, t_exe *parssin);

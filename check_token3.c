@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:39:08 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/01 00:01:54 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/03 08:26:59 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,7 @@ int	check_args2(char *cmd_line, int *i, int *j)
 	(*i)++;
 	while (ft_isspace(cmd_line[(*i)]) && cmd_line[(*i)])
 		(*i)++;
-	if (cmd_line[(*i)] == '<' || cmd_line[(*i)] == '>' \
-		|| cmd_line[(*i)] == '&')
+	if (cmd_line[(*i)] == '<' || cmd_line[(*i)] == '&')
 		return (printf("\033[0;31msyntax error\n"));
 	while (ft_isspace(cmd_line[(*j)]) && (*j) >= 0)
 		(*j)--;

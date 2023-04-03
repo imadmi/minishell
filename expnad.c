@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 06:28:07 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/29 06:53:02 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/03 08:21:27 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,10 @@ void	expand_value_suite(t_env *env, t_token *token, int *i, int *flag)
 		return ;
 	suff = malloc(ft_strlen(find_env(env, key)) + (*i) + 2);
 	if (!suff)
+	{
+		free(key);
 		return ;
+	}
 	ft_strlcpy(suff, token->value, (*i) + 1);
 	ft_strlcat(suff, find_env(env, key), \
 	ft_strlen(find_env(env, key)) + (*i) + 2);
@@ -70,6 +73,21 @@ void	expand_value_suite(t_env *env, t_token *token, int *i, int *flag)
 	token->value = ft_strdup(suff);
 	free(suff);
 	free(key);
+	(*i) = -1;
+}
+
+void	expand_value_suite2(t_token *token, int *i)
+{
+	char	*suff;
+
+	suff = malloc((*i) + 2);
+	if (!suff)
+		return ;
+	ft_strlcpy(suff, token->value, (*i) + 1);
+	free(token->value);
+	token->value = ft_strdup(suff);
+	free(suff);
+	(*i) = -1;
 }
 
 void	expand_value(t_env *env, t_token *token)
@@ -91,9 +109,9 @@ void	expand_value(t_env *env, t_token *token)
 			if (token->value[i] == '$')
 			{
 				if (find_env(env, str) != NULL)
-				{
 					expand_value_suite(env, token, &i, &flag);
-				}
+				else if (find_env(env, str) == NULL)
+					expand_value_suite2(token, &i);
 			}
 		}
 	}
