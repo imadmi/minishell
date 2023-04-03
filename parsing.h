@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 06:56:06 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/02 02:25:01 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/03 02:48:33 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,11 @@ typedef struct s_cmd
     char **args;
     t_red *red;
 	struct s_cmd *next;
-    // int n_args; // added member
 } t_cmd;
 
 // herdock node
 
-typedef struct s_heredoc
+typedef struct s_herdoc
 {
 	int	fd;
 	struct s_herdoc	*next;
@@ -166,7 +165,6 @@ char			*ft_strchr2(char *s, int c, int *flag);
 void			expand_value(t_env *env, t_token *token);
 void			remove_quotes3(t_token *token);
 char			*ft_strdup3(char *str, char c, char cc);
-t_token			*ft_parse(char *cmd_line, t_data *data, t_exe *parssin, t_cmd	*cmd);
-void	ft_freee(t_cmd *cmd);
+t_cmd			*ft_parse(char *cmd_line, t_data *data, t_exe *parssin);
 
 #endif

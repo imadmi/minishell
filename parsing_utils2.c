@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:28:05 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/31 22:30:27 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/02 05:46:57 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,31 +62,9 @@ void	ft_free(t_token *token)
 	{
 		temp = token;
 		token = token->next;
-		free(temp->value);
-		free(temp);
-	}
-}
-
-void	ft_freee(t_cmd *cmd)
-{
-	t_cmd	*temp;
-	int i = 0;
-	while (cmd != NULL)
-	{
-		while(cmd->args[i])
-		{
-			free(cmd->args[i]);
-			i++;
-		}
-		free(cmd->args);
-		while(cmd->red)
-		{
-			temp->red = cmd->red;
-			cmd->red = cmd->red->next;
-			free(temp->red);
-		}
-		temp = cmd;
-		cmd = cmd->next;
-		free(temp);
+		if (temp->value)
+			free(temp->value);
+		if (temp)
+			free(temp);
 	}
 }

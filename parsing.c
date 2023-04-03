@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/02 03:04:17 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/03 03:12:17 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,25 @@ void	exp_token(t_env *env, t_token *token)
 void print_cmds(t_cmd *cmds)
 {
 	if (cmds == NULL) {
-	printf("No commands to print.\n");
-	return;
-    }
+		printf("No commands to print.\n");
+		return;
+	}
+	
     t_cmd *current_cmd = cmds;
-
+	int i;
+	
     while (current_cmd != NULL)
 	{
+		i = 0;
         printf("Command:\n");
         printf("  Arguments:\n");
-        for (int i = 0; current_cmd->args[i] != NULL; i++)
+        while (current_cmd->args[i] != NULL)
 		{
             printf("    %s\n", current_cmd->args[i]);
+			i++;
         }
-        printf("  Redirections:\n");
+		
+		printf("  Redirections:\n");
         t_red *current_red = current_cmd->red;
         while (current_red != NULL)
 		{
@@ -92,6 +97,7 @@ void print_cmds(t_cmd *cmds)
             }
             current_red = current_red->next;
         }
+		
         current_cmd = current_cmd->next;
     }
 }
@@ -101,26 +107,27 @@ void files_type(t_token *token)
 	while(token)
 	{
 		if (token->type >= RED_IN && token->type <= RED_OUT_D)
-			if (token->next)
+			if (token->next && token->next->type == WORD)
 				token->next->type = FILE;
 		token = token->next;
 	}
 }
 
-t_cmd *new_node(t_cmd **cmds, t_cmd **last_cmd)
+void	new_node(t_cmd **cmds, t_cmd **last_cmd, t_cmd **cmdss)
 {
 	t_cmd *cmd = (t_cmd*)malloc(sizeof(t_cmd));
 	if (!cmd)
-		return NULL;
+		return ;
 	cmd->n_heredoc = 0;
+	// cmd->red = (t_red*)malloc(sizeof(t_red*) * MAX_ARGS);
 	cmd->args = (char**)malloc(sizeof(char*) * MAX_ARGS);
 	if (!cmd->args)
 	{
 		free(cmd);
-		return NULL;
+		return ;
 	}
 	cmd->red = NULL;
-	// add command to linked list
+	cmd->next = NULL;
 	if (*cmds == NULL)
 	{
 		*cmds = cmd;
@@ -131,7 +138,7 @@ t_cmd *new_node(t_cmd **cmds, t_cmd **last_cmd)
 		(*last_cmd)->next = cmd;
 		*last_cmd = cmd;
 	}
-	return cmd;
+	(*cmdss) = cmd;
 }
 
 int token_cmd2(t_token	**current_token, int	*arg_index)
@@ -140,44 +147,48 @@ int token_cmd2(t_token	**current_token, int	*arg_index)
 	if ((*current_token)->type == PIPE)
 	{
 		// skip over the PIPE token
-		(*current_token) = (*current_token)->next;
+		if ((*current_token)->next)
+			(*current_token) = (*current_token)->next;
 		return 1;
-		// continue;
 	}
 	return 0;
 }
 
 void add_to_cmd(t_token	**current_token, t_cmd	**cmd, int	*arg_index)
 {
-	// add argument to command
-	(*cmd)->args[(*arg_index)] = (*current_token)->value;
+	(*cmd)->args[(*arg_index)] = ft_strdup((*current_token)->value);
+	// free((*current_token)->value);
 	(*arg_index)++;
 }
 
-t_red *add_to_cmd2(t_token	**current_token, t_cmd	**cmd)
+void	add_to_cmd2(t_token **current_token, t_cmd **cmd)
 {
-	t_red *red;
-	t_red *last_red;
-	
-	red = (t_red*)malloc(sizeof(t_red));
-	red->type = (*current_token)->type;
-	red->filename = (*current_token)->next->value;
+	t_red *temp;
+    t_red *red = (t_red*)malloc(sizeof(t_red));
+    if (!red)
+        return ;
+    red->quotes = (*current_token)->quote;
+    red->type = (*current_token)->prev->type;
+    red->filename = ft_strdup((*current_token)->value);
+	// printf("%s : \n" ,red->filename);
+    // red->next = NULL;
 	red->next = NULL;
-	// add redirection to command
-	if ((*cmd)->red == NULL)
-	{
-		(*cmd)->red = red;
-	}
-	else
-	{
-		last_red = (*cmd)->red;
-		while (last_red->next != NULL)
-			last_red = last_red->next;
-		last_red->next = red;
-	}
-	// skip over the file token
-	(*current_token) = (*current_token)->next;
-	return red;
+    if ((*cmd)->red == NULL)
+    {
+        (*cmd)->red = red;
+		printf("%s\n",(*cmd)->red->filename);
+    }
+    else
+    {
+        temp = (*cmd)->red;
+        while (temp->next != NULL)
+            temp = temp->next;
+        temp->next = red;
+		// red->next = NULL;
+		
+    }
+	// printf("%p\n", &(*cmd)->red);
+	// ((*cmd)->red->next) = NULL;
 }
 
 t_token *void_args(t_cmd **cmds, t_red **red, t_token *token, t_cmd	**last_cmd)
@@ -197,18 +208,20 @@ t_cmd	*tokens_to_cmds(t_token *token)
 	t_cmd	*cmd;
 	t_red	*red;
 	
+	cmd = NULL;
 	tmp = void_args(&cmds, &red, token, &last_cmd);
 	while (tmp != NULL)
 	{
 		if (token_cmd2(&tmp, &arg_index))
 			continue ;
-		cmd = new_node(&cmds, &last_cmd);
+		new_node(&cmds, &last_cmd, &cmd);
+		// printf("%p\n", &cmd->red);
 		while (tmp != NULL && tmp->type != PIPE)
 		{
 			if (tmp->type == WORD)
-				add_to_cmd(&tmp, &cmd, &arg_index);	
-			else if (tmp->type >= RED_IN && tmp->type <= RED_OUT_D)
-				red = add_to_cmd2(&tmp, &cmd);
+				add_to_cmd(&tmp, &cmd, &arg_index);
+			else if (tmp->type == FILE)
+				add_to_cmd2(&tmp, &cmd);
 			tmp = tmp->next;
 		}
 		cmd->args[arg_index] = NULL;
@@ -216,17 +229,48 @@ t_cmd	*tokens_to_cmds(t_token *token)
 	return (cmds);
 }
 
-t_token	*ft_parse(char *cmd_line, t_data *data, t_exe *parssin, t_cmd	*cmd)
+t_cmd	*ft_parse(char *cmd_line, t_data *data, t_exe *parssin)
 {
 	t_token	*token;
+	t_cmd	*cmd;
 
+	cmd = NULL;
 	token = parssing(cmd_line ,parssin);
-	exp_token(data->env, token);
 	files_type(token);
+	// print_token(token);//
+	exp_token(data->env, token);
 	cmd = tokens_to_cmds(token);
 	// print_cmds(cmd);
+	// ft_free(token);
 
-	return (token);
+	return (cmd);
+}
+
+void free_red(t_red *red)
+{
+    if (!red)
+        return;
+    if (red->next)
+    	free_red(red->next);
+    free(red);
+}
+
+void free_cmd(t_cmd *cmd)
+{
+	int i = 0;
+    if (!cmd)
+        return;
+    if (cmd->args != NULL)
+	{
+		while(cmd->args[i] != NULL)
+			free(cmd->args[i]);
+		free(cmd->args);
+	}
+    if (cmd->red != NULL)
+    	free_red(cmd->red);
+    if (cmd->next != NULL)
+    	free_cmd(cmd->next);
+    free(cmd);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -236,21 +280,15 @@ int	main(int argc, char **argv, char **env)
 	t_exe 		error;
 	char		*cmd_line;
 	t_cmd		*cmd;
-	t_token	 	*token;
+	// t_token	 	*token;
 	t_data		data;
 
 	if (setting_data(&data, env) != 0)
 		return (1);
 	cmd = NULL;
-	// print_env_variables(&data);//
-	printf("\n|***********************************************************|\n");
-	printf("|*                                                         *|\n");
-	printf("|*                       MINI SHELL                        *|\n");
-	printf("|*                   by: Imad && Hatim                     *|\n");
-	printf("|*                                                         *|\n");
-	printf("|***********************************************************|\n\n");
 	while (1)
 	{
+		cmd = NULL;
 		// error.b_parssing = 0;
 		// error.b_pipe = 0;
 		// error.b_fail_malloc = 0;
@@ -263,25 +301,10 @@ int	main(int argc, char **argv, char **env)
 			free(cmd_line);
 			exit(0);
 		}
-		if (cmd_line == NULL)
-		{
-			printf("\033[\033[31;1m× exit \n \033[37;1m");
-			free(cmd_line);
-			clear_history();
-			exit(1);
-		}
-		token = ft_parse(cmd_line , &data, &error , cmd);
-		// print_token(token);//
-		if (!ft_strcmp(cmd_line,"clear"))
-		{
-			system("clear");
-		}
-		// printf("\nb_parssing %d\n",error.b_parssing);//
-		// printf("b_pipe %d\n",error.b_pipe);//
-		// printf("b_fail_malloc %d\n",error.b_fail_malloc);//
+		cmd = ft_parse(cmd_line , &data, &error);
+		print_cmds(cmd);//
 		free(cmd_line);
-		ft_free(token);
-		// ft_freee(cmd);
+		// free_cmd(cmd);
 		// system("leaks minishell");
 	}
 	return (0);

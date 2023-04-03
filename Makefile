@@ -1,9 +1,9 @@
-# FLAGS =	-Wall -Wextra  -Werror -fsanitize=address
-FLAGS =	-Wall -Wextra  -Werror
+FLAGS =	-Wall -Wextra  -Werror -fsanitize=address
+# FLAGS =	-Wall -Wextra  -Werror
 
 
 all: parsing.c parsing.h
-	@ cc $(FLAGS) ../libft/libft.a parsing.c\
+	 cc $(FLAGS) ../libft/libft.a parsing.c\
 	 env.c \
 	 parsing_utils.c \
 	 parsing_utils2.c \
