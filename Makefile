@@ -17,3 +17,6 @@ all: parsing.c parsing.h
 	 tokenizer3.c \
 	 expnad.c \
 	 -o minishell  -lreadline -ltermcap
+
+
+#make && sleep 0.1 &&./minishell
