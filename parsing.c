@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/03 08:52:01 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/04 03:15:29 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ void print_cmds(t_cmd *cmds)
                 default:
                     break;
             }
+			print_token_name(current_red->type);
+			print_token_name(current_red->quotes);
             current_red = current_red->next;
         }
 		

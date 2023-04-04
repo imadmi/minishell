@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:42:20 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/03 09:48:40 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/04 03:16:28 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,25 +85,25 @@ int	tokens_parssing(char *cmd_line, t_exe *parssing)
 void	print_token_name(int code)
 {
 	if (code == S_QUOTE)
-		printf("token->type is S_QUOTE\n");
+		printf("           S_QUOTE\n");
 	else if (code == D_QUOTE)
-		printf("token->type is quotes[1]\n");
+		printf("           D_QUOTE\n");
 	else if (code == N_QUOTE)
-		printf("token->type is N_QUOTE\n");
+		printf("           N_QUOTE\n");
 	else if (code == RED_IN)
-		printf("token->type is RED_IN\n");
+		printf("           RED_IN\n");
 	else if (code == RED_OUT)
-		printf("token->type is RED_OUT\n");
+		printf("           RED_OUT\n");
 	else if (code == RED_IN_D)
-		printf("token->type is RED_IN_D\n");
+		printf("           RED_IN_D\n");
 	else if (code == RED_OUT_D)
-		printf("token->type is RED_OUT_D\n");
+		printf("           RED_OUT_D\n");
 	else if (code == PIPE)
-		printf("token->type is PIPE\n");
+		printf("           PIPE\n");
 	else if (code == WORD)
-		printf("token->type is WORD\n");
+		printf("           WORD\n");
 	else if (code == FILE)
-		printf("token->type is FILE\n");
+		printf("           FILE\n");
 	else
 		printf("Unknown type: %d", code);
 }
