@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/05 15:41:26 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:53:03 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,7 @@ int nbr_words(t_token	*tmp)
 
 	token = tmp;
 	int i = 0;
-	while (token != NULL && token->type != PIPE)
+	while (token != NULL && token->type != PIPE && (token->type == WORD || token->type == DOLLAR))
 	{
 		i++;
 		token = token->next;
@@ -239,12 +239,27 @@ int nbr_words(t_token	*tmp)
 	return (i + 1);
 }
 
+int nbr_herdoc(t_token	*tmp)
+{
+	t_token	*token;
+
+	token = tmp;
+	int i = 0;
+	while (token != NULL && token->type != PIPE)
+	{
+		if (token->type == RED_IN_D)
+			i++;
+		token = token->next;
+	}
+	return (i);
+}
+
 void	new_node(t_cmd **cmds, t_cmd **last_cmd, t_cmd **cmdss, t_token	*token)
 {
 	t_cmd *cmd = (t_cmd*)malloc(sizeof(t_cmd));
 	if (!cmd)
 		return ;
-	cmd->n_heredoc = 0;
+	cmd->n_heredoc = nbr_herdoc(token);
 	cmd->args = (char**)malloc(sizeof(char*) * nbr_words(token));
 	if (!cmd->args)
 	{
@@ -354,8 +369,8 @@ t_cmd	*ft_parse(char *cmd_line, t_data *data, t_exe *parssin)
 	token = parssing(cmd_line ,parssin);
 	files_type(token);
 	exp_token(data->env, token);
-	print_token(token);//
-	// cmd = tokens_to_cmds(token);
+	// print_token(token);//
+	cmd = tokens_to_cmds(token);
 	ft_free(token);
 
 	return (cmd);
