@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 06:28:07 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/05 20:17:31 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/05 20:21:00 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,7 +268,7 @@ void	expand_value2(t_env *env, t_token *token,char	*str,char	**s)
 			}
 		}
 	}
-	// ft_freeei(s , &str, &str2);
+	ft_freeei(s , &str, &str2);
 }
 
 	//remove quotes
