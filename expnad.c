@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 06:28:07 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/05 07:13:30 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/05 08:27:16 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,8 +231,6 @@ char	**ft_splitt(char	const *s, char c, char c1)
 	return (spl_words);
 }
 
-
-
 void	expand_value2(t_env *env, t_token *token)
 {
 	int		i;
@@ -240,11 +238,10 @@ void	expand_value2(t_env *env, t_token *token)
 
 	i = -1;
 	str = ft_strchr3(token->value, '$');
-	printf("%s\n",str);
-	printf("%s\n",str + 1);
-	// if (ft_strcmp(str,"$") == 1)
-	// 	return;
-	if (str && char_quotes_type(str) == N_QUOTE)
+	// printf("%s\n",str);
+	// printf("%d\n",ft_strcmp(str,""));
+
+	if (ft_strcmp(str,"") && char_quotes_type(str) == N_QUOTE)
 	{
 		if (token->prev != NULL)
 			if (token->prev->type == RED_IN_D)

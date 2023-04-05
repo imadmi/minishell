@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 06:56:06 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/05 06:16:24 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/05 08:15:36 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ void			print_token(t_token *token);
 void			ft_free(t_token *token);
 char			*find_env(t_env *env, char *key);
 char			*ft_strchr2(char *s, int c);
+char			*ft_strchr3(char *s, int c);
 void			expand_value(t_env *env, t_token *token);
 void			expand_value_suite2(t_token *token, int *i);
 void			remove_quotes3(t_token *token);

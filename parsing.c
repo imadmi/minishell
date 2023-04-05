@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/05 07:12:00 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/05 08:16:37 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,16 @@ int has_dollar_sign(char* s) {
 
 void	exp_token(t_env *env, t_token *token)
 {
-	while (token != NULL)
+	t_token *tmp;
+
+	tmp = token;
+	while (tmp != NULL)
 	{
-		if(token->quote == D_QUOTE && has_dollar_sign(token->value))
-			expand_value(env ,token);
-		else if(token->quote == N_QUOTE && has_dollar_sign(token->value))
-			expand_value2(env ,token);
-		token = token->next;
+		if(tmp->quote == D_QUOTE && has_dollar_sign(tmp->value))
+			expand_value(env ,tmp);
+		else if(tmp->quote == N_QUOTE && has_dollar_sign(tmp->value))
+			expand_value2(env ,tmp);
+		tmp = tmp->next;
 	}
 }
 
@@ -260,7 +263,7 @@ t_cmd	*tokens_to_cmds(t_token *token)
 		new_node(&cmds, &last_cmd, &cmd, tmp);
 		while (tmp != NULL && tmp->type != PIPE)
 		{
-			if (tmp->type == WORD)
+			if (tmp->type == WORD || tmp->type == DOLLAR)
 				add_to_cmd(&tmp, &cmd, &arg_index);
 			else if (tmp->type == FILE)
 				add_to_cmd2(&tmp, &cmd);
