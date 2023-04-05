@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/05 08:16:37 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:20:25 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,25 @@ int has_dollar_sign(char* s) {
 void	exp_token(t_env *env, t_token *token)
 {
 	t_token *tmp;
-
+	char	*str;
+	char	**s;
+	
 	tmp = token;
 	while (tmp != NULL)
 	{
 		if(tmp->quote == D_QUOTE && has_dollar_sign(tmp->value))
 			expand_value(env ,tmp);
 		else if(tmp->quote == N_QUOTE && has_dollar_sign(tmp->value))
-			expand_value2(env ,tmp);
+		{
+			if (token->prev != NULL)
+				if (token->prev->type == RED_IN_D)
+				{
+					tmp = tmp->next ;
+					continue;
+				}
+			expand_value2(env ,tmp, str, s);
+			//remove quotes
+		}
 		tmp = tmp->next;
 	}
 }
@@ -283,8 +294,8 @@ t_cmd	*ft_parse(char *cmd_line, t_data *data, t_exe *parssin)
 	token = parssing(cmd_line ,parssin);
 	files_type(token);
 	exp_token(data->env, token);
-	// print_token(token);//
-	cmd = tokens_to_cmds(token);
+	print_token(token);//
+	// cmd = tokens_to_cmds(token);
 	ft_free(token);
 
 	return (cmd);

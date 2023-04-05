@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 06:28:07 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/05 08:27:16 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:21:14 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,17 +79,7 @@ void	expand_value_suite(t_env *env, t_token *token, int *i)
 	free(key);
 }
 
-void	ft_fre(char	**key, char	**suff, char **env_value)
-{
-	if ((*key))
-		free((*key));
-	if ((*env_value))
-		free((*env_value));
-	if ((*suff))
-		free((*suff));
-}
-
-void	expand_value_suite3(t_env *env, t_token *token, int *i, int *flag)
+void	expand_value_suite3(char *env_value, t_token *token, int *i)
 {
 	char	*key;
 	char	*rest;
@@ -98,12 +88,8 @@ void	expand_value_suite3(t_env *env, t_token *token, int *i, int *flag)
 	key = ft_strtrim(ft_strchr(token->value, '$'), "$'\"");
 	if (key == NULL)
 		return;
-	char *env_value = find_env(env, key);
-	if (env_value == NULL)
-		ft_fre(&key, &suff, &env_value);
+
 	suff = malloc(ft_strlen(token->value) - (*i) + ft_strlen(env_value) + 1);
-	if (!suff)
-		ft_fre(&key, &suff, &env_value);
 	ft_strlcpy(suff, token->value, (*i) + 1);
 	ft_strlcat(suff, env_value, ft_strlen(token->value) + (*i) + ft_strlen(env_value) + 1);
 	free(token->value);
@@ -231,45 +217,58 @@ char	**ft_splitt(char	const *s, char c, char c1)
 	return (spl_words);
 }
 
-void	expand_value2(t_env *env, t_token *token)
+void	ft_freeei(char **str, char **s, char **ss)
+{
+	int i;
+	i = 0;
+	free(*s);
+
+	free(*ss);
+	if (!str)
+		return;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+}
+
+int ft_check(t_env *env, char	**s, char	*str)
+{
+	if (find_env(env, s[0]) != NULL && s[1] \
+		&& (str[0] != '\'' && str[0] != '"'))
+		return 1;
+	return 0;
+}
+
+void	expand_value2(t_env *env, t_token *token,char	*str,char	**s)
 {
 	int		i;
-	char	*str;
+	char	*str2;
 
-	i = -1;
 	str = ft_strchr3(token->value, '$');
-	// printf("%s\n",str);
-	// printf("%d\n",ft_strcmp(str,""));
-
+	s = ft_splitt(str, '\'', '"');
+	i = -1;
+	str2 = ft_strjoin(find_env(env, s[0]),s[1]);
 	if (ft_strcmp(str,"") && char_quotes_type(str) == N_QUOTE)
 	{
-		if (token->prev != NULL)
-			if (token->prev->type == RED_IN_D)
-				return ;
 		while (token->value[++i])
 		{
 			if (token->value[i] == '$')
 			{
 				if (find_env(env, str) != NULL)
 					expand_value_suite(env, token, &i);
-				if (find_env(env, str) == NULL)
+				else if (ft_check(env, s, str))
+					expand_value_suite3(str2, token, &i);
+				else if (find_env(env, s[0]) == NULL && s[1])
+					expand_value_suite3(str, token, &i);
+				else if (find_env(env, str) == NULL && !s[1])
 					expand_value_suite2(token, &i);
 			}
 		}
 	}
-	free(str);
+	ft_freeei(s , &str, &str2);
 }
 
-// void	expand_value2(t_env *env, t_token *token)
-// {
-// 	int i = 0;
-// 	char **sp;
-	
-// 	// sp = ft_splitt(token->value, '\'', '"');
-// 	sp = ft_split(token->value, '\'');
-// 	while(sp[i])
-// 	{
-// 		printf("%s\n",sp[i]);
-// 		i++;
-// 	}
-// }
+	//remove quotes
