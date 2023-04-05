@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/05 15:53:03 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/05 19:55:20 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,30 +136,28 @@ void	remove_quotesv2(t_token *token)
 	remove_quotes22(token, &quotes[0]);
 	remove_quotesv3(token);
 }
-
 void	exp_token(t_env *env, t_token *token)
 {
-	t_token *tmp;
 	char	*str;
 	char	**s;
 	
-	tmp = token;
-	while (tmp != NULL)
+	while (token != NULL)
 	{
-		if(tmp->quote == D_QUOTE && has_dollar_sign(tmp->value))
-			expand_value(env ,tmp);
-		else if(tmp->quote == N_QUOTE && has_dollar_sign(tmp->value))
+		if(token->quote == D_QUOTE && has_dollar_sign(token->value))
+			expand_value(env ,token);
+		else if(token->quote == N_QUOTE && has_dollar_sign(token->value))
 		{
 			if (token->prev != NULL)
 				if (token->prev->type == RED_IN_D)
 				{
-					tmp = tmp->next ;
+					token = token->next ;
 					continue;
 				}
+				expand_value2(env, token,str,s);
 		}
-		if(has_dollar_sign(tmp->value))
+		if(has_dollar_sign(token->value))
 			remove_quotesv2(token);
-		tmp = tmp->next;
+		token = token->next;
 	}
 }
 
