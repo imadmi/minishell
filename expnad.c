@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 06:28:07 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/05 15:21:14 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/05 20:17:31 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ char	*ft_strchr2(char *s, int c)
 
 char	*ft_strchr3(char *s, int c)
 {
-	int		i;
-
 	while (*s)
 	{
 		if (*s == (char)c)
@@ -251,7 +249,9 @@ void	expand_value2(t_env *env, t_token *token,char	*str,char	**s)
 	s = ft_splitt(str, '\'', '"');
 	i = -1;
 	str2 = ft_strjoin(find_env(env, s[0]),s[1]);
-	if (ft_strcmp(str,"") && char_quotes_type(str) == N_QUOTE)
+	// printf("%s\n",str);
+	// printf("%d\n",ft_strcmp(str,""));
+	if (ft_strcmp(str,""))
 	{
 		while (token->value[++i])
 		{
@@ -268,7 +268,7 @@ void	expand_value2(t_env *env, t_token *token,char	*str,char	**s)
 			}
 		}
 	}
-	ft_freeei(s , &str, &str2);
+	// ft_freeei(s , &str, &str2);
 }
 
 	//remove quotes
