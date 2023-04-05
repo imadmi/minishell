@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 06:56:06 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/03 08:54:07 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/05 06:16:24 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@
 # define WORD 7
 # define N_QUOTE 8
 # define FILE 9
+# define DOLLAR 10
 
-# define MAX_ARGS 10
+// # define MAX_ARGS 10
 
 typedef struct s_red
 {
@@ -161,11 +162,13 @@ void			print_token_name(int code);
 void			print_token(t_token *token);
 void			ft_free(t_token *token);
 char			*find_env(t_env *env, char *key);
-char			*ft_strchr2(char *s, int c, int *flag);
+char			*ft_strchr2(char *s, int c);
 void			expand_value(t_env *env, t_token *token);
 void			expand_value_suite2(t_token *token, int *i);
 void			remove_quotes3(t_token *token);
 char			*ft_strdup3(char *str, char c, char cc);
 t_cmd			*ft_parse(char *cmd_line, t_data *data, t_exe *parssin);
+void			expand_value2(t_env *env, t_token *token);
+void	remove_quotes4(t_token *token);
 
 #endif

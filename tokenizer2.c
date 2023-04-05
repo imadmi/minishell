@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:23:29 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/03 08:48:36 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/04 06:37:02 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,43 @@ void	ft_token5(int *j, char *cmd_line)
 void	remove_quotes2(t_token *token, int *s_q)
 {
 	char	*new_value;
+	int		i;
 
+	i = 0;
 	if ((token->quote == S_QUOTE && (*s_q) % 4 == 0))
 	{
 		new_value = ft_strdup3(token->value, '"' , '\'');
 		free(token->value);
 		token->value = new_value;
+		token->quote = D_QUOTE;
+		i = 1;
 	}
-	else if (token->quote == D_QUOTE)
+	else if (token->quote == D_QUOTE && i != 1)
 	{
 		new_value = ft_strdup2(token->value, '"');
 		free(token->value);
 		token->value = new_value;
 	}
-	else if (token->quote == S_QUOTE)
+	else if (token->quote == S_QUOTE && token->type != DOLLAR)
 	{
 		new_value = ft_strdup2(token->value, '\'');
 		free(token->value);
 		token->value = new_value;
 	}
+}
+
+int	contains_dollar(char* str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$')
+			return 1;
+		i++;
+	}
+	return 0;
 }
 
 void	remove_quotes(t_token *token, t_exe *parssing)
@@ -62,6 +80,8 @@ void	remove_quotes(t_token *token, t_exe *parssing)
 	(void)parssing;
 	while (token)
 	{
+		if (contains_dollar(token->value))
+			remove_quotes4(token);
 		ft_quotes_type(token);
 		quotes[0] = 0;
 		quotes[1] = 0;

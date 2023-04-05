@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/04 03:15:29 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/05 07:12:00 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,25 @@ t_token	*parssing(char *cmd_line , t_exe *parssing)
 	return (token);
 }
 
+int has_dollar_sign(char* s) {
+    while (*s != '\0') {
+        if (*s == '$') {
+            return 1;
+        }
+        s++;
+    }
+    return 0;
+}
+
+
 void	exp_token(t_env *env, t_token *token)
 {
 	while (token != NULL)
 	{
-		expand_value(env ,token);
+		if(token->quote == D_QUOTE && has_dollar_sign(token->value))
+			expand_value(env ,token);
+		else if(token->quote == N_QUOTE && has_dollar_sign(token->value))
+			expand_value2(env ,token);
 		token = token->next;
 	}
 }
