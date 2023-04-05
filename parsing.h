@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 06:56:06 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/05 14:57:27 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:32:53 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,5 +172,7 @@ t_cmd			*ft_parse(char *cmd_line, t_data *data, t_exe *parssin);
 void	expand_value2(t_env *env, t_token *token,char	*str,char	**s);
 void	remove_quotes4(t_token *token);
 char	**ft_splitt(char	const *s, char c, char c1);
+int	contains_dollar(char* str);
+void	remove_quotes2(t_token *token, int *s_q);
 
 #endif

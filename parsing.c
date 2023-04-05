@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/05 15:20:25 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:41:26 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,66 @@ int has_dollar_sign(char* s) {
     return 0;
 }
 
+void	remove_quotesv3(t_token *token)
+{
+	char	*new_value;
+
+	if (token->type != DOLLAR)
+		token->type = WORD;
+	if (token->quote == N_QUOTE)
+	{
+		new_value = ft_strdup3(token->value, '"' , '\'');
+		free(token->value);
+		token->value = new_value;
+		token->type = ft_token_type(token->value);
+	}
+}
+
+void	remove_quotes22(t_token *token, int *s_q)
+{
+	char	*new_value;
+	int		i;
+
+	i = 0;
+	if ((token->quote == S_QUOTE && (*s_q) % 4 == 0))
+	{
+		new_value = ft_strdup3(token->value, '"' , '\'');
+		free(token->value);
+		token->value = new_value;
+		token->quote = D_QUOTE;
+		i = 1;
+	}
+	else if (token->quote == D_QUOTE && i != 1)
+	{
+		new_value = ft_strdup2(token->value, '"');
+		free(token->value);
+		token->value = new_value;
+	}
+	else if (token->quote == S_QUOTE)
+	{
+		new_value = ft_strdup2(token->value, '\'');
+		free(token->value);
+		token->value = new_value;
+	}
+}
+
+void	remove_quotesv2(t_token *token)
+{
+	int	i;
+	int	quotes[2];
+
+	ft_quotes_type(token);
+	quotes[0] = 0;
+	quotes[1] = 0;
+	i = 0;
+	while (token->value[i] && !ft_isalnum(token->value[i]))
+		count_quotes(token->value[i++], &quotes[0], &quotes[1]);
+	i = ft_strlen(token->value) - 1;
+	while (i >= 0 && !ft_isalnum(token->value[i]))
+		count_quotes(token->value[i--], &quotes[0], &quotes[1]);
+	remove_quotes22(token, &quotes[0]);
+	remove_quotesv3(token);
+}
 
 void	exp_token(t_env *env, t_token *token)
 {
@@ -96,9 +156,9 @@ void	exp_token(t_env *env, t_token *token)
 					tmp = tmp->next ;
 					continue;
 				}
-			expand_value2(env ,tmp, str, s);
-			//remove quotes
 		}
+		if(has_dollar_sign(tmp->value))
+			remove_quotesv2(token);
 		tmp = tmp->next;
 	}
 }
