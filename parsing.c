@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/05 20:11:43 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/06 11:48:22 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,9 +229,10 @@ int nbr_words(t_token	*tmp)
 
 	token = tmp;
 	int i = 0;
-	while (token != NULL && token->type != PIPE && (token->type == WORD || token->type == DOLLAR))
+	while (token != NULL && token->type != PIPE)
 	{
-		i++;
+		if (token->type == WORD || token->type == DOLLAR)
+			i++;
 		token = token->next;
 	}
 	return (i + 1);
@@ -321,17 +322,51 @@ void	add_to_cmd2(t_token **current_token, t_cmd **cmd)
     }
 }
 
-t_token *void_args(t_cmd **cmds, t_red **red, t_token *token, t_cmd	**last_cmd)
+// t_token *void_args(t_cmd **cmds, t_red **red, t_token *token, t_cmd	**last_cmd)
+// {
+// 	*cmds = NULL;
+// 	*red = NULL;
+// 	*last_cmd = NULL;
+// 	return (token);
+// }
+void void_args(t_cmd **cmds, t_red **red, t_cmd	**last_cmd)
 {
 	*cmds = NULL;
 	*red = NULL;
 	*last_cmd = NULL;
-	return (token);
 }
 
+// t_cmd	*tokens_to_cmds(t_token *token)
+// {
+// 	t_token	*tmp;
+// 	t_cmd	*cmds;
+// 	t_cmd	*last_cmd;
+// 	int		arg_index;
+// 	t_cmd	*cmd;
+// 	t_red	*red;
+	
+// 	cmd = NULL;
+// 	tmp = void_args(&cmds, &red, token, &last_cmd);
+// 	while (tmp != NULL)
+// 	{
+// 		if (token_cmd2(&tmp, &arg_index))
+// 			continue ;
+// 		new_node(&cmds, &last_cmd, &cmd, tmp);
+// 		while (tmp != NULL && tmp->type != PIPE)
+// 		{
+// 			if (tmp->type == WORD || tmp->type == DOLLAR)
+// 				add_to_cmd(&tmp, &cmd, &arg_index);
+// 			else if (tmp->type == FILE)
+// 				add_to_cmd2(&tmp, &cmd);
+// 			tmp = tmp->next;
+// 		}
+// 		cmd->args[arg_index] = NULL;
+// 	}
+// 	return (cmds);
+// }
 t_cmd	*tokens_to_cmds(t_token *token)
 {
-	t_token	*tmp;
+	// t_token	*token;
 	t_cmd	*cmds;
 	t_cmd	*last_cmd;
 	int		arg_index;
@@ -339,19 +374,19 @@ t_cmd	*tokens_to_cmds(t_token *token)
 	t_red	*red;
 	
 	cmd = NULL;
-	tmp = void_args(&cmds, &red, token, &last_cmd);
-	while (tmp != NULL)
+	void_args(&cmds, &red, &last_cmd);
+	while (token != NULL)
 	{
-		if (token_cmd2(&tmp, &arg_index))
+		if (token_cmd2(&token, &arg_index))
 			continue ;
-		new_node(&cmds, &last_cmd, &cmd, tmp);
-		while (tmp != NULL && tmp->type != PIPE)
+		new_node(&cmds, &last_cmd, &cmd, token);
+		while (token != NULL && token->type != PIPE)
 		{
-			if (tmp->type == WORD || tmp->type == DOLLAR)
-				add_to_cmd(&tmp, &cmd, &arg_index);
-			else if (tmp->type == FILE)
-				add_to_cmd2(&tmp, &cmd);
-			tmp = tmp->next;
+			if (token->type == WORD || token->type == DOLLAR)
+				add_to_cmd(&token, &cmd, &arg_index);
+			else if (token->type == FILE)
+				add_to_cmd2(&token, &cmd);
+			token = token->next;
 		}
 		cmd->args[arg_index] = NULL;
 	}
