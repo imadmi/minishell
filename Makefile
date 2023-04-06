@@ -17,6 +17,12 @@ all: parsing.c parsing.h
 	 tokenizer2.c \
 	 tokenizer3.c \
 	 expnad.c \
+	 expand2.c \
+	 expand3.c \
+	 expand4.c \
+	 remove_quotes.c \
+	 token_to_cmd.c \
+	 to_cmd_utils.c \
 	 -o minishell  -lreadline -ltermcap
 
 

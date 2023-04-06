@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 06:56:06 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/05 15:32:53 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/06 14:23:23 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,5 +174,31 @@ void	remove_quotes4(t_token *token);
 char	**ft_splitt(char	const *s, char c, char c1);
 int	contains_dollar(char* str);
 void	remove_quotes2(t_token *token, int *s_q);
+void	expand_value_suite(t_env *env, t_token *token, int *i);
+void	expand_value_suite3(char *env_value, t_token *token, int *i);
+char	**ft_freee(int i, char **str);
+int	words_lenghtt(char const *s, char c, char c1);
+int	count_wordss(char const *s, char c, char c1);
+void ft_str2_protection(t_env *env, char **str2, char **s);
+int ft_check(t_env *env, char	**s, char	*str);
+void	ft_freeei(char **str, char **s, char **ss);
+char	**ft_splitt(char	const *s, char c, char c1);
+char	**ft_filll(char const *s, int i, char c, char c1, char **sp);
+int	has_dollar_sign(char* s);
+void	remove_quotesv3(t_token *token);
+void	remove_quotes22(t_token *token, int *s_q);
+void	remove_quotesv2(t_token *token);
+void files_type(t_token *token);
+void	new_node(t_cmd **cmds, t_cmd **last_cmd, t_cmd **cmdss, t_token	*token);
+int token_cmd2(t_token	**current_token, int	*arg_index);
+void add_to_cmd(t_token	**current_token, t_cmd	**cmd, int	*arg_index);
+void	add_to_cmd2(t_token **current_token, t_cmd **cmd);
+void void_args(t_cmd **cmds, t_cmd **cmd, t_red **red, t_cmd	**last_cmd);
+t_cmd	*tokens_to_cmds(t_token *token);
+void print_cmds(t_cmd *cmds);
+int nbr_words(t_token	*tmp);
+int nbr_herdoc(t_token	*tmp);
+void	exp_token(t_env *env, t_token *token);
+
 
 #endif
