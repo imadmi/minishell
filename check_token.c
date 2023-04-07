@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:35:04 by imimouni          #+#    #+#             */
-/*   Updated: 2023/03/27 02:20:36 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/07 20:10:12 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,18 @@ int	check_pipes_suite2(char *cmd_line)
 	while (ft_isspace(cmd_line[i]) && i < (int)ft_strlen(cmd_line))
 		i++;
 	if (cmd_line[i] == '|')
+	{
+		exit_status = 258;
 		return (printf("\033[0;31munexpected token \'|\' \n"));
+	}
 	i = ft_strlen(cmd_line) - 1;
 	while (ft_isspace(cmd_line[i]) && i > 0)
 		i--;
 	if (cmd_line[i] == '|')
+	{
+		exit_status = 258;
 		return (printf("\033[0;31munexpected token \'|\' \n"));
+	}
 	return (0);
 }
 
@@ -39,7 +45,10 @@ int	check_pipes_suite(char *cmd_line, int *i, int len)
 	while (ft_isspace(cmd_line[b]) && b < len)
 		b++;
 	if (cmd_line[b] == '|' && b < len)
+	{
+		exit_status = 258;
 		return (printf("\033[0;31munexpected token \'|\' \n"));
+	}
 	return (0);
 }
 

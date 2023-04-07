@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 06:56:06 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/06 14:23:23 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/07 20:04:04 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 
 // # define MAX_ARGS 10
 
+int exit_status;
+
 typedef struct s_red
 {
     int     type;    
@@ -44,8 +46,10 @@ typedef struct s_red
 typedef struct s_cmd
 {
     int n_heredoc;//nbr of herdocs in the command
+	int	fd_herdoc;
     char **args;
     t_red *red;
+	int	pid;//-1
 	struct s_cmd *next;
 } t_cmd;
 

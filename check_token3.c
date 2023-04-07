@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:39:08 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/03 08:26:59 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/07 20:43:33 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ int	consecutive_redirections2(char *cmd_line, char red, int *i, int *counter)
 	else
 		(*counter) = 0;
 	if ((*counter) > 2)
-		return (printf("\033[0;31mError, consecutive redirections \n"));
+	{
+		exit_status = 258;
+		return (printf("\033[0;31munexpected token \'|\' \n"));
+	}
 	(*i)++;
 	return (0);
 }
@@ -81,7 +84,10 @@ int	check_redirection(char *cmd_line)
 
 	i = 0;
 	if (!is_last_char_not_redirect(cmd_line))
+	{
+		exit_status = 258;
 		return (printf("\033[0;31msyntax error\n"));
+	}
 	if (consecutive_redirections(cmd_line, '>') || \
 		consecutive_redirections(cmd_line, '<'))
 		return (printf("\033[0;31msyntax error\n"));
@@ -97,16 +103,18 @@ int	check_redirection(char *cmd_line)
 int	check_args2(char *cmd_line, int *i, int *j)
 {
 	(*j) = (*i) - 1;
-	(*i)++;
-	while (ft_isspace(cmd_line[(*i)]) && cmd_line[(*i)])
-		(*i)++;
-	if (cmd_line[(*i)] == '<' || cmd_line[(*i)] == '&')
-		return (printf("\033[0;31msyntax error\n"));
+	// (*i)++;
+	// while (ft_isspace(cmd_line[(*i)]) && cmd_line[(*i)])
+	// 	(*i)++;
+	// if (cmd_line[(*i)] == '<' || cmd_line[(*i)] == '&')
+	// 	return (printf("\033[0;31msyntax error\n"));
 	while (ft_isspace(cmd_line[(*j)]) && (*j) >= 0)
 		(*j)--;
-	if ((cmd_line[(*j)] == '<' || cmd_line[(*j)] == '>' \
-		|| cmd_line[(*j)] == '&') && (*j) >= 0)
-		return (printf("\033[0;31msyntax error\n"));
+	if ((cmd_line[(*j)] == '<' || cmd_line[(*j)] == '>') && (*j) >= 0)
+	{
+		exit_status = 258;
+		return (printf("\033[0;31munexpected token \'< or >\' \n"));
+	}
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/06 14:25:10 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/07 19:59:59 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_parse_tokens(char *cmd_line, t_exe *parssing)
 		return 0;
 	if (tokens_parssing(cmd_line, parssing))
 	{
-		printf("\033[\033[31;1m× exit\n");
+		printf("\033[\033[31;1m× Error\n");
 		return (0);
 	}
 	return (1);
@@ -60,7 +60,6 @@ t_cmd	*ft_parse(char *cmd_line, t_data *data, t_exe *parssin)
 	return (cmd);
 }
 
-
 int	main(int argc, char **argv, char **env)
 {
 	(void)argc;
@@ -91,7 +90,7 @@ int	main(int argc, char **argv, char **env)
 			exit(0);
 		}
 		cmd = ft_parse(cmd_line , &data, &error);
-		// print_cmds(cmd);//
+		print_cmds(cmd);//
 		free(cmd_line);
 		// free_cmd(cmd);
 		// system("leaks minishell");
