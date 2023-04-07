@@ -6,21 +6,19 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 12:25:35 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/07 20:34:28 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/07 20:47:06 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-static int	nbr_of_digits(int nbr)
+int	nbr_of_digits(int nbr)
 {
 	int		i;
 
 	i = 0;
 	if (nbr == 0)
 		return (1);
-	if (nbr < 0)
-		i = 1;
 	while (nbr != 0)
 	{
 		nbr /= 10;
@@ -29,32 +27,27 @@ static int	nbr_of_digits(int nbr)
 	return (i);
 }
 
-char	*ft_itoa(int n)
+char	*ft_itoa(int number)
 {
 	long	nbr;
 	char	*result;
-	int		len;
+	int		i;
 	int		size;
 
+	nbr = number;
 	size = 0;
-	if (n < 0)
-		size = 1;
-	len = nbr_of_digits(n);
-	result = (char *)malloc((len + 1));
+	i = nbr_of_digits(nbr);
+	result = (char *)malloc((i + 1));
 	if (!result)
 		return (result);
-	nbr = n;
-	if (nbr < 0)
-		nbr *= -1;
-	result[len] = '\0';
-	while (--len >= size)
+	result[i] = '\0';
+	while (--i >= size)
 	{
-		result[len] = (nbr % 10) + '0';
+		result[i] = (nbr % 10) + '0';
 		nbr /= 10;
 	}
 	return (result);
 }
-
 
 char	*find_env(t_env *env, char *key)
 {
@@ -64,7 +57,7 @@ char	*find_env(t_env *env, char *key)
 		{
 			return (env->value);
 		}
-		if (ft_strcmp(env->key, key) == 0 || ft_strcmp(key, "$?"))
+		if (ft_strcmp(key, "$?"))
 		{
 			return (ft_itoa(exit_status));
 		}
