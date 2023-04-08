@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:11:05 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 16:41:12 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 18:04:22 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,30 @@ int	tmp_dollar_sign(t_token *token)
 	t_token *tmp;
 
 	tmp = token;
-    if (tmp->value != '\0' && tmp != NULL)
+    if (tmp->value != '\0' && tmp->prev)
 	{
-        while (tmp->prev && (ft_strcmp(tmp->prev->value,"'") == 0|| ft_strcmp(tmp->prev->value,"\"") == 0))
+        while (tmp->prev)
 		{
-			if (tmp->prev)
-				tmp = tmp->prev;
-			else
+			if (!tmp->prev)
 				break;
+			if (tmp->prev)
+			{
+				if ((ft_strcmp(tmp->prev->value,"'") == 0 || ft_strcmp(tmp->prev->value,"\"") == 0))
+					tmp = tmp->prev;
+				else
+					break;
+			}
 		}
+		if (tmp->prev && tmp->prev->prev)
+			if (ft_strcmp(tmp->prev->prev->value,"@") == 0)
+				return 0;
 		if (tmp->prev)
 			if (ft_strcmp(tmp->prev->value,"$") == 0)
+			{
+				free(tmp->prev->value);
+				tmp->prev->value = ft_strdup("");
 				return 1;
+			}
     }
     return 0;
 }

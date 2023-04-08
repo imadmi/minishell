@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:21:17 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 16:42:47 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 17:49:42 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,7 +299,6 @@ void expanding_value(t_env *env, t_token *token)
     // if (ft_strcmp(str, "") && str != NULL && s[0] != NULL)
     if (ft_strcmp(str, "") && str != NULL)
     {
-    printf(">>%s\n",str);
         // while (token->value[++i])
         // {
             // if (token->value[i] == '$')
@@ -375,9 +374,15 @@ int	ft_sigle_q(t_token *token)
 {
     if (token->value != '\0' && token != NULL)
 	{
-        if (token->prev && token->next && \
-        ft_strcmp(token->next->value,"'") == 0 && ft_strcmp(token->prev->value,"'") == 0)
-			return 1;
+        if (token->prev && token->next)
+            if(ft_strcmp(token->next->value,"\"") == 0 && ft_strcmp(token->prev->value,"\"") == 0)
+			    return 1;
+        if (token->prev->prev && token->next)
+            if(ft_strcmp(token->next->value,"'") == 0 && ft_strcmp(token->prev->prev->value,"'") == 0)
+			    return 1;
+        if (token->prev && token->next)
+            if(ft_strcmp(token->next->value,"'") == 0 && ft_strcmp(token->prev->value,"'") == 0)
+			    return 1;
     }
     return 0;
 }
@@ -387,29 +392,25 @@ void	exp_token(t_env *env, t_token *token)
     t_token *tmp;
     t_token *tmp1;
     t_token *head;
-	int		i;
 
 	while (token != NULL)
 	{
-		// if (has_dollar_sign(token->value) && token->quote != S_QUOTE)
-		// {
-			i = -1;
-            tmp = ft_token_exp(NULL, token->value , NULL);
-            head = tmp;
-            while(tmp)
+
+        tmp = ft_token_exp(NULL, token->value , NULL);
+        head = tmp;
+        while(tmp)
+        {
+            tmp1 = tmp;
+            if (tmp_dollar_sign(tmp1) && !ft_sigle_q(tmp1))
             {
-                tmp1 = tmp;
-                if (tmp_dollar_sign(tmp1) && !ft_sigle_q(tmp1))
-                {
-                    expanding_value(env ,tmp);
-                }
-                tmp = tmp->next;
+                printf("%s\n", tmp->value);
+                expanding_value(env ,tmp);
             }
-            // print_token(head);
-            free(token->value);
-            token->value = join_tokens(head);
-            ft_free(head);
-		// }
+            tmp = tmp->next;
+        }
+        free(token->value);
+        token->value = join_tokens(head);
+        ft_free(head);
 		token = token->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 12:25:35 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 16:17:41 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 17:00:13 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,8 @@ void	expand_value_suite(t_env *env, t_token *token)
 	// ft_strlcpy(suff, token->value, (*i) + 1);
 	// ft_strlcat(suff, find_env(env, key), \
 	// ft_strlen(find_env(env, key)) + (*i) + 2);
-	free(token->value);
 	token->value = ft_strdup(find_env(env, key));
+	free(key);
 	// free(suff);
 	// free(key);
 }
