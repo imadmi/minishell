@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 06:56:06 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/07 20:04:04 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 16:07:49 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@
 # define N_QUOTE 8
 # define FILE 9
 # define DOLLAR 10
-
-// # define MAX_ARGS 10
 
 int exit_status;
 
@@ -178,7 +176,7 @@ void	remove_quotes4(t_token *token);
 char	**ft_splitt(char	const *s, char c, char c1);
 int	contains_dollar(char* str);
 void	remove_quotes2(t_token *token, int *s_q);
-void	expand_value_suite(t_env *env, t_token *token, int *i);
+void	expand_value_suite(t_env *env, t_token *token);
 void	expand_value_suite3(char *env_value, t_token *token, int *i);
 char	**ft_freee(int i, char **str);
 int	words_lenghtt(char const *s, char c, char c1);
@@ -203,6 +201,7 @@ void print_cmds(t_cmd *cmds);
 int nbr_words(t_token	*tmp);
 int nbr_herdoc(t_token	*tmp);
 void	exp_token(t_env *env, t_token *token);
+int	tmp_dollar_sign(t_token *token);
 
 
 #endif

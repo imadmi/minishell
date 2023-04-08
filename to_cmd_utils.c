@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:21:17 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/07 20:25:41 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 16:42:47 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ char **split_string_at_dollar(char *string)
     if (dollar_ptr == NULL)
 		return NULL;
 
-    size_t dollar_index = dollar_ptr - string;  // Compute the index of the dollar sign in the string
+    size_t dollar_index = dollar_ptr - string;
 
     result[0] = (char*) malloc((dollar_index + 1) * sizeof(char));
 
@@ -166,14 +166,15 @@ char **split_string_at_dollar(char *string)
 
 int	ft_isspacee(int c)
 {
-	if (c == 32 || (c >= 9 && c <= 13) || c == '\'' )
-		return (1);
+	// if (c == '"')
+	// 	return (1);
 	return (0);
 }
 
 int	ft_sepaa(char c)
 {
-	if (c == '|' || c == '<' || c == '>'  || c == '"')
+	// if (c == '"')
+	if (c == '"' || c == '\'' || c == '$')
 		return (1);
 	return (0);
 }
@@ -216,15 +217,14 @@ void	ft_token44(int *j, char *cmd_line)
 
 void	ft_token55(int *j, char *cmd_line)
 {
-	while (cmd_line[(*j)] && ft_sepaa(cmd_line[(*j)]))
+	if (cmd_line[(*j)] && ft_sepaa(cmd_line[(*j)]))
 	{
 		(*j)++;
-		continue ;
 	}
 }
 
 
-t_token	*ft_tokenn(t_token *token, char *cmd_line, t_exe *err)
+t_token	*ft_token_exp(t_token *token, char *cmd_line, t_exe *err)
 {
 	int	quotes[2];
 	int	pos;
@@ -233,8 +233,8 @@ t_token	*ft_tokenn(t_token *token, char *cmd_line, t_exe *err)
 	ft_token1(&pos, &i, &quotes[0], &quotes[1]);
 	while (cmd_line[i])
 	{
-		if (ft_token22(&i, cmd_line[i], &quotes[0], &quotes[1]))
-			continue ;
+		// if (ft_token22(&i, cmd_line[i], &quotes[0], &quotes[1]))
+		// 	continue ;
 		if (!ft_isspacee(cmd_line[i]) && !ft_sepaa(cmd_line[i]))
 		{
 			ft_token33(&i, cmd_line, &quotes[0], &quotes[1]);
@@ -253,35 +253,69 @@ t_token	*ft_tokenn(t_token *token, char *cmd_line, t_exe *err)
 }
 
 
+// void expanding_value(t_env *env, t_token *token)
+// {
+//     int i;
+//     char *str2;
+//     char *str;
+//     char **s;
+
+//     str = ft_strchr3(token->value, '$');
+//     s = ft_split(str,'"');
+//     i = -1;
+// 	ft_str2_protection(env, &str2, s);
+//     if (ft_strcmp(str, "") && str != NULL && s[0] != NULL)
+//     {
+//         while (token->value[++i])
+//         {
+//             if (token->value[i] == '$')
+//             {
+//                 if (find_env(env, str) != NULL)
+//                     expand_value_suite(env, token, &i);
+//                 else if (ft_check(env, s, str))
+//                     expand_value_suite3(str2, token, &i);
+//                 else if (find_env(env, s[0]) == NULL && str2 != NULL)
+//                     expand_value_suite3(str, token, &i);
+//                 else if (find_env(env, str) == NULL && str2 == NULL)
+//                     expand_value_suite2(token, &i);
+//             }
+//         }
+//     }
+//     ft_freeei(s, &str, &str2);
+// }
+
 void expanding_value(t_env *env, t_token *token)
 {
     int i;
-    char *str2;
+    // char *str2;
+    // char **s;
     char *str;
-    char **s;
 
-    str = ft_strchr3(token->value, '$');
-    s = ft_splitt(str, '\'', '"');
-    i = -1;
-	ft_str2_protection(env, &str2, s);
-    if (ft_strcmp(str, "") && str != NULL && s[0] != NULL)
+    // str = ft_strchr3(token->value, '$');
+    str = token->value;
+    // s = ft_split(str,'"');
+    // i = -1;
+	// ft_str2_protection(env, &str2, s);
+    // if (ft_strcmp(str, "") && str != NULL && s[0] != NULL)
+    if (ft_strcmp(str, "") && str != NULL)
     {
-        while (token->value[++i])
-        {
-            if (token->value[i] == '$')
-            {
+    printf(">>%s\n",str);
+        // while (token->value[++i])
+        // {
+            // if (token->value[i] == '$')
+            // {
                 if (find_env(env, str) != NULL)
-                    expand_value_suite(env, token, &i);
-                else if (ft_check(env, s, str))
-                    expand_value_suite3(str2, token, &i);
-                else if (find_env(env, s[0]) == NULL && str2 != NULL)
-                    expand_value_suite3(str, token, &i);
-                else if (find_env(env, str) == NULL && str2 == NULL)
-                    expand_value_suite2(token, &i);
-            }
-        }
+                    expand_value_suite(env, token);
+                // else if (ft_check(env, s, str))
+                //     expand_value_suite3(str2, token, &i);
+                // else if (find_env(env, s[0]) == NULL && str2 != NULL)
+                //     expand_value_suite3(str, token, &i);
+                // else if (find_env(env, str) == NULL && str2 == NULL)
+                //     expand_value_suite2(token, &i);
+            // }
+        // }
     }
-    ft_freeei(s, &str, &str2);
+    // ft_freeei(s, &str, &str2);
 }
 
 void remove_quotess(char *str)
@@ -337,30 +371,45 @@ char* join_tokens(t_token* head)
     return result;
 }
 
+int	ft_sigle_q(t_token *token)
+{
+    if (token->value != '\0' && token != NULL)
+	{
+        if (token->prev && token->next && \
+        ft_strcmp(token->next->value,"'") == 0 && ft_strcmp(token->prev->value,"'") == 0)
+			return 1;
+    }
+    return 0;
+}
 
 void	exp_token(t_env *env, t_token *token)
 {
     t_token *tmp;
+    t_token *tmp1;
     t_token *head;
 	int		i;
 
 	while (token != NULL)
 	{
-		if (has_dollar_sign(token->value) && token->quote != S_QUOTE)
-		{
+		// if (has_dollar_sign(token->value) && token->quote != S_QUOTE)
+		// {
 			i = -1;
-            tmp = ft_tokenn(NULL, token->value , NULL);
+            tmp = ft_token_exp(NULL, token->value , NULL);
             head = tmp;
             while(tmp)
             {
-                if (has_dollar_sign(tmp->value))
+                tmp1 = tmp;
+                if (tmp_dollar_sign(tmp1) && !ft_sigle_q(tmp1))
+                {
                     expanding_value(env ,tmp);
+                }
                 tmp = tmp->next;
             }
+            // print_token(head);
             free(token->value);
             token->value = join_tokens(head);
             ft_free(head);
-		}
+		// }
 		token = token->next;
 	}
 }

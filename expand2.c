@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 12:25:35 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/07 20:47:06 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 16:17:41 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*find_env(t_env *env, char *key)
 		{
 			return (env->value);
 		}
-		if (ft_strcmp(key, "$?"))
+		if (ft_strcmp(key, "?") == 0)
 		{
 			return (ft_itoa(exit_status));
 		}
@@ -95,42 +95,66 @@ char	*ft_strchr3(char *s, int c)
 	return (NULL);
 }
 
-void	expand_value_suite(t_env *env, t_token *token, int *i)
+// void	expand_value_suite(t_env *env, t_token *token, int *i)
+// {
+// 	char	*key;
+// 	char	*suff;
+
+// 	key = ft_strtrim(ft_strchr(token->value, '$'), "$");
+// 	if (!key)
+// 		return ;
+// 	suff = malloc(ft_strlen(find_env(env, key)) + (*i) + 2);
+// 	if (!suff)
+// 	{
+// 		free(key);
+// 		return ;
+// 	}
+// 	ft_strlcpy(suff, token->value, (*i) + 1);
+// 	ft_strlcat(suff, find_env(env, key), \
+// 	ft_strlen(find_env(env, key)) + (*i) + 2);
+// 	free(token->value);
+// 	token->value = ft_strdup(suff);
+// 	free(suff);
+// 	free(key);
+// }
+
+void	expand_value_suite(t_env *env, t_token *token)
 {
 	char	*key;
-	char	*suff;
+	// char	*suff;
 
-	key = ft_strtrim(ft_strchr(token->value, '$'), "$");
+	key = token->value;
 	if (!key)
 		return ;
-	suff = malloc(ft_strlen(find_env(env, key)) + (*i) + 2);
-	if (!suff)
-	{
-		free(key);
-		return ;
-	}
-	ft_strlcpy(suff, token->value, (*i) + 1);
-	ft_strlcat(suff, find_env(env, key), \
-	ft_strlen(find_env(env, key)) + (*i) + 2);
+	// suff = malloc(ft_strlen(find_env(env, key)) + (*i) + 2);
+	// suff = malloc(ft_strlen(find_env(env, key)) + 1);
+	// if (!suff)
+	// {
+	// 	free(key);
+	// 	return ;
+	// }
+	// ft_strlcpy(suff, token->value, (*i) + 1);
+	// ft_strlcat(suff, find_env(env, key), \
+	// ft_strlen(find_env(env, key)) + (*i) + 2);
 	free(token->value);
-	token->value = ft_strdup(suff);
-	free(suff);
-	free(key);
+	token->value = ft_strdup(find_env(env, key));
+	// free(suff);
+	// free(key);
 }
 
-void	expand_value_suite3(char *env_value, t_token *token, int *i)
-{
-	char	*key;
-	char	*suff;
+// void	expand_value_suite3(char *env_value, t_token *token, int *i)
+// {
+// 	char	*key;
+// 	char	*suff;
 
-	key = ft_strtrim(ft_strchr(token->value, '$'), "$'\"");
-	if (key == NULL)
-		return;
+// 	key = ft_strtrim(ft_strchr(token->value, '$'), "$'\"");
+// 	if (key == NULL)
+// 		return;
 
-	suff = malloc(ft_strlen(token->value) - (*i) + ft_strlen(env_value) + 1);
-	ft_strlcpy(suff, token->value, (*i) + 1);
-	ft_strlcat(suff, env_value, ft_strlen(token->value) + (*i) + ft_strlen(env_value) + 1);
-	free(token->value);
-	token->value = suff;
-	free(key);
-}
+// 	suff = malloc(ft_strlen(token->value) - (*i) + ft_strlen(env_value) + 1);
+// 	ft_strlcpy(suff, token->value, (*i) + 1);
+// 	ft_strlcat(suff, env_value, ft_strlen(token->value) + (*i) + ft_strlen(env_value) + 1);
+// 	free(token->value);
+// 	token->value = suff;
+// 	free(key);
+// }

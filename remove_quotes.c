@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:11:05 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/06 14:13:25 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 16:41:12 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,27 @@ int	has_dollar_sign(char* s)
         if (*s == '$')
             return 1;
         s++;
+    }
+    return 0;
+}
+
+int	tmp_dollar_sign(t_token *token)
+{
+	t_token *tmp;
+
+	tmp = token;
+    if (tmp->value != '\0' && tmp != NULL)
+	{
+        while (tmp->prev && (ft_strcmp(tmp->prev->value,"'") == 0|| ft_strcmp(tmp->prev->value,"\"") == 0))
+		{
+			if (tmp->prev)
+				tmp = tmp->prev;
+			else
+				break;
+		}
+		if (tmp->prev)
+			if (ft_strcmp(tmp->prev->value,"$") == 0)
+				return 1;
     }
     return 0;
 }
