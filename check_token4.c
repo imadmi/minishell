@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:42:20 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/07 20:37:03 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 22:08:32 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,13 @@ int	check_semicolon(char *cmd_line)
 
 int	check_backslash(char *cmd_line)
 {
-	int	i;
-	int	quotes[2];
+	int		i;
+	int		quotes[2];
+	char	*temp;
 
 	i = 0;
 	quotes[0] = 0;
 	quotes[1] = 0;
-	char	*temp;
-
 	temp = ft_strtrim(cmd_line, "'\" ");
 	if ((int)ft_strlen(temp) == 0)
 		return (0);
@@ -80,41 +79,27 @@ int	tokens_parssing(char *cmd_line, t_exe *parssing)
 	return (0);
 }
 
-void	print_token_name(int code)
+int	check_args(char *cmd_line)
 {
-	if (code == S_QUOTE)
-		printf("           S_QUOTE\n");
-	else if (code == D_QUOTE)
-		printf("           D_QUOTE\n");
-	else if (code == N_QUOTE)
-		printf("           N_QUOTE\n");
-	else if (code == RED_IN)
-		printf("           RED_IN\n");
-	else if (code == RED_OUT)
-		printf("           RED_OUT\n");
-	else if (code == RED_IN_D)
-		printf("           RED_IN_D\n");
-	else if (code == RED_OUT_D)
-		printf("           RED_OUT_D\n");
-	else if (code == PIPE)
-		printf("           PIPE\n");
-	else if (code == WORD)
-		printf("           WORD\n");
-	else if (code == FILE)
-		printf("           FILE\n");
-	else
-		printf("Unknown type: %d", code);
-}
+	int	i;
+	int	j;
+	int	quotes[2];
 
-void	print_token(t_token *token)
-{
-	while (token)
+	quotes[0] = 0;
+	quotes[1] = 0;
+	i = -1;
+	while (cmd_line[++i])
 	{
-		printf("value is `%s`\n", token->value);
-		print_token_name(token->type);
-		printf("quotes is \"%d\"\n", token->quote);
-		// printf("space_befor is \"%d\"", token->space_befor);
-		token = token->next;
+		count_quotes(cmd_line[i], &quotes[0], &quotes[1]);
+		if (quotes[0] % 2 || quotes[1] % 2)
+		{
+			if(cmd_line[i + 1])
+				i++;
+			continue ;
+		}
+		if (cmd_line[i] == '|')
+			if (check_args2(cmd_line, &i, &j))
+				return (1);
 	}
-	// printf("\n");
+	return (0);
 }

@@ -5,72 +5,57 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/26 06:28:07 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 16:09:47 by imimouni         ###   ########.fr       */
+/*   Created: 2023/04/06 12:25:35 by imimouni          #+#    #+#             */
+/*   Updated: 2023/04/08 23:13:41 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-// void expand_value2(t_env *env, t_token *token, char *str, char **s)
-// {
-//     int i;
-//     char *str2;
+int	find_env_check(t_env *env, char *key)
+{
+	if (ft_strcmp(key, "?") == 0)
+		return (1);
+	while (env != NULL)
+	{
+		if (ft_strcmp(env->key, key) == 0)
+		{
+			return (1);
+		}
+		env = env->next;
+	}
+	return (0);
+}
 
-//     str = ft_strchr3(token->value, '$');
-//     s = ft_splitt(str, '\'', '"');
-//     i = -1;
-// 	ft_str2_protection(env, &str2, s);
-//     if (ft_strcmp(str, "") && str != NULL && s[0] != NULL)
-//     {
-//         while (token->value[++i])
-//         {
-//             if (token->value[i] == '$')
-//             {
-//                 if (find_env(env, str) != NULL)
-//                     expand_value_suite(env, token, &i);
-//                 else if (ft_check(env, s, str))
-//                     expand_value_suite3(str2, token, &i);
-//                 else if (find_env(env, s[0]) == NULL && str2 != NULL)
-//                     expand_value_suite3(str, token, &i);
-//                 else if (find_env(env, str) == NULL && str2 == NULL)
-//                     expand_value_suite2(token, &i);
-//             }
-//         }
-//     }
-//     ft_freeei(s, &str, &str2);
-// }
+char	*find_env(t_env *env, char *key)
+{
+	while (env != NULL)
+	{
+		if (ft_strcmp(env->key, key) == 0)
+		{
+			return (env->value);
+		}
+		env = env->next;
+	}
+	return (NULL);
+}
 
-// void	expand_value2(t_env *env, t_token *token,char	*str,char	**s)
-// {
-// 	int		i;
-// 	char	*str2;
+void	expand_value_suite(t_env *env, t_token *token)
+{
+	char	*key;
+	char	*suff;
 
-// 	str = ft_strchr3(token->value, '$');
-// 	s = ft_splitt(str, '\'', '"');
-// 	i = -1;
-// 	str2 = ft_strjoin(find_env(env, s[0]),s[1]);
-// 	// printf("%s",str2);
-// 	// printf("%s\n",str);
-// 	// printf("%d\n",ft_strcmp(str,""));
-// 	if (ft_strcmp(str,"") && str && s[0])
-// 	{
-// 		while (token->value[++i])
-// 		{
-// 			if (token->value[i] == '$')
-// 			{
-// 				if (find_env(env, str) != NULL)
-// 					expand_value_suite(env, token, &i);
-// 				else if (ft_check(env, s, str))
-// 					expand_value_suite3(str2, token, &i);
-// 				else if (find_env(env, s[0]) == NULL && str2)
-// 					expand_value_suite3(str, token, &i);
-// 				else if (find_env(env, str) == NULL && !str2)
-// 					expand_value_suite2(token, &i);
-// 			}
-// 		}
-// 	}
-// 	ft_freeei(s , &str, &str2);
-// }
-
-	//remove quotes
+	key = token->value;
+	if (!key)
+		return ;
+	if (ft_strcmp(key, "?") == 0)
+	{
+		free(key);
+		token->value = ft_itoa(exit_status);
+		return ;
+	}
+	suff = find_env(env, key);
+	free(key);
+	token->value = ft_strdup(suff);
+	return ;
+}

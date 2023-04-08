@@ -6,60 +6,59 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:11:05 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 18:18:55 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 23:17:55 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-int	has_dollar_sign(char* s)
+int	has_dollar_sign(char *s)
 {
-    while (*s != '\0')
+	while (*s != '\0')
 	{
-        if (*s == '$')
-            return 1;
-        s++;
-    }
-    return 0;
+		if (*s == '$')
+			return (1);
+		s++;
+	}
+	return (0);
 }
 
-int ft_checker(t_token *tmp)
+int	ft_checker(t_token *tmp)
 {
 	if (tmp->prev->prev && tmp)
-		if (ft_strcmp(tmp->prev->prev->value,"'") == 0 && ft_strcmp(tmp->value,"'") != 0)
-			return 1;
+		if (ft_strcmp(tmp->prev->prev->value, "'") == 0 && \
+			ft_strcmp(tmp->value, "'") != 0)
+			return (1);
 	free(tmp->prev->value);
 	tmp->prev->value = ft_strdup("");
-	return 1;
+	return (1);
 }
 
 int	tmp_dollar_sign(t_token *token)
 {
-	t_token *tmp;
-
-	tmp = token;
-    if (tmp->value != '\0' && tmp->prev)
+	if (token->value != '\0' && token->prev)
 	{
-        while (tmp->prev)
+		while (token->prev)
 		{
-			if (!tmp->prev)
-				break;
-			if (tmp->prev)
+			if (!token->prev)
+				break ;
+			if (token->prev)
 			{
-				if ((ft_strcmp(tmp->prev->value,"'") == 0 || ft_strcmp(tmp->prev->value,"\"") == 0))
-					tmp = tmp->prev;
+				if ((ft_strcmp(token->prev->value, "'") == 0 || \
+					ft_strcmp(token->prev->value, "\"") == 0))
+					token = token->prev;
 				else
-					break;
+					break ;
 			}
 		}
-		if (tmp->prev && tmp->prev->prev)
-			if (ft_strcmp(tmp->prev->prev->value,"@") == 0)
-				return 0;
-		if (tmp->prev)
-			if (ft_strcmp(tmp->prev->value,"$") == 0)
-				return ft_checker(tmp);
-    }
-    return 0;
+		if (token->prev && token->prev->prev)
+			if (ft_strcmp(token->prev->prev->value, "@") == 0)
+				return (0);
+		if (token->prev)
+			if (ft_strcmp(token->prev->value, "$") == 0)
+				return (ft_checker(token));
+	}
+	return (0);
 }
 
 void	remove_quotesv3(t_token *token)
@@ -70,7 +69,7 @@ void	remove_quotesv3(t_token *token)
 		token->type = WORD;
 	if (token->quote == N_QUOTE)
 	{
-		new_value = ft_strdup3(token->value, '"' , '\'');
+		new_value = ft_strdup3(token->value, '"', '\'');
 		free(token->value);
 		token->value = new_value;
 		token->type = ft_token_type(token->value);
@@ -85,7 +84,7 @@ void	remove_quotes22(t_token *token, int *s_q)
 	i = 0;
 	if ((token->quote == S_QUOTE && (*s_q) % 4 == 0))
 	{
-		new_value = ft_strdup3(token->value, '"' , '\'');
+		new_value = ft_strdup3(token->value, '"', '\'');
 		free(token->value);
 		token->value = new_value;
 		token->quote = D_QUOTE;
@@ -102,34 +101,5 @@ void	remove_quotes22(t_token *token, int *s_q)
 		new_value = ft_strdup2(token->value, '\'');
 		free(token->value);
 		token->value = new_value;
-	}
-}
-
-void	remove_quotesv2(t_token *token)
-{
-	int	i;
-	int	quotes[2];
-
-	ft_quotes_type(token);
-	quotes[0] = 0;
-	quotes[1] = 0;
-	i = 0;
-	while (token->value[i] && !ft_isalnum(token->value[i]))
-		count_quotes(token->value[i++], &quotes[0], &quotes[1]);
-	i = ft_strlen(token->value) - 1;
-	while (i >= 0 && !ft_isalnum(token->value[i]))
-		count_quotes(token->value[i--], &quotes[0], &quotes[1]);
-	remove_quotes22(token, &quotes[0]);
-	remove_quotesv3(token);
-}
-
-void files_type(t_token *token)
-{
-	while(token)
-	{
-		if (token->type >= RED_IN && token->type <= RED_OUT_D)
-			if (token->next && token->next->type == WORD)
-				token->next->type = FILE;
-		token = token->next;
 	}
 }

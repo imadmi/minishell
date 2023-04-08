@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 06:56:06 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 21:03:25 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 23:36:51 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ typedef struct s_herdoc
 typedef struct s_exe
 {
 	int				b_fail_malloc; // 1 if error
-	// int				b_pipe;
 	int				b_parssing; // 1 if error
 }					t_exe;
 
@@ -164,8 +163,6 @@ void			print_token_name(int code);
 void			print_token(t_token *token);
 void			ft_free(t_token *token);
 char			*find_env(t_env *env, char *key);
-char			*ft_strchr2(char *s, int c);
-char			*ft_strchr3(char *s, int c);
 void			expand_value(t_env *env, t_token *token);
 void			expand_value_suite2(t_token *token, int *i);
 void			remove_quotes3(t_token *token);
@@ -202,6 +199,12 @@ int nbr_words(t_token	*tmp);
 int nbr_herdoc(t_token	*tmp);
 void	exp_token(t_env *env, t_token *token);
 int	tmp_dollar_sign(t_token *token);
+int find_env_check(t_env *env, char *key);
+int	ft_isspacee(int c);
+int	ft_sepaa(char c);
+int	ft_token22(int *j, char cmd_line, int *single_quote, int *double_quote);
+t_token	*ft_token_exp(t_token *token, char *cmd_line, t_exe *err);
+void	expanding_value(t_env *env, t_token *token);
 
 
 #endif
