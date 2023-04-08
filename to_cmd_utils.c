@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:21:17 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 18:43:10 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 21:13:22 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,46 +286,24 @@ t_token	*ft_token_exp(t_token *token, char *cmd_line, t_exe *err)
 
 void expanding_value(t_env *env, t_token *token)
 {
-    int i;
-    // char *str2;
-    // char **s;
     char *str;
 
-    // str = ft_strchr3(token->value, '$');
     str = token->value;
-    // s = ft_split(str,'"');
-    // i = -1;
-	// ft_str2_protection(env, &str2, s);
-    // if (ft_strcmp(str, "") && str != NULL && s[0] != NULL)
     if (ft_strcmp(str, "") && str != NULL)
     {
-        // while (token->value[++i])
-        // {
-            // if (token->value[i] == '$')
-            // {
-                if (token->prev->prev != NULL)
-                    if (token->prev->prev->type == RED_IN_D)
-                        return ;
-                if (find_env(env, str) != NULL)
-                    expand_value_suite(env, token);
-                // else if (ft_check(env, s, str))
-                //     expand_value_suite3(str2, token, &i);
-                // else if (find_env(env, s[0]) == NULL && str2 != NULL)
-                //     expand_value_suite3(str, token, &i);
-                // else if (find_env(env, str) == NULL && str2 == NULL)
-                //     expand_value_suite2(token, &i);
-            // }
-        // }
+        if (find_env(env, str) != NULL)
+            expand_value_suite(env, token);
     }
-    // ft_freeei(s, &str, &str2);
 }
 
 void remove_quotess(char *str)
 {
     int len = ft_strlen(str);
     int i = 0, j = 0;
-    while (i < len) {
-        if (str[i] != '"' && str[i] != '\'') {
+    while (i < len)
+    {
+        if (str[i] != '"' && str[i] != '\'')
+        {
             str[j] = str[i];
             j++;
         }
@@ -334,10 +312,11 @@ void remove_quotess(char *str)
     str[j] = '\0';
 }
 
-char* ft_strcat(char* dest, const char* src)
+char*   ft_strcat(char* dest, const char* src)
 {
     char* dest_end = dest;
-    while (*dest_end != '\0') {
+    while (*dest_end != '\0')
+    {
         ++dest_end;
     }
     while (*src != '\0')
@@ -390,19 +369,32 @@ int	ft_sigle_q(t_token *token)
     return 0;
 }
 
+int  ft_skip_red(t_token **token)
+{
+    if ((*token)->prev)
+    {
+        if(ft_strcmp((*token)->prev->value, "<<") == 0)
+        {
+            printf("*");
+            (*token) = (*token)->next;
+            return 1;
+        }
+    }
+    return 0;
+}
+
 void	exp_token(t_env *env, t_token *token)
 {
-    t_token *token_tmp;
     t_token *tmp;
     t_token *tmp1;
     t_token *head;
 
 	while (token != NULL)
 	{
-        // printf("%s\n",token->value);
-        // printf("%d\n",token->type);
         tmp = ft_token_exp(NULL, token->value , NULL);
         head = tmp;
+        if (ft_skip_red(&token))
+            continue;
         while(tmp)
         {
             tmp1 = tmp;

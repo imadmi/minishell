@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 06:56:06 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 16:07:49 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 21:03:25 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ typedef struct s_herdoc
 // parsing structs
 typedef struct s_exe
 {
-	int				b_fail_malloc;
-	int				b_pipe;
-	int				b_parssing;
+	int				b_fail_malloc; // 1 if error
+	// int				b_pipe;
+	int				b_parssing; // 1 if error
 }					t_exe;
 
 typedef struct s_token

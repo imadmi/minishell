@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 18:20:04 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 20:51:02 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_cmd	*ft_parse(char *cmd_line, t_data *data, t_exe *parssin)
 	token = parssing(cmd_line ,parssin);
 	files_type(token);
 	exp_token(data->env, token);
-	// print_token(token);//
+	print_token(token);//
 	cmd = tokens_to_cmds(token);
 	ft_free(token);
 
@@ -90,7 +90,7 @@ int	main(int argc, char **argv, char **env)
 			exit(0);
 		}
 		cmd = ft_parse(cmd_line , &data, &error);
-		print_cmds(cmd);//
+		// print_cmds(cmd);//
 		free(cmd_line);
 		// free_cmd(cmd);
 		// system("leaks minishell");

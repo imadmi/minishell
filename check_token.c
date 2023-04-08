@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:35:04 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/07 20:10:12 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 21:30:53 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	check_pipes_suite2(char *cmd_line)
 	if (cmd_line[i] == '|')
 	{
 		exit_status = 258;
-		return (printf("\033[0;31munexpected token \'|\' \n"));
+		return (printf("unexpected token \'|\' \n"));
 	}
 	i = ft_strlen(cmd_line) - 1;
 	while (ft_isspace(cmd_line[i]) && i > 0)
@@ -30,7 +30,7 @@ int	check_pipes_suite2(char *cmd_line)
 	if (cmd_line[i] == '|')
 	{
 		exit_status = 258;
-		return (printf("\033[0;31munexpected token \'|\' \n"));
+		return (printf("unexpected token \'|\' \n"));
 	}
 	return (0);
 }
@@ -47,7 +47,7 @@ int	check_pipes_suite(char *cmd_line, int *i, int len)
 	if (cmd_line[b] == '|' && b < len)
 	{
 		exit_status = 258;
-		return (printf("\033[0;31munexpected token \'|\' \n"));
+		return (printf("unexpected token \'|\' \n"));
 	}
 	return (0);
 }
@@ -67,7 +67,6 @@ int	check_pipes(char *cmd_line, t_exe *parssing)
 		{
 			if (cmd_line[i] == '|')
 			{				
-				parssing->b_pipe = 1;
 				if (check_pipes_suite2(cmd_line))
 					return (1);
 				if (check_pipes_suite(cmd_line, &i, ft_strlen(cmd_line)))
