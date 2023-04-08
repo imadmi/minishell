@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:39:08 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/07 20:43:33 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 20:23:15 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@ int	consecutive_redirections2(char *cmd_line, char red, int *i, int *counter)
 {
 	while (cmd_line[*i] && ft_isspace(cmd_line[*i]))
 		(*i)++;
-	if (cmd_line[*i] == red)
+	if (cmd_line[*i] &&  cmd_line[*i] == red)
 		(*counter)++;
 	else
 		(*counter) = 0;
 	if ((*counter) > 2)
 	{
 		exit_status = 258;
-		return (printf("\033[0;31munexpected token \'|\' \n"));
+		printf("\033[0;31munexpected token \'|\' \n");
+		return (1);
 	}
 	(*i)++;
 	return (0);
@@ -39,6 +40,8 @@ int	consecutive_redirections(char *cmd_line, char red)
 	quotes[1] = 0;
 	i = 0;
 	counter = 0;
+	if (!cmd_line)
+        return 0;
 	while (cmd_line[i])
 	{
 		count_quotes(cmd_line[i], &quotes[0], &quotes[1]);

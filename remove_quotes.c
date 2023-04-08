@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:11:05 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 18:04:22 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 18:18:55 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,16 @@ int	has_dollar_sign(char* s)
         s++;
     }
     return 0;
+}
+
+int ft_checker(t_token *tmp)
+{
+	if (tmp->prev->prev && tmp)
+		if (ft_strcmp(tmp->prev->prev->value,"'") == 0 && ft_strcmp(tmp->value,"'") != 0)
+			return 1;
+	free(tmp->prev->value);
+	tmp->prev->value = ft_strdup("");
+	return 1;
 }
 
 int	tmp_dollar_sign(t_token *token)
@@ -47,11 +57,7 @@ int	tmp_dollar_sign(t_token *token)
 				return 0;
 		if (tmp->prev)
 			if (ft_strcmp(tmp->prev->value,"$") == 0)
-			{
-				free(tmp->prev->value);
-				tmp->prev->value = ft_strdup("");
-				return 1;
-			}
+				return ft_checker(tmp);
     }
     return 0;
 }

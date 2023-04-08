@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:21:17 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 17:49:42 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 18:43:10 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,6 +303,9 @@ void expanding_value(t_env *env, t_token *token)
         // {
             // if (token->value[i] == '$')
             // {
+                if (token->prev->prev != NULL)
+                    if (token->prev->prev->type == RED_IN_D)
+                        return ;
                 if (find_env(env, str) != NULL)
                     expand_value_suite(env, token);
                 // else if (ft_check(env, s, str))
@@ -389,23 +392,22 @@ int	ft_sigle_q(t_token *token)
 
 void	exp_token(t_env *env, t_token *token)
 {
+    t_token *token_tmp;
     t_token *tmp;
     t_token *tmp1;
     t_token *head;
 
 	while (token != NULL)
 	{
-
+        // printf("%s\n",token->value);
+        // printf("%d\n",token->type);
         tmp = ft_token_exp(NULL, token->value , NULL);
         head = tmp;
         while(tmp)
         {
             tmp1 = tmp;
             if (tmp_dollar_sign(tmp1) && !ft_sigle_q(tmp1))
-            {
-                printf("%s\n", tmp->value);
                 expanding_value(env ,tmp);
-            }
             tmp = tmp->next;
         }
         free(token->value);

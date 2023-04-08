@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:23:29 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 15:28:18 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 18:28:07 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@ void	ft_token4(int *j, char *cmd_line)
 
 void	ft_token5(int *j, char *cmd_line)
 {
-	// while (cmd_line[(*j)] && ft_sepa(cmd_line[(*j)]))
-	// {
-	// 	(*j)++;
-	// 	continue ;
-	// }
-	if (cmd_line[(*j)] && ft_sepa(cmd_line[(*j)]))
+	while (cmd_line[(*j)] && ft_sepa(cmd_line[(*j)]))
 	{
 		(*j)++;
-		// continue ;
+		continue ;
 	}
+	// if (cmd_line[(*j)] && ft_sepa(cmd_line[(*j)]))
+	// {
+	// 	(*j)++;
+	// 	// continue ;
+	// }
 }
 
 void	remove_quotes2(t_token *token, int *s_q)
