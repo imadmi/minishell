@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 15:04:38 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 15:08:39 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 18:31:21 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void print_cmds(t_cmd *cmds)
 {
 	if (cmds == NULL) {
-		printf("No commands to print.\n");
+		// printf("No commands to print.\n");
 		return;
 	}
 	

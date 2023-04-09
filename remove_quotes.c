@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:11:05 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 23:17:55 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 17:29:40 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,21 @@ int	ft_checker(t_token *tmp)
 	return (1);
 }
 
+int	contains_only_spaces(char* string)
+{
+    int i = 0;
+
+    while (i < (int)ft_strlen(string))
+	{
+        if (!ft_isspace(string[i]))
+		{
+            return 0;
+        }
+        i++;
+    }
+    return 1;
+}
+
 int	tmp_dollar_sign(t_token *token)
 {
 	if (token->value != '\0' && token->prev)
@@ -45,6 +60,7 @@ int	tmp_dollar_sign(t_token *token)
 			if (token->prev)
 			{
 				if ((ft_strcmp(token->prev->value, "'") == 0 || \
+					contains_only_spaces(token->prev->value) || \
 					ft_strcmp(token->prev->value, "\"") == 0))
 					token = token->prev;
 				else

@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:21:17 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 00:33:41 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 16:00:56 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,17 @@ void	exp_token(t_env *env, t_token *token)
 	{
 		tmp = ft_token_exp(NULL, token->value, NULL);
 		head = tmp;
-		if (ft_skip_red(&token))
-			continue ;
-		while (tmp)
+		if (token->quote != S_QUOTE)
 		{
-			tmp1 = tmp;
-			if (tmp_dollar_sign(tmp1) && !ft_sigle_q(tmp1))
-				expanding_value(env, tmp);
-			tmp = tmp->next;
+			if (ft_skip_red(&token))
+				continue ;
+			while (tmp)
+			{
+				tmp1 = tmp;
+				if (tmp_dollar_sign(tmp1) && !ft_sigle_q(tmp1))
+					expanding_value(env, tmp);
+				tmp = tmp->next;
+			}
 		}
 		free(token->value);
 		token->value = join_tokens(head);

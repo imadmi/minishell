@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 23:35:52 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 23:55:07 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 18:34:30 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,23 +77,53 @@ char	*join_tokens(t_token *head)
 	return (result);
 }
 
-int	ft_sigle_q(t_token *token)
+int	ft_sigle_q_suite(t_token *token)
 {
-	if (token->value != '\0' && token != NULL)
+	if (token->value != '\0' && token->next)
 	{
-		if (token->prev && token->next)
-			if (ft_strcmp(token->next->value, "\"") == 0 && \
-				ft_strcmp(token->prev->value, "\"") == 0)
-				return (1);
-		if (token->prev->prev && token->next)
-			if (ft_strcmp(token->next->value, "'") == 0 && \
-				ft_strcmp(token->prev->prev->value, "'") == 0)
-				return (1);
-		if (token->prev && token->next)
-			if (ft_strcmp(token->next->value, "'") == 0 && \
-				ft_strcmp(token->prev->value, "'") == 0)
+		while (token->next)
+		{
+			if (!token->next)
+				break ;
+			if (token->next)
+			{
+				if (contains_only_spaces(token->next->value) || \
+					ft_strcmp(token->next->value, "\"") == 0)
+					token = token->next;
+				else
+					break ;
+			}
+		}
+		if (token->next)
+			if (ft_strcmp(token->next->value, "'") == 0)
 				return (1);
 	}
+	return (0);
+}
+
+int	ft_sigle_q(t_token *token)
+{
+	if (token->value != '\0' && token->prev)
+	{
+		while (token->prev)
+		{
+			if (!token->prev)
+				break ;
+			if (token->prev)
+			{
+				if (contains_only_spaces(token->prev->value) || \
+					ft_strcmp(token->prev->value, "\"") == 0)
+					token = token->prev;
+				else
+					break ;
+			}
+		}
+		if (token->prev)
+			if (ft_strcmp(token->prev->value, "'") == 0)
+				return (1);
+	}
+	if (ft_sigle_q_suite(token))
+		return (1);
 	return (0);
 }
 

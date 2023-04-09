@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:22:08 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 15:26:05 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 16:27:32 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,60 @@ t_token	*ft_create_new_node(char *value, t_exe *parssing, int space_befor)
 	return (new);
 }
 
+void ft_add_back_suite(t_token **token, char *value, t_exe *parssing, int *space_befor)
+{
+	(*space_befor) = 0;
+	if (value[0] == ' ')
+		(*space_befor) = 1;
+	if (contains_dollar(value))
+	{
+		(*token) = ft_create_new_node(ft_strdup(value), parssing, *space_befor);
+		return ;
+	}
+	(*token) = ft_create_new_node(ft_strtrim(value, " "), parssing, *space_befor);
+	return ;
+}
+
+void ft_add_back_suite_dol(t_token **token, char *value, t_exe *parssing, int *space_befor)
+{
+	(*space_befor) = 0;
+	if (value[0] == ' ')
+		(*space_befor) = 1;
+	(*token) = ft_create_new_node(ft_strdup(value), parssing, *space_befor);
+	return ;
+}
+
+void	ft_add_back_dol(t_token **token, char *value, t_exe *parssing)
+{
+	t_token	*last;
+	t_token	*new;
+	int		space_befor;
+
+	ft_add_back_suite_dol(&new, value, parssing, &space_befor);
+	free(value);
+	if (new == NULL)
+		return ;
+	last = *token;
+	if (last == NULL)
+	{
+		*token = new;
+		return ;
+	}
+	while (last->next != NULL)
+	{
+		last = last->next;
+	}
+	last->next = new;
+	new->prev = last;
+}
+
 void	ft_add_back(t_token **token, char *value, t_exe *parssing)
 {
 	t_token	*last;
 	t_token	*new;
 	int		space_befor;
 
-	space_befor = 0;
-	if (value[0] == ' ')
-		space_befor = 1;
-	new = ft_create_new_node(ft_strtrim(value, " "), parssing, space_befor);
+	ft_add_back_suite(&new, value, parssing, &space_befor);
 	free(value);
 	if (new == NULL)
 		return ;
