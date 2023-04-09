@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:37:07 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 21:30:53 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 01:13:15 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	consecutive_op_redirections_suite(char *cmd_line, int *i, char red)
 		a--;
 	if (a >= 0 && cmd_line[a] == red)
 	{
-		exit_status = 258;
+		g_exit_status = 258;
 		return (printf("unexpected token \'|\' \n"));
 	}
 	return (0);
@@ -65,7 +65,7 @@ int	space_between_redirections2(char *cmd_line, int *i, char red, int *counter)
 	}
 	if (cmd_line[(*i)] == red && (*counter))
 	{
-		exit_status = 258;
+		g_exit_status = 258;
 		return (printf("unexpected token \'|\' \n"));
 	}
 	return (0);

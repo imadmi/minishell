@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:39:08 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 22:04:37 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 01:13:15 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	consecutive_redirections2(char *cmd_line, char red, int *i, int *counter)
 {
 	if (!cmd_line || !i || !counter)
 	{
-		exit_status = 1;
+		g_exit_status = 1;
 		printf("Error: null pointer detected\n");
 		return (1);
 	}
@@ -28,7 +28,7 @@ int	consecutive_redirections2(char *cmd_line, char red, int *i, int *counter)
 		(*counter) = 0;
 	if ((*counter) > 2)
 	{
-		exit_status = 258;
+		g_exit_status = 258;
 		printf("unexpected token \'|\' \n");
 		return (1);
 	}
@@ -94,7 +94,7 @@ int	check_redirection(char *cmd_line)
 	i = 0;
 	if (!is_last_char_not_redirect(cmd_line))
 	{
-		exit_status = 258;
+		g_exit_status = 258;
 		return (printf("syntax error\n"));
 	}
 	if (consecutive_redirections(cmd_line, '>') || \
@@ -116,7 +116,7 @@ int	check_args2(char *cmd_line, int *i, int *j)
 		(*j)--;
 	if ((cmd_line[(*j)] == '<' || cmd_line[(*j)] == '>') && (*j) >= 0)
 	{
-		exit_status = 258;
+		g_exit_status = 258;
 		return (printf("unexpected token \'< or >\' \n"));
 	}
 	return (0);

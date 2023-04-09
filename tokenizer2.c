@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:23:29 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 18:28:07 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/08 23:57:49 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,6 @@ void	ft_token5(int *j, char *cmd_line)
 		(*j)++;
 		continue ;
 	}
-	// if (cmd_line[(*j)] && ft_sepa(cmd_line[(*j)]))
-	// {
-	// 	(*j)++;
-	// 	// continue ;
-	// }
 }
 
 void	remove_quotes2(t_token *token, int *s_q)
@@ -43,7 +38,7 @@ void	remove_quotes2(t_token *token, int *s_q)
 	i = 0;
 	if ((token->quote == S_QUOTE && (*s_q) % 4 == 0))
 	{
-		new_value = ft_strdup3(token->value, '"' , '\'');
+		new_value = ft_strdup3(token->value, '"', '\'');
 		free(token->value);
 		token->value = new_value;
 		token->quote = D_QUOTE;
@@ -63,7 +58,7 @@ void	remove_quotes2(t_token *token, int *s_q)
 	}
 }
 
-int	contains_dollar(char* str)
+int	contains_dollar(char *str)
 {
 	int	i;
 
@@ -71,10 +66,10 @@ int	contains_dollar(char* str)
 	while (str[i])
 	{
 		if (str[i] == '$')
-			return 1;
+			return (1);
 		i++;
 	}
-	return 0;
+	return (0);
 }
 
 void	remove_quotes(t_token *token, t_exe *parssing)
@@ -100,33 +95,4 @@ void	remove_quotes(t_token *token, t_exe *parssing)
 		remove_quotes3(token);
 		token = token->next;
 	}
-}
-
-t_token	*ft_token(t_token *token, char *cmd_line, t_exe *err)
-{
-	int	quotes[2];
-	int	pos;
-	int	i;
-
-	ft_token1(&pos, &i, &quotes[0], &quotes[1]);
-	while (cmd_line[i])
-	{
-		if (ft_token2(&i, cmd_line[i], &quotes[0], &quotes[1]))
-			continue ;
-		if (!ft_isspace(cmd_line[i]) && !ft_sepa(cmd_line[i]))
-		{
-			ft_token3(&i, cmd_line, &quotes[0], &quotes[1]);
-			ft_add_back(&token, ft_substr(cmd_line, pos, i - pos), err);
-			pos = i;
-		}
-		ft_token4(&i, cmd_line);
-		if (ft_sepa(cmd_line[i]))
-		{
-			ft_token5(&i, cmd_line);
-			ft_add_back(&token, ft_substr(cmd_line, pos, i - pos), err);
-			pos = i;
-		}
-	}
-	remove_quotes(token, err);
-	return (token);
 }

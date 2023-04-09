@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:42:20 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 22:08:32 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 00:08:29 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	check_args(char *cmd_line)
 		count_quotes(cmd_line[i], &quotes[0], &quotes[1]);
 		if (quotes[0] % 2 || quotes[1] % 2)
 		{
-			if(cmd_line[i + 1])
+			if (cmd_line [i + 1])
 				i++;
 			continue ;
 		}

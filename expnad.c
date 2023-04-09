@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 12:25:35 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 23:13:41 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 01:13:15 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	expand_value_suite(t_env *env, t_token *token)
 	if (ft_strcmp(key, "?") == 0)
 	{
 		free(key);
-		token->value = ft_itoa(exit_status);
+		token->value = ft_itoa(g_exit_status);
 		return ;
 	}
 	suff = find_env(env, key);

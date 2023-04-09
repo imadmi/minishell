@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 06:56:06 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 23:36:51 by imimouni         ###   ########.fr       */
+/*   Created: 2023/04/09 01:14:28 by imimouni          #+#    #+#             */
+/*   Updated: 2023/04/09 01:22:23 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,40 +31,37 @@
 # define FILE 9
 # define DOLLAR 10
 
-int exit_status;
+int	g_exit_status;
 
 typedef struct s_red
 {
-    int     type;    
-    char    *filename;
-    int     quotes;
-    struct  s_red *next;
-} t_red;
+	int				type;
+	char			*filename;
+	int				quotes;
+	struct s_red	*next;
+}	t_red;
 
 typedef struct s_cmd
 {
-    int n_heredoc;//nbr of herdocs in the command
-	int	fd_herdoc;
-    char **args;
-    t_red *red;
-	int	pid;//-1
-	struct s_cmd *next;
-} t_cmd;
-
-// herdock node
+	int				n_heredoc;
+	int				fd_herdoc;
+	char			**args;
+	t_red			*red;
+	int				pid;
+	struct s_cmd	*next;
+}	t_cmd;
 
 typedef struct s_herdoc
 {
-	int	fd;
+	int				fd;
 	struct s_herdoc	*next;
 }	t_heredoc;
 
-// parsing structs
 typedef struct s_exe
 {
-	int				b_fail_malloc; // 1 if error
-	int				b_parssing; // 1 if error
-}					t_exe;
+	int				b_fail_malloc;
+	int				b_parssing;
+}	t_exe;
 
 typedef struct s_token
 {
@@ -90,24 +87,22 @@ typedef struct s_env
 	struct s_env	*prev;
 }	t_env;
 
-// struct passed as first argument for each function
 typedef struct s_data
 {
-	int		should_exit;
-	int		shell_level;
-	t_env	*env;
-	char	**ex_env;
-	char	**builtins;
-	char	current_dir[1024];
-	int		save_stdin;
-	int		save_stdout;
-	int		fd_in;
-	int		fd_out;
-	t_token *head;
-	t_heredoc *her_head;
+	int			should_exit;
+	int			shell_level;
+	t_env		*env;
+	char		**ex_env;
+	char		**builtins;
+	char		current_dir[1024];
+	int			save_stdin;
+	int			save_stdout;
+	int			fd_in;
+	int			fd_out;
+	t_token		*head;
+	t_heredoc	*her_head;
 }	t_data;
 
-//env functions
 char			*env_key(char *str);//
 char			*env_value(char *str);//
 void			setting_var(char *environ, t_env *tmp);//
@@ -117,7 +112,6 @@ t_env			*export_linked_list(char **environ);//
 void			print_env_variables(t_data *data);//
 int				setting_data(t_data *data, char **env);//
 
-// parsing functions
 int				ft_isspace(int c);
 int				ft_sepa(char c);
 char			*ft_strdup2(char *str, char c);
@@ -163,48 +157,43 @@ void			print_token_name(int code);
 void			print_token(t_token *token);
 void			ft_free(t_token *token);
 char			*find_env(t_env *env, char *key);
-void			expand_value(t_env *env, t_token *token);
-void			expand_value_suite2(t_token *token, int *i);
 void			remove_quotes3(t_token *token);
 char			*ft_strdup3(char *str, char c, char cc);
 t_cmd			*ft_parse(char *cmd_line, t_data *data, t_exe *parssin);
-void	expand_value2(t_env *env, t_token *token,char	*str,char	**s);
-void	remove_quotes4(t_token *token);
-char	**ft_splitt(char	const *s, char c, char c1);
-int	contains_dollar(char* str);
-void	remove_quotes2(t_token *token, int *s_q);
-void	expand_value_suite(t_env *env, t_token *token);
-void	expand_value_suite3(char *env_value, t_token *token, int *i);
-char	**ft_freee(int i, char **str);
-int	words_lenghtt(char const *s, char c, char c1);
-int	count_wordss(char const *s, char c, char c1);
-void ft_str2_protection(t_env *env, char **str2, char **s);
-int ft_check(t_env *env, char	**s, char	*str);
-void	ft_freeei(char **str, char **s, char **ss);
-char	**ft_splitt(char	const *s, char c, char c1);
-char	**ft_filll(char const *s, int i, char c, char c1, char **sp);
-int	has_dollar_sign(char* s);
-void	remove_quotesv3(t_token *token);
-void	remove_quotes22(t_token *token, int *s_q);
-void	remove_quotesv2(t_token *token);
-void files_type(t_token *token);
-void	new_node(t_cmd **cmds, t_cmd **last_cmd, t_cmd **cmdss, t_token	*token);
-int token_cmd2(t_token	**current_token, int	*arg_index);
-void add_to_cmd(t_token	**current_token, t_cmd	**cmd, int	*arg_index);
-void	add_to_cmd2(t_token **current_token, t_cmd **cmd);
-void void_args(t_cmd **cmds, t_cmd **cmd, t_red **red, t_cmd	**last_cmd);
-t_cmd	*tokens_to_cmds(t_token *token);
-void print_cmds(t_cmd *cmds);
-int nbr_words(t_token	*tmp);
-int nbr_herdoc(t_token	*tmp);
-void	exp_token(t_env *env, t_token *token);
-int	tmp_dollar_sign(t_token *token);
-int find_env_check(t_env *env, char *key);
-int	ft_isspacee(int c);
-int	ft_sepaa(char c);
-int	ft_token22(int *j, char cmd_line, int *single_quote, int *double_quote);
-t_token	*ft_token_exp(t_token *token, char *cmd_line, t_exe *err);
-void	expanding_value(t_env *env, t_token *token);
-
+void			remove_quotes4(t_token *token);
+int				contains_dollar(char *str);
+void			remove_quotes2(t_token *token, int *s_q);
+void			expand_value_suite(t_env *env, t_token *token);
+int				has_dollar_sign(char *s);
+void			remove_quotesv3(t_token *token);
+void			remove_quotes22(t_token *token, int *s_q);
+void			remove_quotesv2(t_token *token);
+void			files_type(t_token *token);
+void			new_node(t_cmd **cmds, t_cmd **last_cmd, t_cmd **cmdss, \
+t_token *token);
+int				token_cmd2(t_token **current_token, int *arg_index);
+void			add_to_cmd(t_token **current_token, t_cmd **cmd, int \
+*arg_index);
+void			add_to_cmd2(t_token **current_token, t_cmd **cmd);
+void			void_args(t_cmd **cmds, t_cmd **cmd, t_red **red, \
+t_cmd	**last_cmd);
+t_cmd			*tokens_to_cmds(t_token *token);
+void			print_cmds(t_cmd *cmds);
+int				nbr_words(t_token *tmp);
+int				nbr_herdoc(t_token *tmp);
+void			exp_token(t_env *env, t_token *token);
+int				tmp_dollar_sign(t_token *token);
+int				find_env_check(t_env *env, char *key);
+int				ft_isspacee(int c);
+int				ft_sepaa(char c);
+int				ft_token22(int *j, char cmd_line, int *single_quote, int \
+*double_quote);
+t_token			*ft_token_exp(t_token *token, char *cmd_line, t_exe *err);
+void			expanding_value(t_env *env, t_token *token);
+int				ft_sigle_q(t_token *token);
+int				ft_skip_red(t_token **token);
+char			*join_tokens(t_token *head);
+char			*ft_strcat(char *dest, char *src);
+void			remove_quotess(char *str);
 
 #endif

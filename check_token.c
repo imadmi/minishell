@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:35:04 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 21:30:53 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 01:13:15 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_pipes_suite2(char *cmd_line)
 		i++;
 	if (cmd_line[i] == '|')
 	{
-		exit_status = 258;
+		g_exit_status = 258;
 		return (printf("unexpected token \'|\' \n"));
 	}
 	i = ft_strlen(cmd_line) - 1;
@@ -29,7 +29,7 @@ int	check_pipes_suite2(char *cmd_line)
 		i--;
 	if (cmd_line[i] == '|')
 	{
-		exit_status = 258;
+		g_exit_status = 258;
 		return (printf("unexpected token \'|\' \n"));
 	}
 	return (0);
@@ -46,7 +46,7 @@ int	check_pipes_suite(char *cmd_line, int *i, int len)
 		b++;
 	if (cmd_line[b] == '|' && b < len)
 	{
-		exit_status = 258;
+		g_exit_status = 258;
 		return (printf("unexpected token \'|\' \n"));
 	}
 	return (0);
