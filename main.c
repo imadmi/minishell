@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 15:04:38 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 21:38:56 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 22:31:55 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,13 +116,13 @@ int	main(int argc, char **argv, char **env)
 	{
 		cmd_line = readline("➜ Minishell >");
 		add_history(cmd_line);
-		// if (!ft_strcmp(cmd_line,"q"))
-		// {
-		// 	printf("\033[\033[31;1m× exit \n");
-		// 	clear_history();
-		// 	free(cmd_line);
-		// 	exit(0);
-		// }
+		if (!ft_strcmp(cmd_line,"q"))
+		{
+			printf("\033[\033[31;1m× exit \n");
+			clear_history();
+			free(cmd_line);
+			exit(0);
+		}
 		cmd = ft_parse(cmd_line , &data, &error);
 		print_cmds(cmd);//
 		free(cmd_line);

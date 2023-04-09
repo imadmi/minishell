@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 23:25:42 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 21:09:30 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 22:49:06 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	ft_isspacee(int c)
 
 int	ft_sepaa(char c)
 {
-	if (!ft_isalnum(c))
+	if (!ft_isalnum(c) && c != '_')
 		return (1);
 	if (c == '"' || c == '\'' || c == '$' || c == ' ')
 		return (1);
