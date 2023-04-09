@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:35:04 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 01:13:15 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 15:06:33 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	check_pipes_suite(char *cmd_line, int *i, int len)
 	return (0);
 }
 
-int	check_pipes(char *cmd_line, t_exe *parssing)
+int	check_pipes(char *cmd_line)
 {
 	int	i;
 	int	quotes[2];

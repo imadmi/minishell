@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 23:25:42 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 23:31:31 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 15:06:59 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	nbr_herdoc(t_token	*tmp)
 
 int	ft_isspacee(int c)
 {
+	(void) c;
 	return (0);
 }
 

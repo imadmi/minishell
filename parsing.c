@@ -6,17 +6,17 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 01:28:27 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 15:07:54 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-int	ft_parse_tokens(char *cmd_line, t_exe *parssing)
+int	ft_parse_tokens(char *cmd_line)
 {
 	if (!ft_strcmp(cmd_line, ""))
 		return (0);
-	if (tokens_parssing(cmd_line, parssing))
+	if (tokens_parssing(cmd_line))
 	{
 		printf("\033[\033[31;1m× Error\n\033[0;37m");
 		return (0);
@@ -31,7 +31,7 @@ t_token	*parssing(char *cmd_line, t_exe *parssing)
 	token = NULL;
 	if (cmd_line)
 	{
-		if (ft_parse_tokens(cmd_line, parssing))
+		if (ft_parse_tokens(cmd_line))
 			token = ft_token(token, cmd_line, parssing);
 		else
 		{

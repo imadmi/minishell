@@ -1,10 +1,11 @@
-FLAGS =	-fsanitize=address
-# FLAGS =	-Wall -Wextra  -Werror -fsanitize=address
+# FLAGS =	-fsanitize=address
+FLAGS =	-Wall -Wextra  -Werror -fsanitize=address
 # FLAGS =	-Wall -Wextra  -Werror
 
 all: parsing.c parsing.h
 	 cc $(FLAGS) ../libft/libft.a parsing.c\
 	 env.c \
+	 main.c \
 	 parsing_utils.c \
 	 parsing_utils2.c \
 	 check_token.c \

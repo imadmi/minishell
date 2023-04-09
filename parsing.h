@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 01:14:28 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 01:22:23 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 15:07:23 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ t_token			*ft_token(t_token *token, char *cmd_line, t_exe *err);
 void			remove_quotes(t_token *token, t_exe *parssing);
 int				check_pipes_suite2(char *cmd_line);
 int				check_pipes_suite(char *cmd_line, int *i, int len);
-int				check_pipes(char *cmd_line, t_exe *parssing);
+int				check_pipes(char *cmd_line);
 int				check_quotes(char *cmd_line);
 int				consecutive_op_redirections_suite(char *cmd_line, int *i, \
 char red);
@@ -152,7 +152,7 @@ int				check_args2(char *cmd_line, int *i, int *j);
 int				check_args(char *cmd_line);
 int				check_semicolon(char *cmd_line);
 int				check_backslash(char *cmd_line);
-int				tokens_parssing(char *cmd_line, t_exe *parssing);
+int				tokens_parssing(char *cmd_line);
 void			print_token_name(int code);
 void			print_token(t_token *token);
 void			ft_free(t_token *token);
