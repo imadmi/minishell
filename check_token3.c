@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:39:08 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 01:13:15 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 21:04:43 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,23 +89,30 @@ int	is_last_char_not_redirect(char *str)
 
 int	check_redirection(char *cmd_line)
 {
-	int	i;
-
-	i = 0;
 	if (!is_last_char_not_redirect(cmd_line))
 	{
 		g_exit_status = 258;
-		return (printf("syntax error\n"));
+		ft_putstr_fd("syntax error\n", 2);
+		return (1);
 	}
 	if (consecutive_redirections(cmd_line, '>') || \
 		consecutive_redirections(cmd_line, '<'))
-		return (printf("syntax error\n"));
+	{
+		ft_putstr_fd("syntax error\n", 2);
+		return (1);
+	}
 	if (consecutive_op_redirections(cmd_line, '>') || \
 		consecutive_op_redirections(cmd_line, '<'))
-		return (printf("syntax error\n"));
+	{
+		ft_putstr_fd("syntax error\n", 2);
+		return (1);
+	}
 	if (space_between_redirections(cmd_line, '>') || \
 		space_between_redirections(cmd_line, '<'))
-		return (printf("syntax error\n"));
+	{
+		ft_putstr_fd("syntax error\n", 2);
+		return (1);
+	}
 	return (0);
 }
 
@@ -117,7 +124,8 @@ int	check_args2(char *cmd_line, int *i, int *j)
 	if ((cmd_line[(*j)] == '<' || cmd_line[(*j)] == '>') && (*j) >= 0)
 	{
 		g_exit_status = 258;
-		return (printf("unexpected token \'< or >\' \n"));
+		ft_putstr_fd("unexpected token \'< or >\' \n", 2);
+		return (1);
 	}
 	return (0);
 }

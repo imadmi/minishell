@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:35:04 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 15:06:33 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 21:02:39 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int	check_pipes_suite2(char *cmd_line)
 	if (cmd_line[i] == '|')
 	{
 		g_exit_status = 258;
-		return (printf("unexpected token \'|\' \n"));
+		ft_putstr_fd("unexpected token \'|\' \n", 2);
+		return (1);
 	}
 	i = ft_strlen(cmd_line) - 1;
 	while (ft_isspace(cmd_line[i]) && i > 0)
@@ -30,7 +31,8 @@ int	check_pipes_suite2(char *cmd_line)
 	if (cmd_line[i] == '|')
 	{
 		g_exit_status = 258;
-		return (printf("unexpected token \'|\' \n"));
+		ft_putstr_fd("unexpected token \'|\' \n", 2);
+		return (1);
 	}
 	return (0);
 }
@@ -47,7 +49,8 @@ int	check_pipes_suite(char *cmd_line, int *i, int len)
 	if (cmd_line[b] == '|' && b < len)
 	{
 		g_exit_status = 258;
-		return (printf("unexpected token \'|\' \n"));
+		ft_putstr_fd("unexpected token \'|\' \n", 2);
+		return (1);
 	}
 	return (0);
 }
@@ -95,6 +98,9 @@ int	check_quotes(char *cmd_line)
 		i++;
 	}
 	if (quotes[0] % 2 || quotes[1] % 2)
-		return (printf("Quotes Syntax Error \n"));
+	{
+		ft_putstr_fd("Quotes Syntax Error \n", 2);
+		return (1);
+	}
 	return (0);
 }

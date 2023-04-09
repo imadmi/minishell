@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 18:30:23 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 20:48:06 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_parse_tokens(char *cmd_line)
 		return (0);
 	if (tokens_parssing(cmd_line))
 	{
-		printf("\033[\033[31;1m× Error\n\033[0;37m");
+		write(2, "× Error\n", 9);
 		return (0);
 	}
 	return (1);

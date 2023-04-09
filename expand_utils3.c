@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 23:35:52 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 18:34:30 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 22:00:52 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,18 +124,5 @@ int	ft_sigle_q(t_token *token)
 	}
 	if (ft_sigle_q_suite(token))
 		return (1);
-	return (0);
-}
-
-int	ft_skip_red(t_token **token)
-{
-	if ((*token)->prev)
-	{
-		if (ft_strcmp((*token)->prev->value, "<<") == 0)
-		{
-			(*token) = (*token)->next;
-			return (1);
-		}
-	}
 	return (0);
 }

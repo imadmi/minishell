@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 03:28:35 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 23:57:52 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 21:41:53 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,38 @@ t_token	*ft_token(t_token *token, char *cmd_line, t_exe *err)
 	}
 	remove_quotes(token, err);
 	return (token);
+}
+
+t_token	*ft_create_new_node(char *value, t_exe *parssing, int space_befor)
+{
+	t_token	*new;
+
+	new = malloc(sizeof(t_token));
+	if (!new)
+	{
+		parssing->b_fail_malloc = 0;
+		return (NULL);
+	}
+	new->value = value;
+	new->space_befor = space_befor;
+	new->next = NULL;
+	new->prev = NULL;
+	return (new);
+}
+
+void	ft_add_back_suite(t_token **token, char *value, \
+t_exe *parssing, int *space_befor)
+{
+	(*space_befor) = 0;
+	if (value[0] == ' ')
+		(*space_befor) = 1;
+	if (contains_dollar(value))
+	{
+		(*token) = ft_create_new_node(ft_strdup(value), \
+			parssing, *space_befor);
+		return ;
+	}
+	(*token) = ft_create_new_node(ft_strtrim(value, " "), \
+		parssing, *space_befor);
+	return ;
 }

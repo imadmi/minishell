@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:11:05 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 17:29:40 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 21:51:57 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,35 @@ int	has_dollar_sign(char *s)
 	return (0);
 }
 
+char	*delete_first_char(char *str)
+{
+	char	*start;
+
+	start = str;
+	while (*str != '\0')
+	{
+		*str = *(str + 1);
+		str++;
+	}
+	return (start + 1);
+}
+
 int	ft_checker(t_token *tmp)
 {
+	char	start[1000];
+
+	ft_strcpy(start, tmp->value);
+	if (tmp && tmp->value)
+	{
+		if (tmp->value[0] <= '9' && tmp->value[0] >= '0')
+		{
+			free(tmp->value);
+			tmp->value = ft_strdup(start + 1);
+			free(tmp->prev->value);
+			tmp->prev->value = ft_strdup("");
+			return (0);
+		}
+	}
 	if (tmp->prev->prev && tmp)
 		if (ft_strcmp(tmp->prev->prev->value, "'") == 0 && \
 			ft_strcmp(tmp->value, "'") != 0)
@@ -34,88 +61,16 @@ int	ft_checker(t_token *tmp)
 	return (1);
 }
 
-int	contains_only_spaces(char* string)
+int	contains_only_spaces(char *string)
 {
-    int i = 0;
-
-    while (i < (int)ft_strlen(string))
-	{
-        if (!ft_isspace(string[i]))
-		{
-            return 0;
-        }
-        i++;
-    }
-    return 1;
-}
-
-int	tmp_dollar_sign(t_token *token)
-{
-	if (token->value != '\0' && token->prev)
-	{
-		while (token->prev)
-		{
-			if (!token->prev)
-				break ;
-			if (token->prev)
-			{
-				if ((ft_strcmp(token->prev->value, "'") == 0 || \
-					contains_only_spaces(token->prev->value) || \
-					ft_strcmp(token->prev->value, "\"") == 0))
-					token = token->prev;
-				else
-					break ;
-			}
-		}
-		if (token->prev && token->prev->prev)
-			if (ft_strcmp(token->prev->prev->value, "@") == 0)
-				return (0);
-		if (token->prev)
-			if (ft_strcmp(token->prev->value, "$") == 0)
-				return (ft_checker(token));
-	}
-	return (0);
-}
-
-void	remove_quotesv3(t_token *token)
-{
-	char	*new_value;
-
-	if (token->type != DOLLAR)
-		token->type = WORD;
-	if (token->quote == N_QUOTE)
-	{
-		new_value = ft_strdup3(token->value, '"', '\'');
-		free(token->value);
-		token->value = new_value;
-		token->type = ft_token_type(token->value);
-	}
-}
-
-void	remove_quotes22(t_token *token, int *s_q)
-{
-	char	*new_value;
-	int		i;
+	int	i;
 
 	i = 0;
-	if ((token->quote == S_QUOTE && (*s_q) % 4 == 0))
+	while (i < (int)ft_strlen(string))
 	{
-		new_value = ft_strdup3(token->value, '"', '\'');
-		free(token->value);
-		token->value = new_value;
-		token->quote = D_QUOTE;
-		i = 1;
+		if (!ft_isspace(string[i]))
+			return (0);
+		i++;
 	}
-	else if (token->quote == D_QUOTE && i != 1)
-	{
-		new_value = ft_strdup2(token->value, '"');
-		free(token->value);
-		token->value = new_value;
-	}
-	else if (token->quote == S_QUOTE)
-	{
-		new_value = ft_strdup2(token->value, '\'');
-		free(token->value);
-		token->value = new_value;
-	}
+	return (1);
 }

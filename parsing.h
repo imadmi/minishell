@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 01:14:28 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 16:14:37 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 21:52:30 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <stdio.h>
 # include <unistd.h>
-# include "../libft/libft.h"
+# include "./libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -195,7 +195,12 @@ int				ft_skip_red(t_token **token);
 char			*join_tokens(t_token *head);
 char			*ft_strcat(char *dest, char *src);
 void			remove_quotess(char *str);
-void	ft_add_back_dol(t_token **token, char *value, t_exe *parssing);
-int	contains_only_spaces(char* string);
+void			ft_add_back_dol(t_token **token, char *value, t_exe *parssing);
+int				contains_only_spaces(char *string);
+void			ft_add_back_suite(t_token **token, char *value, \
+t_exe *parssing, int *space_befor);
+void			ft_add_back_suite_dol(t_token **token, char *value, \
+t_exe *parssing, int *space_befor);
+int				ft_checker(t_token *tmp);
 
 #endif
