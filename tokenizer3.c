@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 03:28:35 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 21:41:53 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/09 22:04:32 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,6 @@ t_exe *parssing, int *space_befor)
 	(*space_befor) = 0;
 	if (value[0] == ' ')
 		(*space_befor) = 1;
-	if (contains_dollar(value))
-	{
-		(*token) = ft_create_new_node(ft_strdup(value), \
-			parssing, *space_befor);
-		return ;
-	}
 	(*token) = ft_create_new_node(ft_strtrim(value, " "), \
 		parssing, *space_befor);
 	return ;
