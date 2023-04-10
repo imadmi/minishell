@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 23:29:42 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 21:56:25 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/10 21:27:14 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	ft_token55(int *j, char *cmd_line)
 
 t_token	*ft_token_exp(t_token *token, char *cmd_line, t_exe *err)
 {
-	int	quotes[2];
 	int	pos;
+	int	quotes[2];
 	int	i;
 
 	ft_token1(&pos, &i, &quotes[0], &quotes[1]);
