@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 23:35:52 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/10 21:11:10 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/10 22:50:14 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*join_tokens(t_token *head)
 
 int	ft_sigle_q_suite(t_token *token)
 {
-	if (token->value != '\0' && token->next && token->next->next)
+	if (token->value != '\0' && token->next)
 	{
 		while (token->next)
 		{
