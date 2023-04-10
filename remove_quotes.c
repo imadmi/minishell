@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:11:05 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/10 00:31:37 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/10 21:12:30 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,13 @@ char	*delete_first_char(char *str)
 	return (start + 1);
 }
 
-int	ft_checker_suite(t_token **tmp)
+void	ft_checker_suite(t_token **tmp)
 {
-	if (!ft_isalnum((*tmp)->value[0]) && (*tmp)->value[0] != '_')
+	if (ft_isalnum((*tmp)->value[0]) || (*tmp)->value[0] == '_')
 	{
 		free((*tmp)->prev->value);
 		(*tmp)->prev->value = ft_strdup("");
-		return (1);
 	}
-	return (0);
 }
 
 int	ft_checker(t_token *tmp)
@@ -53,8 +51,7 @@ int	ft_checker(t_token *tmp)
 
 	ft_strcpy(start, tmp->value);
 	if (tmp->value)
-		if (ft_checker_suite(&tmp))
-			return (0);
+		ft_checker_suite(&tmp);
 	if (tmp && tmp->value)
 	{
 		if (tmp->value[0] <= '9' && tmp->value[0] >= '0')
@@ -68,7 +65,7 @@ int	ft_checker(t_token *tmp)
 	}
 	if (tmp->prev->prev && tmp)
 		if (ft_strcmp(tmp->prev->prev->value, "'") == 0 && \
-			ft_strcmp(tmp->value, "'") != 0)
+			ft_strcmp(tmp->value, "'") == 0)
 			return (1);
 	free(tmp->prev->value);
 	tmp->prev->value = ft_strdup("");

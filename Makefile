@@ -1,5 +1,5 @@
-# FLAGS =	-fsanitize=address
-FLAGS =	-Wall -Wextra  -Werror -fsanitize=address
+FLAGS =	-fsanitize=address
+# FLAGS =	-Wall -Wextra  -Werror -fsanitize=address
 # FLAGS =	-Wall -Wextra  -Werror
 
 all: parsing.c parsing.h
@@ -30,3 +30,4 @@ all: parsing.c parsing.h
 	 -o minishell  -lreadline -ltermcap
 
 #make && sleep 0.1 &&./minishell
+#  "$PWD"' $USER '"$?" $"PWD" $'PWD' '$PWD' "$PWD"

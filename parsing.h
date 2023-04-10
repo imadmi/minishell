@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 01:14:28 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 21:52:30 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/10 21:12:02 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,5 +202,7 @@ t_exe *parssing, int *space_befor);
 void			ft_add_back_suite_dol(t_token **token, char *value, \
 t_exe *parssing, int *space_befor);
 int				ft_checker(t_token *tmp);
+int				ft_sigle_q2(t_token *token);
+int				ft_sigle_q_suite(t_token *token);
 
 #endif

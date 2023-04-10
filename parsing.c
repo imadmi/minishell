@@ -6,11 +6,23 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 22:09:27 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/10 21:12:45 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+int	ft_sigle_q(t_token *token)
+{
+	t_token	*tmp1;
+	t_token	*tmp2;
+
+	tmp1 = token;
+	tmp2 = token;
+	if (ft_sigle_q_suite(tmp1) && ft_sigle_q2(tmp2))
+		return (1);
+	return (0);
+}
 
 int	ft_parse_tokens(char *cmd_line)
 {

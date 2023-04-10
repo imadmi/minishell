@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 23:35:52 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/10 00:22:59 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/10 21:11:10 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*join_tokens(t_token *head)
 
 int	ft_sigle_q_suite(t_token *token)
 {
-	if (token->value != '\0' && token->next)
+	if (token->value != '\0' && token->next && token->next->next)
 	{
 		while (token->next)
 		{
@@ -87,8 +87,7 @@ int	ft_sigle_q_suite(t_token *token)
 				break ;
 			if (token->next)
 			{
-				if (contains_only_spaces(token->next->value) || \
-					ft_strcmp(token->next->value, "\"") == 0)
+				if (contains_only_spaces(token->next->value))
 					token = token->next;
 				else
 					break ;
@@ -101,7 +100,7 @@ int	ft_sigle_q_suite(t_token *token)
 	return (0);
 }
 
-int	ft_sigle_q(t_token *token)
+int	ft_sigle_q2(t_token *token)
 {
 	if (token->value != '\0' && token->prev)
 	{
@@ -111,8 +110,7 @@ int	ft_sigle_q(t_token *token)
 				break ;
 			if (token->prev)
 			{
-				if (contains_only_spaces(token->prev->value) || \
-					ft_strcmp(token->prev->value, "\"") == 0)
+				if (contains_only_spaces(token->prev->value))
 					token = token->prev;
 				else
 					break ;
@@ -122,7 +120,5 @@ int	ft_sigle_q(t_token *token)
 			if (ft_strcmp(token->prev->value, "'") == 0)
 				return (1);
 	}
-	if (ft_sigle_q_suite(token))
-		return (1);
 	return (0);
 }

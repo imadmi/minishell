@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 23:17:48 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 23:10:56 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/10 21:13:06 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ int	tmp_dollar_sign(t_token *token)
 			if (token->prev)
 			{
 				if ((ft_strcmp(token->prev->value, "'") == 0 || \
-					contains_only_spaces(token->prev->value) || \
-					ft_strcmp(token->prev->value, "\"") == 0))
+					contains_only_spaces(token->prev->value)))
 					token = token->prev;
 				else
 					break ;
