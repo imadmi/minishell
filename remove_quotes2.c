@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 23:17:48 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/11 01:20:35 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/11 22:22:40 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	files_type(t_token *token)
 		if (token->type >= RED_IN && token->type <= RED_OUT_D)
 			if (token->next && (token->next->type == WORD \
 				|| token->next->type == DOLLAR))
-				token->next->type = FILE;
+				if (!(ft_strcmp(token->next->value, "") == 0))
+					token->next->type = FILE;
 		token = token->next;
 	}
 }

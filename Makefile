@@ -3,7 +3,7 @@ FLAGS =	-Wall -Wextra  -Werror -fsanitize=address
 # FLAGS =	-Wall -Wextra  -Werror
 
 all: parsing.c parsing.h
-	 cc $(FLAGS) ./libft/libft.a \
+	 @cc $(FLAGS) ./libft/libft.a \
 	 env.c \
 	 main.c \
 	 \
