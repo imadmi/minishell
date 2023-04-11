@@ -1,5 +1,5 @@
-FLAGS =	-fsanitize=address
-# FLAGS =	-Wall -Wextra  -Werror -fsanitize=address
+# FLAGS =	-fsanitize=address
+FLAGS =	-Wall -Wextra  -Werror -fsanitize=address
 # FLAGS =	-Wall -Wextra  -Werror
 
 all: parsing.c parsing.h

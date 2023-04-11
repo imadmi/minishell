@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:16:07 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/07 20:57:15 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/11 16:45:43 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ int	ft_isspace(int c)
 
 int	ft_sepa(char c)
 {
-	if (c == '|' || c == '<' || c == '>')
+	if (c == '|')
 		return (1);
+	else if (c == '<' || c == '>')
+		return (2);
 	return (0);
 }
 

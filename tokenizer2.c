@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:23:29 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/11 01:35:38 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/11 16:59:13 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,21 @@ void	ft_token4(int *j, char *cmd_line)
 
 void	ft_token5(int *j, char *cmd_line)
 {
-	while (cmd_line[(*j)] && ft_sepa(cmd_line[(*j)]))
+	if (cmd_line[(*j)] && ft_sepa(cmd_line[(*j)]) == 1)
 	{
-		(*j)++;
-		continue ;
+		while (cmd_line[(*j)] && ft_sepa(cmd_line[(*j)]) == 1)
+		{
+			(*j)++;
+			continue ;
+		}
+	}
+	else if (cmd_line[(*j)] && ft_sepa(cmd_line[(*j)]) == 2)
+	{
+		while (cmd_line[(*j)] && ft_sepa(cmd_line[(*j)]) == 2)
+		{
+			(*j)++;
+			continue ;
+		}
 	}
 }
 
