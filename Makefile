@@ -27,6 +27,7 @@ all: parsing.c parsing.h
 	 remove_quotes2.c \
 	 token_to_cmd.c \
 	 to_cmd_utils.c \
+	 remove_quote.c \
 	 -o minishell  -lreadline -ltermcap
 
 #make && sleep 0.1 &&./minishell

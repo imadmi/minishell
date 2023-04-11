@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:11:05 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/10 21:12:30 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/11 01:03:06 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	ft_checker(t_token *tmp)
 	char	start[1000];
 
 	ft_strcpy(start, tmp->value);
-	if (tmp->value)
+	if (!ft_sigle_q(tmp))
 		ft_checker_suite(&tmp);
 	if (tmp && tmp->value)
 	{
@@ -63,10 +63,6 @@ int	ft_checker(t_token *tmp)
 			return (0);
 		}
 	}
-	if (tmp->prev->prev && tmp)
-		if (ft_strcmp(tmp->prev->prev->value, "'") == 0 && \
-			ft_strcmp(tmp->value, "'") == 0)
-			return (1);
 	free(tmp->prev->value);
 	tmp->prev->value = ft_strdup("");
 	return (1);

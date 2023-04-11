@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 23:17:48 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/10 21:13:06 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/11 01:20:35 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	files_type(t_token *token)
 
 int	tmp_dollar_sign(t_token *token)
 {
+	if (ft_sigle_qe(token))
+		return (0);
 	if (token->value != '\0' && token->prev)
 	{
 		while (token->prev)

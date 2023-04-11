@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:23:29 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 23:57:49 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/11 01:35:38 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,10 @@ void	remove_quotes(t_token *token, t_exe *parssing)
 		quotes[0] = 0;
 		quotes[1] = 0;
 		i = 0;
-		while (token->value[i] && !ft_isalnum(token->value[i]))
+		while (token->value[i] && !ft_isalnumm(token->value[i]))
 			count_quotes(token->value[i++], &quotes[0], &quotes[1]);
 		i = ft_strlen(token->value) - 1;
-		while (i >= 0 && !ft_isalnum(token->value[i]))
+		while (i >= 0 && !ft_isalnumm(token->value[i]))
 			count_quotes(token->value[i--], &quotes[0], &quotes[1]);
 		remove_quotes2(token, &quotes[0]);
 		remove_quotes3(token);
