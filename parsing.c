@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/11 00:51:58 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/11 18:04:17 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ t_cmd	*ft_parse(char *cmd_line, t_data *data, t_exe *parssin)
 	t_cmd	*cmd;
 
 	cmd = NULL;
-	if (*cmd_line == '\0')
-		return (NULL);
+	if (cmd_line)
+		if (*cmd_line == '\0')
+			return (NULL);
 	token = parssing(cmd_line, parssin);
 	if (!token)
 		return (NULL);
