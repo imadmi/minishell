@@ -6,24 +6,17 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 23:29:42 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/10 21:27:14 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/12 05:50:10 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-void	ft_token33(int *j, char *cmd_line, int *single_quote, int *double_quote)
+void	ft_token33(int *j, char *cmd_line)
 {
-	count_quotes(cmd_line[*j], single_quote, double_quote);
 	while ((cmd_line[*j] && !ft_isspacee(cmd_line[*j])
-			&& !ft_sepaa(cmd_line[*j])) || (cmd_line[*j]
-			&& ((*single_quote) % 2 || (*double_quote) % 2)))
+			&& !ft_sepaa(cmd_line[*j])))
 	{
-		count_quotes(cmd_line[*j], single_quote, double_quote);
-		if ((*double_quote) % 2 || (*single_quote) % 2)
-			(*j)++;
-		if ((*double_quote) % 2 || (*single_quote) % 2)
-			continue ;
 		(*j)++;
 	}
 }
@@ -48,15 +41,15 @@ void	ft_token55(int *j, char *cmd_line)
 t_token	*ft_token_exp(t_token *token, char *cmd_line, t_exe *err)
 {
 	int	pos;
-	int	quotes[2];
 	int	i;
 
-	ft_token1(&pos, &i, &quotes[0], &quotes[1]);
+	i = 0;
+	pos = 0;
 	while (cmd_line[i])
 	{
 		if (!ft_isspacee(cmd_line[i]) && !ft_sepaa(cmd_line[i]))
 		{
-			ft_token33(&i, cmd_line, &quotes[0], &quotes[1]);
+			ft_token33(&i, cmd_line);
 			ft_add_back_dol(&token, ft_substr(cmd_line, pos, i - pos), err);
 			pos = i;
 		}

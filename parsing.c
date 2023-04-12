@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/12 04:49:24 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/12 05:20:10 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	ft_parse_tokens(char *cmd_line)
 		return (0);
 	if (tokens_parssing(cmd_line))
 	{
-		write(2, "× Error\n", 9);
 		return (0);
 	}
 	return (1);
