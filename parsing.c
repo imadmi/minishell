@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/11 18:04:17 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/12 04:49:24 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,12 @@ t_cmd	*ft_parse(char *cmd_line, t_data *data, t_exe *parssin)
 	if (!token)
 		return (NULL);
 	exp_token(data->env, token);
-	files_type(token);
+	if (files_type(token) == -1)
+	{
+		ft_putstr_fd("Empty file Error \n", 2);
+		ft_free(token);
+		return (NULL);
+	}
 	cmd = tokens_to_cmds(token);
 	ft_free(token);
 	return (cmd);

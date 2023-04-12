@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 01:14:28 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/11 01:34:56 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/12 04:47:25 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ int				has_dollar_sign(char *s);
 void			remove_quotesv3(t_token *token);
 void			remove_quotes22(t_token *token, int *s_q);
 void			remove_quotesv2(t_token *token);
-void			files_type(t_token *token);
+int				files_type(t_token *token);
 void			new_node(t_cmd **cmds, t_cmd **last_cmd, t_cmd **cmdss, \
 t_token *token);
 int				token_cmd2(t_token **current_token, int *arg_index);
