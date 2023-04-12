@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 23:35:52 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/12 05:58:26 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/12 06:33:15 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,7 @@ char	*join_tokens(t_token *head)
 		ft_strcat(result, current->value);
 		current = current->next;
 	}
-	if (head->type == DOLLAR)
-		remove_quotess(result);
+	remove_quotess(result);
 	return (result);
 }
 
