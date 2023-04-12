@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:42:20 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 15:07:15 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/12 09:22:17 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,21 @@
 int	check_semicolon(char *cmd_line)
 {
 	int	i;
-	int	quotes[2];
 
 	i = 0;
-	quotes[0] = 0;
-	quotes[1] = 0;
 	while (cmd_line[i])
 	{
-		count_quotes(cmd_line[i], &quotes[0], &quotes[1]);
-		if (!(quotes[0] % 2) && !(quotes[1] % 2))
+		if (cmd_line[i] == ';')
 		{
-			if (cmd_line[i] == ';' || cmd_line[i] == '\\')
-			{
-				return (1);
-			}
+			g_exit_status = 1;
+			ft_putstr_fd("Error ; \n", 2);
+			return (1);
+		}
+		else if (cmd_line[i] == '\\')
+		{
+			g_exit_status = 1;
+			ft_putstr_fd("Error \\ \n", 2);
+			return (1);
 		}
 		i++;
 	}
