@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 01:14:28 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/12 05:45:27 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/12 09:30:52 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,5 +208,6 @@ int				ft_sigle_q_suitee(t_token *token);
 int				ft_sigle_q2e(t_token *token);
 int				ft_sigle_qe(t_token *token);
 int				ft_isalnumm(int c);
+char			*exp_str(t_env *env, char *str);
 
 #endif
