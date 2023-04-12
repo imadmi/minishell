@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 09:26:39 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/12 11:01:53 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/12 12:42:57 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,15 +117,12 @@ char	*join_tokenss(t_token *head)
 
 char	*exp_str(t_env *env, char *str)
 {
-    char *dup;
 	t_token	*tmp;
 	t_token	*tmp1;
 	t_token	*head;
-	if (!str)
-		return (NULL);
+
 	tmp = ft_token_expp(NULL, str, NULL);
 	head = tmp;
-	dup = NULL;
 	if (contains_dollar(str))
 	{
 		while (tmp)
@@ -135,8 +132,8 @@ char	*exp_str(t_env *env, char *str)
 				expanding_value(env, tmp);
 			tmp = tmp->next;
 		}
-		dup = join_tokenss(head);
 	}
+	str = join_tokenss(head);
 	ft_free(head);
-	return (dup);
+	return (str);
 }

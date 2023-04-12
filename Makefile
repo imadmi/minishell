@@ -21,3 +21,8 @@ all: parsing.c parsing.h
 
 #make && sleep 0.1 &&./minishell
 #  "$PWD"' $USER '"$?" $"PWD" $'PWD' '$PWD' "$PWD"
+
+# while true
+# do leaks minishell
+# sleep 2
+# done
