@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 01:14:28 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/12 09:30:52 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/12 10:37:11 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,5 +209,8 @@ int				ft_sigle_q2e(t_token *token);
 int				ft_sigle_qe(t_token *token);
 int				ft_isalnumm(int c);
 char			*exp_str(t_env *env, char *str);
+void			ft_token33(int *j, char *cmd_line);
+void			ft_token44(int *j, char *cmd_line);
+void			ft_token55(int *j, char *cmd_line);
 
 #endif
