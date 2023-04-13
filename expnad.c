@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 12:25:35 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 22:35:46 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/13 02:04:32 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	find_env_check(t_env *env, char *key)
 		return (1);
 	while (env != NULL)
 	{
-		if (ft_strcmp(env->key, key) == 0)
+		if (ft_strcmp(env->key, key) == 0 && env->visible != -1)
 		{
 			return (1);
 		}

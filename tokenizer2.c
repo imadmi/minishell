@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:23:29 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/12 05:56:33 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/13 03:01:15 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,9 @@ void	remove_quotes(t_token *token, t_exe *parssing)
 	(void)parssing;
 	while (token)
 	{
-		if (contains_dollar(token->value))
-			remove_quotes4(token);
 		ft_quotes_type(token);
+		if (contains_dollar(token->value) && token->quote != S_QUOTE)
+			remove_quotes4(token);
 		quotes[0] = 0;
 		quotes[1] = 0;
 		i = 0;

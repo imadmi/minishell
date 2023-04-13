@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/12 23:35:35 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/13 03:09:34 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,6 @@ t_cmd	*ft_parse(char *cmd_line, t_data *data, t_exe *parssin)
 	t_cmd	*cmd;
 
 	cmd = NULL;
-	// char *str= ft_strdup(cmd_line);
-	// char *str1= exp_str(data->env, cmd_line);
-	// printf("%s\n", str1);
-	// free(str);
-	// free(str1);
 	if (cmd_line)
 		if (*cmd_line == '\0')
 			return (NULL);
@@ -72,6 +67,8 @@ t_cmd	*ft_parse(char *cmd_line, t_data *data, t_exe *parssin)
 	exp_token(data->env, token);
 	if (files_type(token) == -1)
 	{
+		parssin->b_parssing = 1;
+		g_exit_status = 1;
 		ft_putstr_fd("Empty file Error \n", 2);
 		ft_free(token);
 		return (NULL);
