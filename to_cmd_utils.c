@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:21:17 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/12 06:32:22 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/14 02:05:05 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	exp_token(t_env *env, t_token *token)
 				tmp = tmp->next;
 			}
 			free(token->value);
-			token->value = join_tokens(head);
+			token->value = join_tokens(head, token->quote);
 		}
 		ft_free(head);
 		token = token->next;

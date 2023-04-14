@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 09:26:39 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/12 12:42:57 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/14 02:33:17 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_add_back_doll(t_token **token, char *value, t_exe *parssing)
 	int		space_befor;
 
 	ft_add_back_suite_dol(&new, value, parssing, &space_befor);
-    free(value);
+	free(value);
 	if (new == NULL)
 		return ;
 	last = *token;

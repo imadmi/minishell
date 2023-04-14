@@ -6,32 +6,11 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 23:35:52 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/12 06:33:15 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/14 02:39:13 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-void	remove_quotess(char *str)
-{
-	int	len;
-	int	i;
-	int	j;
-
-	len = ft_strlen(str);
-	i = 0;
-	j = 0;
-	while (i < len)
-	{
-		if (str[i] != '"' && str[i] != '\'')
-		{
-			str[j] = str[i];
-			j++;
-		}
-		i++;
-	}
-	str[j] = '\0';
-}
 
 char	*ft_strcat(char *dest, char *src)
 {
@@ -50,31 +29,30 @@ char	*ft_strcat(char *dest, char *src)
 	return (dest);
 }
 
-char	*join_tokens(t_token *head)
+char	*join_tokens(t_token *head, int quotes)
 {
-	int			total_length;
+	int			lne;
 	char		*result;
-	t_token		*current;
+	t_token		*tmp;
 
-	current = head;
-	total_length = 0;
-	while (current != NULL)
+	tmp = head;
+	lne = 0;
+	while (tmp != NULL)
 	{
-		total_length += ft_strlen(current->value);
-		current = current->next;
+		lne += ft_strlen(tmp->value);
+		tmp = tmp->next;
 	}
-	result = (char *)malloc((total_length + 1));
+	result = (char *)malloc((lne + 1));
 	if (result == NULL)
 		return (NULL);
 	result[0] = '\0';
-	current = head;
-	while (current != NULL)
+	tmp = head;
+	while (tmp != NULL)
 	{
-		ft_strcat(result, current->value);
-		current = current->next;
+		ft_strcat(result, tmp->value);
+		tmp = tmp->next;
 	}
-	remove_quotess(result);
-	return (result);
+	return (remove_quotess(result, quotes));
 }
 
 int	ft_sigle_q_suite(t_token *token)

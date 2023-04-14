@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 23:03:56 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/13 23:03:58 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/14 02:32:43 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,9 +192,9 @@ t_token			*ft_token_exp(t_token *token, char *cmd_line, t_exe *err);
 void			expanding_value(t_env *env, t_token *token);
 int				ft_sigle_q(t_token *token);
 int				ft_skip_red(t_token **token);
-char			*join_tokens(t_token *head);
+char			*join_tokens(t_token *head, int quotes);
 char			*ft_strcat(char *dest, char *src);
-void			remove_quotess(char *str);
+char			*remove_quotess(char *str, int quotes);
 void			ft_add_back_dol(t_token **token, char *value, t_exe *parssing);
 int				contains_only_spaces(char *string);
 void			ft_add_back_suite(t_token **token, char *value, \
@@ -212,5 +212,7 @@ char			*exp_str(t_env *env, char *str);
 void			ft_token33(int *j, char *cmd_line);
 void			ft_token44(int *j, char *cmd_line);
 void			ft_token55(int *j, char *cmd_line);
+char			*remove_quotesss(char *str, int quote_type);
+char			*remove_quotess(char *str1, int quote_type);
 
 #endif
