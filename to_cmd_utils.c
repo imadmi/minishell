@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:21:17 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/14 02:05:05 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/14 05:52:17 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	exp_token(t_env *env, t_token *token)
 {
 	t_token	*tmp;
-	t_token	*tmp1;
 	t_token	*head;
 
 	while (token != NULL)
@@ -28,9 +27,10 @@ void	exp_token(t_env *env, t_token *token)
 				continue ;
 			while (tmp)
 			{
-				tmp1 = tmp;
-				if (tmp_dollar_sign(tmp1) && !ft_sigle_q(tmp1))
+				if (tmp_dollar_sign(tmp) && !ft_sigle_q(tmp))
+				{
 					expanding_value(env, tmp);
+				}	
 				tmp = tmp->next;
 			}
 			free(token->value);

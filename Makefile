@@ -5,11 +5,11 @@
 # # sleep 2
 # # done
 
-# CFLAGS = -Wall -Werror -Wextra -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -fsanitize=address
 # CFLAGS = -fsanitize=address
 # CFLAGS = -Wall -Werror -Wextra
 
-NAME = minishell
+NAME = minishell_pars
 
 CC = gcc
 
