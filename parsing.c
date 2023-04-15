@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:59:24 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/15 23:25:22 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/15 23:39:42 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,7 @@ t_cmd	*ft_parse(char *cmd_line, t_data *data, t_exe *parssin)
 		ft_free(token);
 		return (NULL);
 	}
-	print_token(token);//
-	// cmd = tokens_to_cmds(token);
+	cmd = tokens_to_cmds(token);
 	ft_free(token);
 	return (cmd);
 }
