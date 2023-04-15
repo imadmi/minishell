@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:35:04 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/15 04:38:15 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/15 23:48:34 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int	check_quotes(char *cmd_line)
 	}
 	if (quotes[0] % 2 || quotes[1] % 2)
 	{
+		g_exit_status = 1;
 		ft_putstr_fd("Quotes Syntax Error \n", 2);
 		return (1);
 	}
