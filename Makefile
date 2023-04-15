@@ -21,10 +21,10 @@ OBJS = $(SRC:.c=.o)
 
 READLINE = -lreadline -ltermcap
 
-all: $(OBJS) $(HEADER)
+all: $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) ./libft/libft.a -o $(NAME) $(READLINE)
 
-%.o: %.c
+%.o: %.c $(HEADER)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
@@ -35,6 +35,10 @@ fclean: clean
 	@rm -f $(NAME)
 	@echo "\033[0;93mthe object files and the executable are removed.\033[0m"
 
+f:
+	@rm -f $(NAME)
+	@echo "\033[0;93mthe executable is removed.\033[0m"
+
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re f

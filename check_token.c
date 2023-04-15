@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:35:04 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/12 05:23:40 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/15 04:38:15 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	check_pipes_suite2(char *cmd_line)
 	if (cmd_line[i] == '|')
 	{
 		g_exit_status = 258;
-		ft_putstr_fd("unexpected token \'|\' \n", 2);
+		ft_putstr_fd("syntax error\n", 2);
 		return (1);
 	}
 	i = ft_strlen(cmd_line) - 1;
@@ -31,7 +31,7 @@ int	check_pipes_suite2(char *cmd_line)
 	if (cmd_line[i] == '|')
 	{
 		g_exit_status = 258;
-		ft_putstr_fd("unexpected token \'|\' \n", 2);
+		ft_putstr_fd("syntax error\n", 2);
 		return (1);
 	}
 	return (0);
@@ -49,7 +49,7 @@ int	check_pipes_suite(char *cmd_line, int *i, int len)
 	if (cmd_line[b] == '|' && b < len)
 	{
 		g_exit_status = 258;
-		ft_putstr_fd("unexpected token \'|\' \n", 2);
+		ft_putstr_fd("syntax error\n", 2);
 		return (1);
 	}
 	return (0);

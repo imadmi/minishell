@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:39:08 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/12 09:20:54 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/15 04:42:56 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	consecutive_redirections2(char *cmd_line, char red, int *i, int *counter)
 	if ((*counter) > 2)
 	{
 		g_exit_status = 258;
-		ft_putstr_fd("unexpected token \'|\' \n", 2);
 		return (1);
 	}
 	return (0);
