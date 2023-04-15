@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 23:25:42 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/12 06:26:11 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/15 04:48:57 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,6 @@ int	nbr_words(t_token	*tmp)
 		token = token->next;
 	}
 	return (i + 1);
-}
-
-int	nbr_herdoc(t_token	*tmp)
-{
-	int		i;
-	t_token	*token;
-
-	token = tmp;
-	i = 0;
-	while (token != NULL && token->type != PIPE)
-	{
-		if (token->type == RED_IN_D)
-			i++;
-		token = token->next;
-	}
-	return (i);
 }
 
 int	ft_isspacee(int c)

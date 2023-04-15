@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:21:17 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/14 05:52:17 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/15 04:49:51 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,9 @@ void	exp_token(t_env *env, t_token *token)
 	}
 }
 
-void	new_node_init(t_cmd **cmd, t_token	*token)
+void	new_node_init(t_cmd **cmd)
 {
 	(*cmd)->pid = -1;
-	(*cmd)->n_heredoc = nbr_herdoc(token);
 	(*cmd)->red = NULL;
 	(*cmd)->next = NULL;
 }
@@ -56,7 +55,7 @@ void	new_node(t_cmd **cmds, t_cmd **last_cmd, t_cmd **cmdss, t_token	*token)
 	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!cmd)
 		return ;
-	new_node_init(&cmd, token);
+	new_node_init(&cmd);
 	cmd->args = (char **)malloc(sizeof(char *) * nbr_words(token));
 	if (!cmd->args)
 	{
