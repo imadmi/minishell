@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 15:04:38 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/14 05:42:43 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/15 06:05:58 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	print_token(t_token *token)
 		printf("value is `%s`\n", token->value);
 		print_token_name(token->type);
 		printf("quotes is \"%d\"\n", token->quote);
+		printf("type is \"%d\"\n", token->type);
 		token = token->next;
 	}
 }

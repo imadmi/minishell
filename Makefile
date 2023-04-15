@@ -15,7 +15,7 @@ CC = gcc
 
 HEADER = parsing.h
 
-SRC = check_token4.c expand_utils.c main.c parsing_utils2.c remove_quotes2.c tokenizer.c check_token.c env.c expand_utils2.c parsing.c to_cmd_utils.c tokenizer2.c check_token2.c expan_char.c expand_utils3.c remove_quote.c token_to_cmd.c tokenizer3.c check_token3.c expand.c parsing_utils.c remove_quotes.c token_type.c tokenizer4.c remove_qts.c
+SRC = check_token4.c expand_utils.c main.c parsing_utils2.c remove_quotes2.c tokenizer.c check_token.c env.c expand_utils2.c parsing.c to_cmd_utils.c tokenizer2.c check_token2.c expan_char.c expand_utils3.c remove_quote.c token_to_cmd.c tokenizer3.c check_token3.c expand.c parsing_utils.c remove_quotes.c token_type.c tokenizer4.c remove_qts.c spaces_handling.c
 
 OBJS = $(SRC:.c=.o)
 

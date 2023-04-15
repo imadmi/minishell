@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 23:03:56 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/15 04:51:13 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/15 06:50:12 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,5 +213,6 @@ void			ft_token44(int *j, char *cmd_line);
 void			ft_token55(int *j, char *cmd_line);
 char			*remove_quotesss(char *str, int quote_type);
 char			*remove_quotess(char *str1, int quote_type);
+void			dollar_nodes(t_token *token);
 
 #endif
