@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 23:03:56 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/14 05:54:00 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/15 04:51:13 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,6 @@ t_cmd	**last_cmd);
 t_cmd			*tokens_to_cmds(t_token *token);
 void			print_cmds(t_cmd *cmds);
 int				nbr_words(t_token *tmp);
-int				nbr_herdoc(t_token *tmp);
 void			exp_token(t_env *env, t_token *token);
 int				tmp_dollar_sign(t_token *token);
 int				find_env_check(t_env *env, char *key);
