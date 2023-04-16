@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 06:44:23 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/15 23:37:54 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/16 01:57:48 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,15 @@ void	dollar_nodes(t_token *token)
 
 	while (token != NULL)
 	{
-		if (token->quote == N_QUOTE && token->type == DOLLAR)
+		if (token->quote == N_QUOTE && token->type == DOLLAR \
+			&& ft_strlen(token->value))
 		{
 			sp = ft_split(token->value, ' ');
 			i = len_arr(sp);
 			while (--i > 0)
 				dollar_nodes_suite(&token, &new_node, sp, i);
 			free(token->value);
-			token->value = ft_strdup(sp[i]);
+			token->value = ft_strdup(sp[0]);
 			ft_fri(sp);
 		}
 		token = token->next;

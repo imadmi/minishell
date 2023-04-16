@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:18:36 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/09 00:03:40 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/16 01:41:22 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	add_to_cmd(t_token	**current_token, t_cmd	**cmd, int	*arg_index)
 {
 	(*cmd)->args[(*arg_index)] = ft_strdup((*current_token)->value);
 	(*arg_index)++;
+	(*cmd)->fd_herdoc = -1;
 }
 
 void	add_to_cmd2(t_token **current_token, t_cmd **cmd)

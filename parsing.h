@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 23:03:56 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/15 06:50:12 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/16 01:39:54 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef struct s_red
 
 typedef struct s_cmd
 {
-	int				n_heredoc;
 	int				fd_herdoc;
 	char			**args;
 	t_red			*red;
