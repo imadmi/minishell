@@ -6,7 +6,7 @@
 /*   By: imimouni <imimouni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 03:28:05 by imimouni          #+#    #+#             */
-/*   Updated: 2023/04/08 22:48:22 by imimouni         ###   ########.fr       */
+/*   Updated: 2023/04/17 03:09:09 by imimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_strdup2(char *str, char c)
 
 	i = 0;
 	j = 0;
-	while (str[i])
+	while (str[i] && j < 9999)
 	{
 		if (str[i] != c)
 		{
@@ -41,7 +41,7 @@ char	*ft_strdup3(char *str, char c, char cc)
 
 	i = 0;
 	j = 0;
-	while (str[i])
+	while (str[i] && j < 9999)
 	{
 		if (str[i] != c && str[i] != cc)
 		{

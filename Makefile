@@ -5,9 +5,9 @@
 # # sleep 2
 # # done
 
-# CFLAGS = -Wall -Werror -Wextra -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -fsanitize=address
 # CFLAGS = -fsanitize=address
-CFLAGS = -Wall -Werror -Wextra
+# CFLAGS = -Wall -Werror -Wextra
 
 NAME = minishell_pars
 
